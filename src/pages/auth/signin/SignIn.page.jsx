@@ -53,15 +53,8 @@ export default function SignIn() {
   return (
     <>
       <div className="row m-0 signin__page d-flex justify-content-center align-items-center">
-        <div className="col-12 signin__page-inner d-flex  justify-content-center align-items-center">
-          <div className="col-12 col-md-6 d-flex  flex-column justify-content-center align-items-center">
-            <img
-              src={require("../../../assets/images/logo.gif")}
-              width={"auto"}
-              height={100}
-              alt=""
-              className="mb-2"
-            />
+        <div className="coll-12 signin__page-inner d-flex  justify-content-center align-items-center">
+          <div className="coll-12 coll-md-6 d-flex  flex-column justify-content-center align-items-center  w-100">
             <h1 className="login__title mb-5 text-center">ĐĂNG NHẬP</h1>
             <Form
               onSubmit={handleSubmit(onSubmit)}
@@ -98,7 +91,7 @@ export default function SignIn() {
                 <Link className="link_to_signup" to="/signup">
                   Bạn chưa có tài khoản? Đăng kí ngay
                 </Link>
-                <Link className="link_to_signup" to="/signup">
+                <Link className="link_to_signup" to="/forgotpass">
                   Quên mật khẩu
                 </Link>
               </div>
@@ -111,12 +104,14 @@ export default function SignIn() {
               </Button>
             </Form>
           </div>
-          <div className="col-12 col-md-6 d-none d-md-block ">
-            <img
-              className="img-fluid"
-              src={require("../../../assets/images/65012-learning-concept.gif")}
-              alt=""
-            />
+          <div className="coll-12 coll-md-6 d-none d-md-block ">
+            <lottie-player
+              src="https://assets3.lottiefiles.com/private_files/lf30_sxw84pnl.json"
+              background="transparent"
+              speed="1"
+              loop
+              autoplay
+            ></lottie-player>
           </div>
         </div>
       </div>

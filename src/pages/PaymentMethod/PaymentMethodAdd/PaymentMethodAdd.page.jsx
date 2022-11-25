@@ -1,13 +1,14 @@
 import React from "react";
 import { Col, Form, Row, Tab, Tabs } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import categoriescoursesApi from "../../../api/categoriescoursesApi";
+import paymentApi from "../../../api/paymentApi";
 
-export default function CategoriesCourseAdd(props) {
+export default function PaymentMethodAdd(props) {
   const { state } = useLocation();
-  console.log(state);
+  const { currentUser } = useSelector((state) => state.user);
   const isEdit = state && state.data ? true : false;
   const {
     register,
@@ -19,6 +20,7 @@ export default function CategoriesCourseAdd(props) {
 
   const nav = useNavigate();
   const onSubmit = async (data) => {
+
     if (isEdit) {
       await handleEdit(data);
     } else {
@@ -28,8 +30,7 @@ export default function CategoriesCourseAdd(props) {
 
   const handleAdd = async (data) => {
     try {
-      const res = await categoriescoursesApi.add(data);
-      console.log("A", res.errorCode);
+      const res = await paymentApi.add(data);
       if (res.errorCode === "") {
         Swal.fire({
           icon: "success",
@@ -37,7 +38,7 @@ export default function CategoriesCourseAdd(props) {
           showConfirmButton: false,
           timer: 1500,
         });
-        nav("/categories");
+        nav("/payments");
       } else {
         Swal.fire({
           icon: "error",
@@ -51,8 +52,7 @@ export default function CategoriesCourseAdd(props) {
   };
   const handleEdit = async (data) => {
     try {
-      console.log("edit");
-      const res = await categoriescoursesApi.update(data.id, data);
+      const res = await paymentApi.update(data);
 
       if (res.errorCode === "") {
         Swal.fire({
@@ -61,7 +61,7 @@ export default function CategoriesCourseAdd(props) {
           showConfirmButton: false,
           timer: 1500,
         });
-        nav("/categories");
+        nav("/payments");
       } else {
         Swal.fire({
           icon: "error",
@@ -77,7 +77,9 @@ export default function CategoriesCourseAdd(props) {
     <div className="container">
       <div className="content__head d-flex  justify-content-between">
         <h3 className="content__title mb-3">
-          {isEdit ? "SỬA LOẠI KHÓA HỌC" : "THÊM MỚI LOẠI KHÓA HỌC"}
+          {isEdit
+            ? "SỬA phương thức thanh toán"
+            : "THÊM MỚI phương thức thanh toán"}
         </h3>
         <div className="content__tool ">
           <button className="main__btn me-2" onClick={() => nav(-1)}>
@@ -99,7 +101,7 @@ export default function CategoriesCourseAdd(props) {
               <Row className="mb-3">
                 <Col md={6} sm={12}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Tên loại khóa học</Form.Label>
+                    <Form.Label>Tên phương thức thanh toán</Form.Label>
                     <Form.Control
                       type="text"
                       {...register("name", { required: true })}
@@ -109,7 +111,6 @@ export default function CategoriesCourseAdd(props) {
                     )}
                   </Form.Group>
                 </Col>
-                <Col md={6} sm={12}></Col>
               </Row>
             </Form>
           </Tab>

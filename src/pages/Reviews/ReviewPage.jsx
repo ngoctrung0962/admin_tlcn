@@ -6,27 +6,37 @@ import CustomDataTable from "../../components/CustomDataTable/CustomDataTable.co
 import Dropdown from "../../components/Dropdown/Dropdown.component";
 import { AiFillEye, AiFillDelete } from "react-icons/ai";
 import { BiHistory } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
+import { formatDateDisplay } from "../../utils/MyUtils";
 
 const ReviewPage = () => {
   const [listReviews, setListReviews] = useState([]);
-
+  const [paginate, setPaginate] = useState({
+    page: 0,
+  });
+  const [totalReview, setTotalReview] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
-      const res = await reviewApi.getAll();
+      const res = await reviewApi.getAll(paginate.page);
       console.log(res);
       setListReviews(res.data.content);
+      setTotalReview(res.data.totalElements);
     };
     fetchData();
-  }, []);
+  }, [paginate]);
+  const nav = useNavigate();
+  const handleEdit = (row) => {
+    nav(`${row.id}`);
+  };
   const columns = [
     {
       name: "Action",
-      stt: -10,
-      width: "100px",
+      minWidth: "100px",
+      maxWidth: "100px",
       center: true,
       cell: (row) => (
         <Dropdown>
-          <MenuItem>
+          <MenuItem onClick={() => handleEdit(row)}>
             <AiFillEye />
             Xem
           </MenuItem>
@@ -46,58 +56,65 @@ const ReviewPage = () => {
       selector: (row) => row.id,
       sortable: true,
       reorder: true,
+      minWidth: "100px",
+      maxWidth: "100px",
     },
     {
       name: "User name",
       selector: (row) => row.username,
       sortable: true,
       reorder: true,
+      minWidth: "150px",
+      maxWidth: "150px",
     },
 
     {
       name: "Ngày tạo",
-      selector: (row) => row.createDate,
+      selector: (row) => formatDateDisplay(row.createDate),
       sortable: true,
       reorder: true,
+      minWidth: "200px",
+      maxWidth: "200px",
     },
     {
       name: "Nội dung",
       selector: (row) => row.content,
       sortable: true,
       reorder: true,
+      minWidth: "250px",
+      maxWidth: "250px",
+      wrap: true,
     },
     {
       name: "Đánh giá",
       selector: (row) => row.rate,
       sortable: true,
       reorder: true,
+      minWidth: "100px",
+      maxWidth: "100px",
     },
   ];
-  const data = [
-    {
-      id: 1,
-      title: "Beetlejuice",
-      year: "1988",
-    },
-    {
-      id: 2,
-      title: "Ghostbusters",
-      year: "1984",
-    },
-  ];
-  console.log("listReviews", listReviews);
+
   return (
     <div className="container-fluid">
       <div className="content__head d-flex  justify-content-between">
         <h3 className="content__title ">Tất cả bình luận</h3>
         <div className="content__tool">
-          <button className="main__btn">
+          <button className="main__btn" onClick={() => nav("add")}>
             Thêm mới <MdOutlineAdd size={15} color="#005fb7" />
           </button>
         </div>
       </div>
       <div className="container">
-        <CustomDataTable columns={columns} data={listReviews} />
+        {columns && (
+          <CustomDataTable
+            columns={columns}
+            data={listReviews}
+            paginate={paginate}
+            setPaginate={setPaginate}
+            count={totalReview}
+          />
+        )}
       </div>
     </div>
   );

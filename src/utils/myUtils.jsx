@@ -1,22 +1,22 @@
-import moment from 'moment';
-import Swal from 'sweetalert2';
+import moment from "moment";
+import Swal from "sweetalert2";
 
-const words = 'abcdefghijklmnopqrstuvwxyz0123456789';
+const words = "abcdefghijklmnopqrstuvwxyz0123456789";
 
 export const generateRandomString = (length) => {
-	let result = '';
-	for (let i = 0; i < length; i++) {
-		result += words.charAt(Math.floor(Math.random() * words.length));
-	}
-	return result;
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += words.charAt(Math.floor(Math.random() * words.length));
+  }
+  return result;
 };
 
 export const getRandomNumberString = (length) => {
-	let result = '';
-	for (let i = 0; i < length; i++) {
-		result += Math.floor(Math.random() * 10);
-	}
-	return result;
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += Math.floor(Math.random() * 10);
+  }
+  return result;
 };
 
 /**
@@ -24,10 +24,10 @@ export const getRandomNumberString = (length) => {
  * @param {*} date
  * @returns
  */
-export const formatDateDisplay = (date, separator = ' / ') => {
-	return date && moment(date).isValid()
-		? moment(date).format('DD' + separator + 'MM' + separator + 'YYYY')
-		: '';
+export const formatDateDisplay = (date, separator = " / ") => {
+  return date && moment(date).isValid()
+    ? moment(date).format("DD" + separator + "MM" + separator + "YYYY")
+    : "";
 };
 
 /**
@@ -36,9 +36,9 @@ export const formatDateDisplay = (date, separator = ' / ') => {
  * @returns
  */
 export const formatTimeDisplay = (date, showSeconds = false) => {
-	return date && moment(date).isValid()
-		? moment(date).format('HH:mm' + (showSeconds ? ':ss' : ''))
-		: '';
+  return date && moment(date).isValid()
+    ? moment(date).format("HH:mm" + (showSeconds ? ":ss" : ""))
+    : "";
 };
 
 /**
@@ -47,15 +47,15 @@ export const formatTimeDisplay = (date, showSeconds = false) => {
  * @returns
  */
 export const formatDateTimeDisplay = (
-	date,
-	separator = ' / ',
-	showSeconds = true
+  date,
+  separator = " / ",
+  showSeconds = true
 ) => {
-	return date && moment(date).isValid()
-		? formatDateDisplay(date, separator) +
-				' | ' +
-				formatTimeDisplay(date, showSeconds)
-		: '';
+  return date && moment(date).isValid()
+    ? formatDateDisplay(date, separator) +
+        " | " +
+        formatTimeDisplay(date, showSeconds)
+    : "";
 };
 
 /**
@@ -63,19 +63,19 @@ export const formatDateTimeDisplay = (
  * @param {*} value
  * @returns
  */
-export const formatCurrency = (value, unit = 'VNĐ') => {
-	value = formatNumber(value);
+export const formatCurrency = (value, unit = "VNĐ") => {
+  value = formatNumber(value);
 
-	if (unit) value += ' ' + unit;
+  if (unit) value += " " + unit;
 
-	return value;
+  return value;
 };
 
 export const formatNumber = (value) => {
-	if (isNaN(value)) return '';
+  if (isNaN(value)) return "";
 
-	// return value = value.toLocaleString('vi-VN');
-	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  // return value = value.toLocaleString('vi-VN');
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
 /**
@@ -84,118 +84,120 @@ export const formatNumber = (value) => {
  * @returns date in format yyyy-mm-dd if date is valid else return null
  */
 export const formatDateValue = (date) => {
-	return date && moment(date).isValid()
-		? moment(date).format('YYYY-MM-DD')
-		: '';
+  return date && moment(date).isValid()
+    ? moment(date).format("YYYY-MM-DD")
+    : "";
 };
 
 export const currencyToNumber = (value) => {
-	return value
-		? Number(value.toString().replaceAll('.', '').replaceAll(',', ''))
-		: 0;
+  return value
+    ? Number(value.toString().replaceAll(".", "").replaceAll(",", ""))
+    : 0;
 };
 
 export const getDirectlyLink = (url) => {
-	if (url.startsWith('http' || 'https')) {
-		return url;
-	} else {
-		if (url.startsWith('/')) {
-			return 'https://api.wlin.com.vn' + url;
-		}
-		return 'https://api.wlin.com.vn/' + url;
-	}
+  if (url.startsWith("http" || "https")) {
+    return url;
+  } else {
+    if (url.startsWith("/")) {
+      return "https://api.wlin.com.vn" + url;
+    }
+    return "https://api.wlin.com.vn/" + url;
+  }
 };
 
 export const showConfirmDeleteDialog = (positiveAction) => {
-	showConfirmDialog(
-		'Bạn có chắc chắn muốn xóa không?',
-		'Xóa',
-		positiveAction
-	);
+  showConfirmDialog("Bạn có chắc chắn muốn xóa không?", "Xóa", positiveAction);
 };
 
 export const showConfirmDialog = (title, confirmButtonText, positiveAction) => {
-	Swal.fire({
-		title: title,
-		showCancelButton: true,
-		confirmButtonText: confirmButtonText,
-		confirmButtonColor: '#005fb7',
-		cancelButtonText: 'Hủy',
-		cancelButtonColor: '#d33',
-	}).then((result) => {
-		if (result.isConfirmed) {
-			positiveAction();
-		}
-	});
+  Swal.fire({
+    title: title,
+    showCancelButton: true,
+    confirmButtonText: confirmButtonText,
+    confirmButtonColor: "#005fb7",
+    cancelButtonText: "Hủy",
+    cancelButtonColor: "#d33",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      positiveAction();
+    }
+  });
 };
 
 export const generateRegexTextSearch = (listField, text) => {
-	return text === ''
-		? ''
-		: `"$or":[${listField.map((item) =>
-				JSON.stringify({
-					[item]: { $regex: text, $options: 'i' },
-				})
-		  )}]`;
+  return text === ""
+    ? ""
+    : `"$or":[${listField.map((item) =>
+        JSON.stringify({
+          [item]: { $regex: text, $options: "i" },
+        })
+      )}]`;
 };
 
 export const generateRegexTextSearchFromObject = (object) => {
-	const query = [];
-	for (const key in object) {
-		if (object[key]) {
-			if (typeof object[key] === 'object' && moment.isDate(object[key])) {
-				const startOfDay = moment(object[key])
-					.startOf('day')
-					.toISOString();
-				const endOfDay = moment(object[key]).endOf('day').toISOString();
+  const query = [];
+  for (const key in object) {
+    if (object[key]) {
+      if (typeof object[key] === "object" && moment.isDate(object[key])) {
+        const startOfDay = moment(object[key]).startOf("day").toISOString();
+        const endOfDay = moment(object[key]).endOf("day").toISOString();
 
-				const q = {
-					$and: [
-						{
-							[key]: {
-								$gte: startOfDay,
-							},
-						},
-						{
-							[key]: {
-								$lte: endOfDay,
-							},
-						},
-					],
-				};
+        const q = {
+          $and: [
+            {
+              [key]: {
+                $gte: startOfDay,
+              },
+            },
+            {
+              [key]: {
+                $lte: endOfDay,
+              },
+            },
+          ],
+        };
 
-				query.push(JSON.stringify(q));
-			} else {
-				const q = { [key]: { $regex: object[key], $options: 'i' } };
-				query.push(JSON.stringify(q));
-			}
-		}
-	}
-	return query.length ? `"$and":[${query}]` : '';
+        query.push(JSON.stringify(q));
+      } else {
+        const q = { [key]: { $regex: object[key], $options: "i" } };
+        query.push(JSON.stringify(q));
+      }
+    }
+  }
+  return query.length ? `"$and":[${query}]` : "";
 };
 
 export const showLoadingDelete = () => {
-	Swal.fire({
-		title: 'Đang xóa',
-		text: 'Vui lòng chờ giây lát...',
-		icon: 'info',
-		allowOutsideClick: false,
-		allowEscapeKey: false,
-		didOpen: () => {
-			Swal.showLoading();
-		},
-	});
+  Swal.fire({
+    title: "Đang xóa",
+    text: "Vui lòng chờ giây lát...",
+    icon: "info",
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
 };
 
 export const showLoadingDialog = (title, text) => {
-	Swal.fire({
-		title: title,
-		text: text,
-		icon: 'info',
-		allowOutsideClick: false,
-		allowEscapeKey: false,
-		didOpen: () => {
-			Swal.showLoading();
-		},
-	});
+  Swal.fire({
+    title: title,
+    text: text,
+    icon: "info",
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+};
+
+//Format tiền tệ VNĐ
+export const formatCurrencyVN = (value) => {
+  if (value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  return value;
 };

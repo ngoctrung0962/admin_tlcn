@@ -31,17 +31,29 @@ const sidebarNav = [
     text: "Customers",
   },
   {
-    link: "/stats",
-    section: "stats",
-    icon: <i className="bx bx-line-chart"></i>,
-    text: "Stats",
+    link: "/coupons",
+    section: "coupons",
+    icon: <i className="bx bx-message-rounded-dots"></i>,
+    text: "Coupons",
   },
   {
-    link: "/settings",
-    section: "settings",
-    icon: <i className="bx bx-cog"></i>,
-    text: "Settings",
+    link: "/payments",
+    section: "payments",
+    icon: <i className="bx bx-message-rounded-dots"></i>,
+    text: "Payments",
   },
+  // {
+  //   link: "/stats",
+  //   section: "stats",
+  //   icon: <i className="bx bx-line-chart"></i>,
+  //   text: "Stats",
+  // },
+  // {
+  //   link: "/settings",
+  //   section: "settings",
+  //   icon: <i className="bx bx-cog"></i>,
+  //   text: "Settings",
+  // },
 ];
 
 export default sidebarNav;

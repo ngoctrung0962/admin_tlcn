@@ -51,9 +51,9 @@ export default function CustomDataTable({
     setPaginate({ ...paginate, page: newPage });
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setPaginate({ ...paginate, page: 1, limit: event.target.value });
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setPaginate({ ...paginate, page: 1, limit: event.target.value });
+  // };
 
   const changeTimeoutRef = useRef(null);
 
@@ -109,16 +109,14 @@ export default function CustomDataTable({
       />
       {paginate && (
         <TablePagination
-          rowsPerPageOptions={[10, 20, 50, 100, 200]}
           component="div"
           count={isNaN(count) ? 100 : count}
           page={paginate.page}
           onPageChange={handleChangePage}
-          rowsPerPage={paginate.page}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPageOptions={[]}
+          rowsPerPage={10}
           showFirstButton
           showLastButton
-          labelRowsPerPage={width >= 768 ? "Số hàng trên trang:" : ""}
         />
       )}
     </>

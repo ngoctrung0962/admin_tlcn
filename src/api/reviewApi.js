@@ -1,8 +1,8 @@
 import axiosClient from "./axiosClient";
 
 const reviewApi = {
-  getAll() {
-    const url = "/reviews";
+  getAll(page) {
+    const url = `/reviews?page=${page}`;
     return axiosClient.get(url);
   },
   // get 10 products first
@@ -10,13 +10,17 @@ const reviewApi = {
     const url = `/reviews/course/${id}`;
     return axiosClient.get(url);
   },
+  getbyId(id) {
+    const url = `/reviews/${id}`;
+    return axiosClient.get(url);
+  },
   getReviewByCourseId(id) {
     const url = `/reviews/course/${id}`;
     return axiosClient.get(url);
   },
-  add( data) {
+  add(data) {
     const url = `/review/add`;
-    return axiosClient.post(url,data);
+    return axiosClient.post(url, data);
   },
 
   update(data, id, username) {

@@ -13,21 +13,21 @@ import Swal from "sweetalert2";
 
 const CategoriesCoursesPage = () => {
   const [listCategoriesCourses, setListCategoriesCourses] = useState([]);
+  const [totalCategoriesCourses, setTotalCategoriesCourses] = useState(0);
   const [paginate, setPaginate] = useState({
     page: 0,
   });
   useEffect(() => {
     const fetchData = async () => {
       const res = await categoriescoursesApi.getAll(paginate.page);
-      console.log(res);
-      setListCategoriesCourses(res.data);
+      setListCategoriesCourses(res.data.content);
+      setTotalCategoriesCourses(res.data.totalElements);
     };
     fetchData();
   }, [paginate]);
 
   //Navigate to edit page
   const handleEdit = (row) => {
-    console.log("A");
     nav("edit", {
       state: {
         data: row,
@@ -82,7 +82,7 @@ const CategoriesCoursesPage = () => {
       ),
     },
     {
-      name: "reviewId",
+      name: "Id",
       selector: (row) => row.id,
       sortable: true,
       reorder: true,
@@ -139,7 +139,7 @@ const CategoriesCoursesPage = () => {
           data={listCategoriesCourses}
           paginate={paginate}
           setPaginate={setPaginate}
-          count={listCategoriesCourses.length}
+          count={totalCategoriesCourses}
           handleDeleteRowSelected={handleDeleteRowSelected}
         />
       </div>

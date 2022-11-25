@@ -1,13 +1,13 @@
 import axiosClient from "./axiosClient";
 
-const coursesApi = {
+const videocoursesApi = {
   getAll(params) {
     const url = `/courses?page=${params}`;
     return axiosClient.get(url);
   },
-  // get course by id
-  get(id) {
-    const url = `/course/${id}`;
+  // get by course id
+  getbycourseId(courseId) {
+    const url = `/course-video/${courseId}`;
     return axiosClient.get(url);
   },
   add(data) {
@@ -15,9 +15,9 @@ const coursesApi = {
     return axiosClient.post(url, data);
   },
 
-  update(id,data) {
-    const url = `/course/update/${id}`;
-    return axiosClient.put(url, data);
+  update(data) {
+    const url = `/products/${data.id}`;
+    return axiosClient.patch(url, data);
   },
 
   remove(id) {
@@ -60,4 +60,4 @@ const coursesApi = {
   },
 };
 
-export default coursesApi;
+export default videocoursesApi;

@@ -37,31 +37,31 @@ const Dashboard = () => {
     <DashboardWrapper>
       <DashboardWrapperMain>
         <div className="row">
-          <div className="col-8 col-md-12">
+          <div className="coll-8 coll-md-12">
             <div className="row">
               {data.summary.map((item, index) => (
                 <div
                   key={`summary-${index}`}
-                  className="col-6 col-md-6 col-sm-12 mb"
+                  className="coll-6 coll-md-6 coll-sm-12 mb"
                 >
                   <SummaryBox item={item} />
                 </div>
               ))}
             </div>
           </div>
-          <div className="col-4 hide-md">
+          <div className="coll-4 hide-md">
             <SummaryBoxSpecial item={data.revenueSummary} />
           </div>
         </div>
         <div className="row">
-          <div className="col-12">
+          <div className="coll-12">
             <Box>
               <RevenueByMonthsChart />
             </Box>
           </div>
         </div>
       </DashboardWrapperMain>
-      <DashboardWrapperRight>
+      {/* <DashboardWrapperRight>
         <div className="title mb">Overall</div>
         <div className="mb">
           <OverallList />
@@ -70,7 +70,7 @@ const Dashboard = () => {
         <div className="mb">
           <RevenueList />
         </div>
-      </DashboardWrapperRight>
+      </DashboardWrapperRight> */}
     </DashboardWrapper>
   );
 };

@@ -51,32 +51,23 @@
   max-width: 400px;
 }
 .login__title {
-  -webkit-box-decoration-break: clone;
-  background: #232526; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #414345,
-    #232526
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #414345,
-    #232526
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-  color: transparent;
-  background-clip: text;
+  color: #212529;
   font-weight: 700;
   font-size: 38px;
 }
 .btn_login {
-  border: 2px solid var(--black);
+  border: 2px solid #212529;
   border-radius: 30px;
   padding: 10px 20px;
   display: inline-block;
   font-weight: 600;
   background-color: transparent;
   max-width: 300px;
+}
+.btn_login:hover {
+  color: #005fb7;
+  border: 2px solid #005fb7;
+  transition: 0.3s;
 }
 .MuiBreadcrumbs-root {
   color: #005fb7 !important;
@@ -150,4 +141,17 @@
 .btn__delete-rows:hover {
   color: #fff;
   background-color: #005fb7;
+}
+.MuiInputBase-inputAdornedEnd {
+  padding: 6.5px 10px !important;
+  font-size: 12px !important;
+}
+.link_to_signup {
+  font-size: 11px;
+  color: rgb(63, 63, 120);
+}
+.video-inTable {
+  border-radius: 5px;
+  max-height: 150px;
+  max-width: 250px;
 }

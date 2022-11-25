@@ -8,34 +8,63 @@ import { AiFillEye, AiFillDelete } from "react-icons/ai";
 import { BiHistory } from "react-icons/bi";
 import coursesApi from "../../api/coursesApi";
 import { useNavigate } from "react-router-dom";
-
+import { formatDateDisplay, formatVND } from "../../utils/MyUtils";
+import Swal from "sweetalert2";
 const CoursesPage = () => {
   const [listCourses, setListCourses] = useState([]);
   const [paginate, setPaginate] = useState({
     page: 0,
   });
+  const [totalCourses, setTotalCourses] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
       const res = await coursesApi.getAll(paginate.page);
-      console.log(res);
       setListCourses(res.data.content);
+      setTotalCourses(res.data.totalElements);
     };
     fetchData();
   }, [paginate]);
-  console.log("listCourses", listCourses);
+
+  const handleEdit = (row) => {
+    nav(`${row.id}`);
+  };
+
+  const handleDelete = async (row) => {
+    try {
+      const resDelete = await coursesApi.remove(row.id);
+      if (resDelete.errorCode === "") {
+        Swal.fire({
+          icon: "success",
+          title: "Xóa thành công",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        const res = await coursesApi.getAll(paginate.page);
+        setListCourses(res.data.content);
+        setTotalCourses(res.data.totalElements);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Xóa thất bại",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {}
+  };
   const columns = [
     {
       name: "Action",
-      stt: -10,
-      width: "100px",
+      minWidth: "100px",
+      maxWidth: "100px",
       center: true,
       cell: (row) => (
         <Dropdown>
-          <MenuItem>
+          <MenuItem onClick={() => handleEdit(row)}>
             <AiFillEye />
             Xem
           </MenuItem>
-          <MenuItem>
+          <MenuItem onClick={() => handleDelete(row)}>
             <AiFillDelete />
             Xóa
           </MenuItem>
@@ -47,34 +76,92 @@ const CoursesPage = () => {
       ),
     },
     {
-      name: "reviewId",
+      name: "ID",
       selector: (row) => row.id,
       sortable: true,
       reorder: true,
+      minWidth: "100px",
+      maxWidth: "100px",
     },
     {
       name: "Tên khóa học",
       selector: (row) => row.name,
       sortable: true,
       reorder: true,
+      minWidth: "200px",
+      maxWidth: "200px",
+      wrap: true,
+    },
+    {
+      name: "Loại khóa học",
+      selector: (row) => row.category.name,
+      sortable: true,
+      reorder: true,
+      minWidth: "200px",
+      maxWidth: "200px",
+      wrap: true,
     },
     {
       name: "Giá",
-      selector: (row) => row.price,
+      selector: (row) => formatVND(row.price),
       sortable: true,
       reorder: true,
+      minWidth: "100px",
+      maxWidth: "100px",
     },
     {
-      name: "Số học sinh tham gia",
+      name: "Giảng viên",
+      selector: (row) => row.accountName,
+      sortable: true,
+      reorder: true,
+      minWidth: "100px",
+      maxWidth: "100px",
+    },
+    {
+      name: "SL tham gia",
       selector: (row) => row.numStudents,
       sortable: true,
       reorder: true,
+      minWidth: "150px",
+      maxWidth: "150px",
+    },
+    {
+      name: "Pulic",
+      selector: (row) => {
+        if (row.public === true) {
+          return "Miễn phí";
+        }
+        return "Có phí";
+      },
+      sortable: true,
+      reorder: true,
+      minWidth: "100px",
+      maxWidth: "100px",
+    },
+    {
+      name: "Ngày tạo",
+      selector: (row) => formatDateDisplay(row.createDate),
+      sortable: true,
+      reorder: true,
+      minWidth: "150px",
+      maxWidth: "150px",
+    },
+    {
+      name: "Ngày cập nhật",
+      selector: (row) => formatDateDisplay(row.updateDate),
+      sortable: true,
+      reorder: true,
+      minWidth: "150px",
+      maxWidth: "150px",
     },
     {
       name: "Mô tả khóa học",
       selector: (row) => row.description,
       sortable: true,
       reorder: true,
+      minWidth: "200px",
+      maxWidth: "200px",
+      wrap: true,
     },
   ];
 
@@ -91,11 +178,12 @@ const CoursesPage = () => {
       </div>
       <div className="container">
         <CustomDataTable
+          onRowDoubleClicked={(row) => handleEdit(row)}
           columns={columns}
           data={listCourses}
           paginate={paginate}
           setPaginate={setPaginate}
-          count={listCourses.length}
+          count={totalCourses}
         />
       </div>
     </div>

@@ -7,7 +7,6 @@ import { Breadcrumbs, Typography } from "@mui/material";
 
 const MainLayout = () => {
   const location = useLocation();
-  console.log("location", location);
   const path = location.pathname.split("/");
   path.shift();
   const lastPath = path[path.length - 1];
