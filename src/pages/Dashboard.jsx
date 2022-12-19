@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import Box from "../components/box/Box";
 import DashboardWrapper, {
@@ -21,6 +21,8 @@ import {
 } from "chart.js";
 import OverallList from "../components/overall-list/OverallList";
 import RevenueList from "../components/revenue-list/RevenueList";
+import reportApi from "../api/reportApi";
+import { useForm } from "react-hook-form";
 
 ChartJS.register(
   CategoryScale,
@@ -54,6 +56,13 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="row">
+          <div className="coll-12">
+            <Box>
+              <RevenueByYearsChart />
+            </Box>
+          </div>
+        </div>
+        <div className="row mt-5">
           <div className="coll-12">
             <Box>
               <RevenueByMonthsChart />
@@ -112,7 +121,30 @@ const RevenueByMonthsChart = () => {
     },
   };
 
-  const chartData = {
+  const [dataTemp, setDataTemp] = useState();
+  const fetchDataRevenueByYear = async (year) => {
+    const res = await reportApi.getDataReportByYear(year);
+
+    const ArrayData = [];
+    const ArrayLabel = [];
+    res?.data?.forEach((item) => {
+      ArrayData.push(item.value);
+      ArrayLabel.push(`Tháng ${item.month}`);
+    });
+    setChartData({
+      labels: ArrayLabel,
+      datasets: [
+        {
+          label: "Revenue",
+          data: ArrayData,
+        },
+      ],
+    });
+
+    //Gắn data vào chart
+  };
+
+  const [chartData, setChartData] = useState({
     labels: data.revenueByMonths.labels,
     datasets: [
       {
@@ -120,10 +152,157 @@ const RevenueByMonthsChart = () => {
         data: data.revenueByMonths.data,
       },
     ],
+  });
+  console.log("chartData", chartData);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      year: 2022,
+    },
+  });
+
+  const onSubmit = (data) => {
+    fetchDataRevenueByYear(data.year);
   };
+  useEffect(() => {
+    fetchDataRevenueByYear(2022);
+  }, []);
   return (
     <>
-      <div className="title mb">Revenue by months</div>
+      <div className="d-flex justify-content-between">
+        <div className="title mb">Doanh thu theo tháng</div>
+        <div className="filter__right d-flex gap-1">
+          <input
+            type="number"
+            placeholder="Tháng"
+            {...register("year", { required: true, min: 1, max: 12 })}
+            className="filter__input"
+          />
+          {errors.year && (
+            <span className="text-danger">Tháng không hợp lệ</span>
+          )}
+          <input
+            type="number"
+            placeholder="Năm"
+            {...register("year", { required: true, min: 1 })}
+            className="filter__input"
+          />
+          <button className="filter__button" onClick={handleSubmit(onSubmit)}>
+            Lọc
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <Bar options={chartOptions} data={chartData} height={`300px`} />
+      </div>
+    </>
+  );
+};
+
+const RevenueByYearsChart = () => {
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: {
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
+      },
+      yAxes: {
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: false,
+      },
+    },
+    elements: {
+      bar: {
+        backgroundColor: "#005fb7",
+        borderRadius: 20,
+        borderSkipped: "bottom",
+      },
+    },
+  };
+
+  const [dataTemp, setDataTemp] = useState();
+  const fetchDataRevenueByYear = async (year) => {
+    const res = await reportApi.getDataReportByYear(year);
+
+    const ArrayData = [];
+    const ArrayLabel = [];
+    res?.data?.forEach((item) => {
+      ArrayData.push(item.value);
+      ArrayLabel.push(`Tháng ${item.month}`);
+    });
+    setChartData({
+      labels: ArrayLabel,
+      datasets: [
+        {
+          label: "Revenue",
+          data: ArrayData,
+        },
+      ],
+    });
+
+    //Gắn data vào chart
+  };
+
+  const [chartData, setChartData] = useState({
+    labels: data.revenueByMonths.labels,
+    datasets: [
+      {
+        label: "Revenue",
+        data: data.revenueByMonths.data,
+      },
+    ],
+  });
+  console.log("chartData", chartData);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      year: 2022,
+    },
+  });
+
+  const onSubmit = (data) => {
+    fetchDataRevenueByYear(data.year);
+  };
+  useEffect(() => {
+    fetchDataRevenueByYear(2022);
+  }, []);
+  return (
+    <>
+      <div className="d-flex justify-content-between">
+        <div className="title mb">Doanh thu theo năm</div>
+        <div className="filter__right d-flex gap-1">
+          <input
+            type="number"
+            {...register("year", { required: true })}
+            className="filter__input"
+          />
+          <button className="filter__button" onClick={handleSubmit(onSubmit)}>
+            Lọc
+          </button>
+        </div>
+      </div>
+
       <div>
         <Bar options={chartOptions} data={chartData} height={`300px`} />
       </div>

@@ -162,7 +162,11 @@ export default function CourseAdd({ isEdit }) {
             </Tab>
           )}
           {isEdit && (
-            <Tab eventKey="profile" title="Danh sách video bài giảng">
+            <Tab
+              eventKey="profile"
+              title="Danh sách video bài giảng"
+              unmountOnExit
+            >
               <TabsVideoCourseList course={course} getValues={getValues} />
             </Tab>
           )}

@@ -84,7 +84,6 @@ export default function ModalChapter({
           chapterName: "Cuối khóa học",
         },
       ];
-  console.log("listchapter", listOptions);
 
   return (
     <Modal
@@ -128,7 +127,7 @@ export default function ModalChapter({
                   control={control}
                   required={true}
                   field={"nextChapterId"}
-                  placeholder="Chọn tiêu đề"
+                  placeholder="Chọn thứ tự"
                   options={
                     listOptions
                       ?.map((item) => {

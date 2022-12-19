@@ -155,3 +155,25 @@
   max-height: 150px;
   max-width: 250px;
 }
+.filter__button {
+  width: 60px;
+  background: linear-gradient(90deg, #0073db 0%, #0068c6 50%, #005fb7 100%);
+  border-radius: 3px;
+  color: #fff;
+  font-size: 11px;
+  border: none;
+  padding: 6px;
+  max-height: 30px;
+}
+.filter__button:hover {
+  transition: 0.3s;
+  background: linear-gradient(90deg, #0068c6 0%, #005fb7 50%, #005fb7 100%);
+}
+.filter__input {
+  width: 100px;
+  padding: 5px 10px;
+  border: 1px solid #005fb7;
+  border-radius: 3px;
+  font-size: 12px;
+  max-height: 30px;
+}

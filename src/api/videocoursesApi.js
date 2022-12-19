@@ -15,47 +15,20 @@ const videocoursesApi = {
     return axiosClient.post(url, data);
   },
 
-  update(data) {
-    const url = `/products/${data.id}`;
-    return axiosClient.patch(url, data);
+  update(id, data) {
+    const url = `/course-video/edit-info/${id}`;
+    return axiosClient.put(url, data);
   },
-
   remove(id) {
-    const url = `/course/delete/${id}`;
+    const url = `/course-video/${id}`;
     return axiosClient.delete(url);
   },
-  getproductbybrandId(brandId, quantity) {
-    const url = `/products/brand/${brandId}/${quantity}`;
-    return axiosClient.get(url);
+  uploadvideo(username, courseId, chapterId, data) {
+    const url = `/video/upload/${username}/courses/${courseId}/chapters/${chapterId}`;
+    return axiosClient.post(url, data);
   },
-  //get top 8 products newest
-  getTop8ProductsNewest() {
-    const url = `/products/newest/8`;
-    return axiosClient.get(url);
-  },
-  //get min price
-  getMinPrice() {
-    const url = `/products/price/min`;
-    return axiosClient.get(url);
-  },
-  //get max price
-  getMaxPrice() {
-    const url = `/products/price/max`;
-    return axiosClient.get(url);
-  },
-  //get top seller
-  getTopSeller() {
-    const url = `/products/topseller`;
-    return axiosClient.get(url);
-  },
-  //get top featured
-  getTopFeatured() {
-    const url = `/products/topfeature`;
-    return axiosClient.get(url);
-  },
-  //get hot trend
-  getHotTrend() {
-    const url = `/products/hottrend`;
+  getbychapter(chapterId) {
+    const url = `/course-video/chapter/${chapterId}`;
     return axiosClient.get(url);
   },
 };

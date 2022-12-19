@@ -1,5 +1,7 @@
 import images from "./images";
-
+import { GrUserManager } from "react-icons/gr";
+import { FaDiscourse } from "react-icons/fa";
+import { FaUserGraduate, FaFileContract } from "react-icons/fa";
 const data = {
   user: {
     name: "Trung",
@@ -7,33 +9,37 @@ const data = {
   },
   summary: [
     {
-      title: "Sales",
-      subtitle: "Total sales today",
-      value: "$1.000",
-      percent: 70,
+      title: "Học viên",
+      subtitle: "Tổng số học viên tham gia khóa học",
+      value: "300/1000",
+      color: "#005fb7",
+      icon: <FaUserGraduate />,
     },
     {
-      title: "Orders",
-      subtitle: "Total orders today",
+      title: "Khóa học",
+      subtitle: "Tổng số khóa học",
       value: "3000",
-      percent: 49,
+      color: "#FF9800",
+      icon: <FaDiscourse />,
     },
     {
-      title: "Revenue",
-      subtitle: "Total revenue today",
-      value: "$678",
-      percent: 38,
+      title: "Giảng viên",
+      subtitle: "Tổng số giảng viên tạo khóa học",
+      value: "50/100",
+      color: "#a23275",
+      icon: <GrUserManager />,
     },
     {
-      title: "Visits",
-      subtitle: "Total visits today",
-      value: "2345",
-      percent: 55,
+      title: "Yêu cầu trở thành giảng viên",
+      subtitle: "Tổng số yêu cầu",
+      value: "20",
+      color: "#F44336",
+      icon: <FaFileContract />,
     },
   ],
   revenueSummary: {
-    title: "Revenue",
-    value: "$678",
+    title: "Tổng doanh thu",
+    value: "25.000.000 VNĐ",
     chartData: {
       labels: ["May", "Jun", "July", "Aug", "May", "Jun", "July", "Aug"],
       data: [300, 300, 280, 380, 200, 300, 280, 350],

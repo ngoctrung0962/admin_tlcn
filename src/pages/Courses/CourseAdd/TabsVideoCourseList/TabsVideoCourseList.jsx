@@ -8,11 +8,27 @@ import { formatDateDisplay } from "../../../../utils/MyUtils";
 import videocoursesApi from "../../../../api/videocoursesApi";
 import { useLocation, useNavigate } from "react-router-dom";
 import Dropdown from "../../../../components/Dropdown/Dropdown.component";
+import ModalVideo from "./ModalVideo";
+import chapterApi from "../../../../api/chapterApi";
+import Swal from "sweetalert2";
 export default function TabsVideoCourseList({ course, getValues }) {
   const [listVideoOfCourses, setListVideoOfCourses] = useState([]);
+  const [listchapters, setListchapters] = useState([]);
+  const getListChapter = async () => {
+    const res = await chapterApi.getbycourseId(courseId);
+    setListchapters(res.data);
+  };
+  const [editRow, setEditRow] = useState();
+
   const [paginate, setPaginate] = useState({
     page: 0,
   });
+  const [showModal, setShowModal] = useState(false);
+
+  const handleEdit = (row) => {
+    setEditRow(row);
+    setShowModal(true);
+  };
   const [totalCourses, setTotalCourses] = useState(0);
   const courseId = useLocation().pathname.split("/")[2];
   useEffect(() => {
@@ -21,11 +37,28 @@ export default function TabsVideoCourseList({ course, getValues }) {
       setListVideoOfCourses(res.data);
     };
     fetchData();
-  }, [courseId]);
+    getListChapter();
+  }, [courseId, editRow]);
 
-  const handleEdit = (row) => {};
   const nav = useNavigate();
-  const handleDelete = async (row) => {};
+  const handleDelete = async (row) => {
+    const res = await videocoursesApi.remove(row.id);
+    if (res.errorCode === "") {
+      Swal.fire({
+        icon: "success",
+        title: "Xóa thành công",
+        showConfirmButton: false,
+      });
+      const res = await videocoursesApi.getbycourseId(courseId);
+      setListVideoOfCourses(res.data);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Xóa thất bại",
+        showConfirmButton: false,
+      });
+    }
+  };
   const columns = [
     {
       name: "Action",
@@ -59,13 +92,22 @@ export default function TabsVideoCourseList({ course, getValues }) {
     },
     {
       name: "Chapter",
-      selector: (row) => row.chapter,
+      selector: (row) => row.chapterId,
       sortable: true,
       reorder: true,
       minWidth: "200px",
       maxWidth: "200px",
       wrap: true,
     },
+    {
+      name: "Tiêu đề",
+      selector: (row) => row.title,
+      sortable: true,
+      reorder: true,
+      minWidth: "150px",
+      maxWidth: "150px",
+    },
+
     {
       name: "Video",
       selector: (row) => {
@@ -85,14 +127,7 @@ export default function TabsVideoCourseList({ course, getValues }) {
       minWidth: "400px",
       maxWidth: "400px",
     },
-    {
-      name: "Tiêu đề",
-      selector: (row) => row.title,
-      sortable: true,
-      reorder: true,
-      minWidth: "150px",
-      maxWidth: "150px",
-    },
+
     {
       name: "Ngày tạo",
       selector: (row) => formatDateDisplay(row.createDate),
@@ -121,10 +156,26 @@ export default function TabsVideoCourseList({ course, getValues }) {
   ];
   return (
     <div className="container-fluid">
+      {showModal && (
+        <ModalVideo
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          editRow={editRow}
+          setEditRow={setEditRow}
+          listchapters={listchapters}
+          listVideos={listVideoOfCourses}
+        />
+      )}
       <div className="content__head d-flex  justify-content-between">
-        <h3 className="content__title mb-3">Tất cả khóa học</h3>
+        <h3 className="content__title mb-3">Tất cả video</h3>
         <div className="content__tool">
-          <button className="main__btn" onClick={() => nav("/courses/add")}>
+          <button
+            className="main__btn"
+            onClick={() => {
+              setEditRow(null);
+              setShowModal(true);
+            }}
+          >
             Thêm mới <MdOutlineAdd size={15} color="#005fb7" />
           </button>
         </div>
@@ -133,7 +184,9 @@ export default function TabsVideoCourseList({ course, getValues }) {
         <CustomDataTable
           onRowDoubleClicked={(row) => handleEdit(row)}
           columns={columns}
-          data={listVideoOfCourses}
+          data={listVideoOfCourses.sort((a, b) =>
+            a.nextVideoId > b.nextVideoId ? -1 : 1
+          )}
           paginate={paginate}
           setPaginate={setPaginate}
           count={totalCourses}
