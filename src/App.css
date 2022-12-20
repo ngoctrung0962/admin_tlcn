@@ -177,3 +177,8 @@
   font-size: 12px;
   max-height: 30px;
 }
+
+button:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

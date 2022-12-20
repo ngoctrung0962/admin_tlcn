@@ -88,9 +88,9 @@ export default function SignIn() {
               </Form.Group>
 
               <div className="d-flex flex-row w-100 justify-content-between align-items-center">
-                <Link className="link_to_signup" to="/signup">
+                {/* <Link className="link_to_signup" to="/signup">
                   Bạn chưa có tài khoản? Đăng kí ngay
-                </Link>
+                </Link> */}
                 <Link className="link_to_signup" to="/forgotpass">
                   Quên mật khẩu
                 </Link>

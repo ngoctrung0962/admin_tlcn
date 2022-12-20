@@ -4,10 +4,30 @@ import { Link, useLocation } from "react-router-dom";
 import { images } from "../../constants";
 import { CgMenuGridR } from "react-icons/cg";
 import sidebarNav from "../../configs/sidebarNav";
+import Swal from "sweetalert2";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { deleteDetailUser } from "../../redux/userRedux";
 
 const Sidebar = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const location = useLocation();
+  const dispatch = useDispatch();
+  const handleLogout = async () => {
+    Swal.fire({
+      title: "Bạn chắc chắn muốn đăng xuất?",
+      denyButtonText: "Hủy",
+      showDenyButton: true,
+      confirmButtonText: `Đăng xuất`,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await Cookies.remove("token");
+        await Cookies.remove("username");
+        await dispatch(deleteDetailUser());
+        Swal.fire("Đăng xuất thành công!", "", "success");
+      }
+    });
+  };
 
   useEffect(() => {
     const curPath = window.location.pathname.split("/")[1];
@@ -54,7 +74,9 @@ const Sidebar = () => {
           <div className="sidebar__menu__item__icon">
             <i className="bx bx-log-out"></i>
           </div>
-          <div className="sidebar__menu__item__txt">Logout</div>
+          <div className="sidebar__menu__item__txt" onClick={handleLogout}>
+            Đăng xuất
+          </div>
         </div>
       </div>
     </div>

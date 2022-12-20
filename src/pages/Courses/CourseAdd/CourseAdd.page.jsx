@@ -48,7 +48,7 @@ export default function CourseAdd({ isEdit }) {
     getValues,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: isEdit ? course : {},
   });
@@ -66,9 +66,9 @@ export default function CourseAdd({ isEdit }) {
     });
     try {
       if (isEdit) {
-        handleEdit(formData);
+        await handleEdit(formData);
       } else {
-        handleAdd(formData);
+        await handleAdd(formData);
       }
     } catch (error) {}
   };
@@ -127,11 +127,19 @@ export default function CourseAdd({ isEdit }) {
         </h3>
 
         <div className="content__tool ">
-          <button className="main__btn me-2" onClick={() => nav(-1)}>
+          <button
+            className="main__btn me-2"
+            onClick={() => nav(-1)}
+            disabled={isSubmitting}
+          >
             Hủy
           </button>
-          <button className="main__btn" onClick={handleSubmit(onSubmit)}>
-            Lưu
+          <button
+            className="main__btn"
+            onClick={handleSubmit(onSubmit)}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Đang lưu..." : "Lưu"}
           </button>
         </div>
       </div>

@@ -23,6 +23,7 @@ import OverallList from "../components/overall-list/OverallList";
 import RevenueList from "../components/revenue-list/RevenueList";
 import reportApi from "../api/reportApi";
 import { useForm } from "react-hook-form";
+import moment from "moment/moment";
 
 ChartJS.register(
   CategoryScale,
@@ -121,15 +122,14 @@ const RevenueByMonthsChart = () => {
     },
   };
 
-  const [dataTemp, setDataTemp] = useState();
-  const fetchDataRevenueByYear = async (year) => {
-    const res = await reportApi.getDataReportByYear(year);
+  const fetchDataRevenueByMonth = async (month, year) => {
+    const res = await reportApi.getDataReportByMonth(month, year);
 
     const ArrayData = [];
     const ArrayLabel = [];
     res?.data?.forEach((item) => {
       ArrayData.push(item.value);
-      ArrayLabel.push(`Tháng ${item.month}`);
+      ArrayLabel.push(`${item.day}`);
     });
     setChartData({
       labels: ArrayLabel,
@@ -160,15 +160,17 @@ const RevenueByMonthsChart = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      year: 2022,
+      //Dùng moment để lấy tháng năm hiện tại
+      year: moment().year(),
+      month: moment().month() + 1,
     },
   });
 
-  const onSubmit = (data) => {
-    fetchDataRevenueByYear(data.year);
+  const onSubmit = async (data) => {
+    await fetchDataRevenueByMonth(data.year, data.month);
   };
   useEffect(() => {
-    fetchDataRevenueByYear(2022);
+    fetchDataRevenueByMonth(moment().year(), moment().month() + 1);
   }, []);
   return (
     <>
@@ -177,19 +179,20 @@ const RevenueByMonthsChart = () => {
         <div className="filter__right d-flex gap-1">
           <input
             type="number"
-            placeholder="Tháng"
-            {...register("year", { required: true, min: 1, max: 12 })}
-            className="filter__input"
-          />
-          {errors.year && (
-            <span className="text-danger">Tháng không hợp lệ</span>
-          )}
-          <input
-            type="number"
             placeholder="Năm"
             {...register("year", { required: true, min: 1 })}
             className="filter__input"
           />
+          {errors.year && <span className="text-danger">Năm không hợp lệ</span>}
+          <input
+            type="number"
+            placeholder="Tháng"
+            {...register("month", { required: true, min: 1 })}
+            className="filter__input"
+          />
+          {errors.month && (
+            <span className="text-danger">Tháng không hợp lệ</span>
+          )}
           <button className="filter__button" onClick={handleSubmit(onSubmit)}>
             Lọc
           </button>
@@ -238,7 +241,6 @@ const RevenueByYearsChart = () => {
     },
   };
 
-  const [dataTemp, setDataTemp] = useState();
   const fetchDataRevenueByYear = async (year) => {
     const res = await reportApi.getDataReportByYear(year);
 
@@ -277,7 +279,7 @@ const RevenueByYearsChart = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      year: 2022,
+      year: moment().year(),
     },
   });
 
@@ -285,7 +287,7 @@ const RevenueByYearsChart = () => {
     fetchDataRevenueByYear(data.year);
   };
   useEffect(() => {
-    fetchDataRevenueByYear(2022);
+    fetchDataRevenueByYear(moment().year());
   }, []);
   return (
     <>

@@ -3,19 +3,19 @@ const sidebarNav = [
     link: "/",
     section: "home",
     icon: <i className="bx bx-home-alt"></i>,
-    text: "Home",
+    text: "Dashboard",
   },
   {
     link: "/courses",
     section: "courses",
     icon: <i className="bx bx-cube"></i>,
-    text: "Courses",
+    text: "Khóa học",
   },
   {
     link: "/categories",
     section: "categories",
     icon: <i className="bx bx-receipt"></i>,
-    text: "Categories course",
+    text: "Loại khóa học",
   },
 
   {
@@ -28,7 +28,7 @@ const sidebarNav = [
     link: "/customers",
     section: "customers",
     icon: <i className="bx bx-user"></i>,
-    text: "Customers",
+    text: "Tài khoản",
   },
   {
     link: "/coupons",
@@ -40,7 +40,7 @@ const sidebarNav = [
     link: "/payments",
     section: "payments",
     icon: <i className="bx bx-message-rounded-dots"></i>,
-    text: "Payments",
+    text: "Phương thức thanh toán",
   },
   // {
   //   link: "/stats",

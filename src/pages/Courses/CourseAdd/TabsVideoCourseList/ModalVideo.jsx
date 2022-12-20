@@ -206,6 +206,7 @@ export default function ModalVideo({
                       console.log("log");
                       buttonChooseFile.current?.click();
                     }}
+                    disabled={isEdit ? true : false}
                   >
                     <MUIAddIcon fontSize="9" />
                     <p
@@ -235,6 +236,7 @@ export default function ModalVideo({
               <Form.Group className="mb-3">
                 <Form.Label>Chapter</Form.Label>
                 <SimpleSelect
+                  isDisabled={isEdit ? true : false}
                   control={control}
                   field={"chapterId"}
                   placeholder="Chọn chapter"
