@@ -9,10 +9,10 @@ const TopNav = () => {
   const openSidebar = () => {
     document.body.classList.add("sidebar-open");
   };
-
+  console.log(currentUser);
   return (
     <div className="topnav">
-      <UserInfo user={data.user} />
+      <UserInfo user={currentUser} />
       <div className="sidebar-toggle" onClick={openSidebar}>
         <i className="bx bx-menu-alt-right"></i>
       </div>

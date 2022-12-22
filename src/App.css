@@ -6,7 +6,7 @@
 .content__title {
   font-size: 20px;
   font-weight: 600;
-  color: #005fb7;
+  color: #00693e;
   text-transform: uppercase;
   display: inline;
 }
@@ -15,16 +15,16 @@
   font-weight: 600;
   white-space: nowrap;
 
-  border: 2px solid #005fb7;
+  border: 2px solid #00693e;
   background-color: #fff;
-  color: #005fb7;
+  color: #00693e;
   border-radius: 3px;
   padding: 7px 15px;
 }
 .main__btn:hover {
   transition: 0.4s;
   color: #fff;
-  background-color: #005fb7;
+  background-color: #00693e;
 }
 .signin__page {
   background-image: linear-gradient(rgba(0, 0, 0, 0.725), rgba(0, 0, 0, 0.7)),
@@ -65,12 +65,12 @@
   max-width: 300px;
 }
 .btn_login:hover {
-  color: #005fb7;
-  border: 2px solid #005fb7;
+  color: #00693e;
+  border: 2px solid #00693e;
   transition: 0.3s;
 }
 .MuiBreadcrumbs-root {
-  color: #005fb7 !important;
+  color: #00693e !important;
 }
 .MuiBreadcrumbs-root a:hover {
   text-decoration: underline;
@@ -86,7 +86,7 @@
   border: none !important;
 }
 .nav-tabs .nav-link.active {
-  color: #005fb7;
+  color: #00693e;
   border: none;
 }
 .nav-tabs .nav-link {
@@ -98,7 +98,7 @@
   display: block;
   width: 0;
   height: 2px;
-  background: #005fb7;
+  background: #00693e;
   transition: width 0.3s;
 }
 .nav-tabs .nav-link.active::after {
@@ -112,7 +112,7 @@
 .form-label {
   font-weight: 500;
   font-size: 14px;
-  color: #005fb7;
+  color: #00693e;
 }
 
 .form-control {
@@ -120,7 +120,7 @@
   padding: 5px 10px;
 }
 .form-control:focus {
-  border-color: #005fb7;
+  border-color: #00693e;
   box-shadow: none;
 }
 .form__error {
@@ -132,15 +132,15 @@
 .btn__delete-rows {
   font-weight: 500;
   font-size: 12px;
-  color: #005fb7;
+  color: #00693e;
   padding: 5px 10px;
-  border: 2px solid #005fb7;
+  border: 2px solid #00693e;
   border-radius: 3px;
   background-color: transparent;
 }
 .btn__delete-rows:hover {
   color: #fff;
-  background-color: #005fb7;
+  background-color: #00693e;
 }
 .MuiInputBase-inputAdornedEnd {
   padding: 6.5px 10px !important;
@@ -157,7 +157,7 @@
 }
 .filter__button {
   width: 60px;
-  background: linear-gradient(90deg, #0073db 0%, #0068c6 50%, #005fb7 100%);
+  background: #00693e;
   border-radius: 3px;
   color: #fff;
   font-size: 11px;
@@ -167,12 +167,14 @@
 }
 .filter__button:hover {
   transition: 0.3s;
-  background: linear-gradient(90deg, #0068c6 0%, #005fb7 50%, #005fb7 100%);
+  background: transparent;
+  border: 1px solid #00693e;
+  color: #00693e;
 }
 .filter__input {
   width: 100px;
   padding: 5px 10px;
-  border: 1px solid #005fb7;
+  border: 1px solid #00693e;
   border-radius: 3px;
   font-size: 12px;
   max-height: 30px;

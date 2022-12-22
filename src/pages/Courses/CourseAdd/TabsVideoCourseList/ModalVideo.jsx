@@ -193,7 +193,7 @@ export default function ModalVideo({
                 <div className="d-flex justify-content-center mt-1">
                   <Fab
                     style={{
-                      backgroundColor: "#005fb7",
+                      backgroundColor: "#00693e",
                       color: "white",
                       borderRadius: "3px",
                       zIndex: 1,

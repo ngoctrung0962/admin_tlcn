@@ -1,24 +1,21 @@
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+} from "chart.js";
 import React from "react";
-import "./summary-box.scss";
-import Box from "../box/Box";
 import {
   buildStyles,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
-import { colors } from "../../constants";
-import { Line } from "react-chartjs-2";
-import { SiCoursera } from "react-icons/si";
 import { GiTakeMyMoney } from "react-icons/gi";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import Box from "../box/Box";
+import "./summary-box.scss";
 
 ChartJS.register(
   CategoryScale,
@@ -65,44 +62,16 @@ const SummaryBox = ({ item }) => {
 export default SummaryBox;
 
 export const SummaryBoxSpecial = ({ item }) => {
-  const chartOptions = {
-    responsive: true,
-    scales: {
-      xAxis: {
-        display: false,
-      },
-      yAxis: {
-        display: false,
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-    elements: {
-      point: {
-        radius: 0,
-      },
-    },
-  };
-
-  const chartData = {
-    labels: item.chartData.labels,
-    datasets: [
-      {
-        label: "Revenue",
-        data: item.chartData.data,
-        borderColor: "#fff",
-        tension: 0.5,
-      },
-    ],
-  };
   return (
     <Box purple fullheight>
       <div className="summary-box-special">
         <div className="summary-box-special__title">{item.title}</div>
-        <div className="summary-box-special__value">{item.value}</div>
+        <div className="summary-box-special__value">
+          {Number(item.value).toLocaleString("vi", {
+            currency: "VND",
+          })}{" "}
+          VND
+        </div>
         <div className="summary-box-special__chart" style={{ height: "250px" }}>
           {/* <Line options={chartOptions} data={chartData} width={`250px`} /> */}
           <GiTakeMyMoney size={250} />

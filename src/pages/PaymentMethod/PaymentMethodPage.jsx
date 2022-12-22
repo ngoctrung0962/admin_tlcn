@@ -147,7 +147,7 @@ const PaymentMethodPage = () => {
         <h3 className="content__title mb-3">Tất cả phương thức thanh toán</h3>
         <div className="content__tool">
           <button className="main__btn" onClick={() => nav("/payments/add")}>
-            Thêm mới <MdOutlineAdd size={15} color="#005fb7" />
+            Thêm mới <MdOutlineAdd size={15} color="#00693e" />
           </button>
         </div>
       </div>

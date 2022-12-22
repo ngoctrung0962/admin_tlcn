@@ -49,7 +49,7 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="sidebar__logo">
         <Link to="/">
-          <CgMenuGridR size={40} color="#005fb7" />
+          <CgMenuGridR size={40} color="#00693e" />
         </Link>
 
         <div className="sidebar-close" onClick={closeSidebar}>

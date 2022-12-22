@@ -9,6 +9,10 @@ const reportApi = {
     const url = `/reports/revenues/${year}/${month}`;
     return axiosClient.get(url);
   },
+  getDataOverviewReport() {
+    const url = `/reports/overview`;
+    return axiosClient.get(url);
+  }
 };
 
 export default reportApi;

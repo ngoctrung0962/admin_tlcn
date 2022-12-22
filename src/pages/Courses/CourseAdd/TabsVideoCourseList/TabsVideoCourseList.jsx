@@ -176,7 +176,7 @@ export default function TabsVideoCourseList({ course, getValues }) {
               setShowModal(true);
             }}
           >
-            Thêm mới <MdOutlineAdd size={15} color="#005fb7" />
+            Thêm mới <MdOutlineAdd size={15} color="#00693e" />
           </button>
         </div>
       </div>

@@ -1,29 +1,28 @@
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+} from "chart.js";
+import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import { useForm } from "react-hook-form";
+import { FaDiscourse, FaFileContract, FaUserGraduate } from "react-icons/fa";
+import { GrUserManager } from "react-icons/gr";
+import reportApi from "../api/reportApi";
 import Box from "../components/box/Box";
 import DashboardWrapper, {
   DashboardWrapperMain,
-  DashboardWrapperRight,
 } from "../components/dashboard-wrapper/DashboardWrapper";
 import SummaryBox, {
   SummaryBoxSpecial,
 } from "../components/summary-box/SummaryBox";
-import { colors, data } from "../constants";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import OverallList from "../components/overall-list/OverallList";
-import RevenueList from "../components/revenue-list/RevenueList";
-import reportApi from "../api/reportApi";
-import { useForm } from "react-hook-form";
-import moment from "moment/moment";
+import { data } from "../constants";
 
 ChartJS.register(
   CategoryScale,
@@ -36,13 +35,87 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+  const [dataSummary, setDataSummary] = useState([
+    {
+      title: "Học viên",
+      subtitle: "Tổng số học viên tham gia khóa học",
+      value: "300/1000",
+      color: "#005fb7",
+      icon: <FaUserGraduate />,
+    },
+    {
+      title: "Khóa học",
+      subtitle: "Tổng số khóa học",
+      value: "3000",
+      color: "#FF9800",
+      icon: <FaDiscourse />,
+    },
+    {
+      title: "Giảng viên",
+      subtitle: "Tổng số giảng viên tạo khóa học",
+      value: "50/100",
+      color: "#a23275",
+      icon: <GrUserManager />,
+    },
+    {
+      title: "Yêu cầu trở thành giảng viên",
+      subtitle: "Tổng số yêu cầu",
+      value: "20",
+      color: "#F44336",
+      icon: <FaFileContract />,
+    },
+  ]);
+  const [dataTotalRevenue, setDataTotalRevenue] = useState({
+    title: "Tổng doanh thu",
+    value: "3000000",
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await reportApi.getDataOverviewReport();
+      setDataSummary([
+        {
+          title: "Học viên",
+          subtitle: "Tổng số học viên tham gia khóa học",
+          value: `${res.data.studentsNum}/100`,
+          color: "#005fb7",
+          icon: <FaUserGraduate />,
+        },
+        {
+          title: "Khóa học",
+          subtitle: "Tổng số khóa học",
+          value: `${res.data.coursesNum}`,
+          color: "#FF9800",
+          icon: <FaDiscourse />,
+        },
+        {
+          title: "Giảng viên",
+          subtitle: "Tổng số giảng viên tạo khóa học",
+          value: `${res.data.teachersNum}/100`,
+          color: "#a23275",
+          icon: <GrUserManager />,
+        },
+        {
+          title: "Yêu cầu trở thành giảng viên",
+          subtitle: "Tổng số yêu cầu",
+          value: `${res.data.requestToTeacher}`,
+          color: "#F44336",
+          icon: <FaFileContract />,
+        },
+      ]);
+      setDataTotalRevenue({
+        title: "Tổng doanh thu",
+        value: `${res.data.totalRevenues}`,
+      });
+    };
+    fetchData();
+  }, []);
   return (
     <DashboardWrapper>
       <DashboardWrapperMain>
         <div className="row">
           <div className="coll-8 coll-md-12">
             <div className="row">
-              {data.summary.map((item, index) => (
+              {dataSummary?.map((item, index) => (
                 <div
                   key={`summary-${index}`}
                   className="coll-6 coll-md-6 coll-sm-12 mb"
@@ -53,7 +126,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="coll-4 hide-md">
-            <SummaryBoxSpecial item={data.revenueSummary} />
+            <SummaryBoxSpecial item={dataTotalRevenue} />
           </div>
         </div>
         <div className="row">
@@ -153,7 +226,6 @@ const RevenueByMonthsChart = () => {
       },
     ],
   });
-  console.log("chartData", chartData);
   const {
     register,
     handleSubmit,
@@ -272,7 +344,6 @@ const RevenueByYearsChart = () => {
       },
     ],
   });
-  console.log("chartData", chartData);
   const {
     register,
     handleSubmit,

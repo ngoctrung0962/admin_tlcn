@@ -28,7 +28,7 @@ const MainLayout = () => {
                 );
               }
               return (
-                <Typography color="text.primary">
+                <Typography key={index} color="text.primary">
                   {item.toUpperCase()}
                 </Typography>
               );

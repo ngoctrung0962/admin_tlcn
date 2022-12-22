@@ -4,7 +4,7 @@ import { FaDiscourse } from "react-icons/fa";
 import { FaUserGraduate, FaFileContract } from "react-icons/fa";
 const data = {
   user: {
-    name: "Trung",
+    name: "ADMIN",
     img: images.avt,
   },
   summary: [
@@ -12,7 +12,7 @@ const data = {
       title: "Học viên",
       subtitle: "Tổng số học viên tham gia khóa học",
       value: "300/1000",
-      color: "#005fb7",
+      color: "#00693e",
       icon: <FaUserGraduate />,
     },
     {

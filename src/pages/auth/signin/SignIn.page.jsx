@@ -19,7 +19,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     try {
-      const res = await userApi.login(data);
+      const res = await userApi.loginAdminOrTeacher(data);
       if (!res.errorCode) {
         await Cookies.set("token", res.data.token);
 
@@ -27,15 +27,20 @@ export default function SignIn() {
 
         if (isDoneLogin) {
           const resGetUser = await userApi.get(res.data.username);
-          dispatch(loginSuccess(resGetUser.data));
-          await Cookies.set("username", res.data.username);
-          Swal.fire({
-            icon: "success",
-            iconHtml: "👍",
-            title: "Đăng nhập thành công",
-            text: "Chào mừng bạn đến với trang quản lý của chúng tôi",
-          });
-          navigate("/");
+          if (
+            resGetUser.data.role === "ROLE_01" ||
+            resGetUser.data.role === "TEACHER"
+          ) {
+            dispatch(loginSuccess(resGetUser.data));
+            await Cookies.set("username", res.data.username);
+            Swal.fire({
+              icon: "success",
+              iconHtml: "👍",
+              title: "Đăng nhập thành công",
+              text: "Chào mừng bạn đến với trang quản lý của chúng tôi",
+            });
+            navigate("/");
+          }
         }
       } else {
         Swal.fire({

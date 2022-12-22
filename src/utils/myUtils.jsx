@@ -115,7 +115,7 @@ export const showConfirmDialog = (title, confirmButtonText, positiveAction) => {
     title: title,
     showCancelButton: true,
     confirmButtonText: confirmButtonText,
-    confirmButtonColor: "#005fb7",
+    confirmButtonColor: "#00693e",
     cancelButtonText: "Hủy",
     cancelButtonColor: "#d33",
   }).then((result) => {
