@@ -15,7 +15,9 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import TabsVideoCourseList from "./TabsVideoCourseList/TabsVideoCourseList";
 import TabsChapterList from "./TabsChapterList/TabsChapterList";
+import { useSelector } from "react-redux";
 export default function CourseAdd({ isEdit }) {
+  const { currentUser } = useSelector((state) => state.user);
   const courseId = useLocation().pathname.split("/")[2];
   const [course, setCourse] = useState();
   useEffect(() => {
@@ -55,7 +57,7 @@ export default function CourseAdd({ isEdit }) {
 
   const onSubmit = async (data) => {
     data.category = data.category.id;
-    data.accountName = data.accountName.username;
+    data.accountName = currentUser.username;
     data.avatar = data.avatarFile?.[0];
     delete data.avatarFile;
     const formData = new FormData();

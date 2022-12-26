@@ -17,6 +17,12 @@ const CategoriesCoursesPage = () => {
   const [paginate, setPaginate] = useState({
     page: 0,
   });
+
+  const fetchData = async () => {
+    const res = await categoriescoursesApi.getAll(paginate.page);
+    setListCategoriesCourses(res.data.content);
+    setTotalCategoriesCourses(res.data.totalElements);
+  };
   useEffect(() => {
     const fetchData = async () => {
       const res = await categoriescoursesApi.getAll(paginate.page);
@@ -45,10 +51,11 @@ const CategoriesCoursesPage = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        const newList = listCategoriesCourses.filter(
-          (item) => item.id !== row.id
-        );
-        setListCategoriesCourses(newList);
+        // const newList = listCategoriesCourses.filter(
+        //   (item) => item.id !== row.id
+        // );
+        // setListCategoriesCourses(newList);
+        fetchData();
       } else {
         Swal.fire({
           icon: "error",

@@ -92,7 +92,7 @@ export default function TabsVideoCourseList({ course, getValues }) {
     },
     {
       name: "Chapter",
-      selector: (row) => row.chapterId,
+      selector: (row) => row.chapter.chapterName,
       sortable: true,
       reorder: true,
       minWidth: "200px",

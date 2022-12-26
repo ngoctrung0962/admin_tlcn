@@ -23,7 +23,9 @@ export default function TabsCourseInfo({
   getValues,
 }) {
   useEffect(() => {
-    reset(course);
+    if (isEdit) {
+      reset(course);
+    }
   }, [course]);
 
   const nav = useNavigate();
@@ -120,10 +122,21 @@ export default function TabsCourseInfo({
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Ngôn ngữ</Form.Label>
-            <Form.Control
+
+            <SimpleSelect
+              control={control}
+              field={"language"}
+              placeholder="Chọn ngôn ngữ"
+              options={[
+                { value: "Vietnamese", label: "Tiếng việt" },
+                { value: "English", label: "English" },
+              ]}
+              required={true}
+            />
+            {/* <Form.Control
               type="text"
               {...register("language", { required: true })}
-            />
+            /> */}
             {errors.language && <p className="form__error">Vui lòng nhập</p>}
           </Form.Group>
         </Col>
@@ -150,7 +163,7 @@ export default function TabsCourseInfo({
             {errors.public && <p className="form__error">Vui lòng nhập</p>}
           </Form.Group>
 
-          <Form.Group className="mb-3">
+          {/* <Form.Group className="mb-3">
             <Form.Label>Giảng viên</Form.Label>
             <SelectAsync
               control={control}
@@ -163,7 +176,7 @@ export default function TabsCourseInfo({
               required={true}
             />
             {errors.category && <p className="form__error">Vui lòng nhập</p>}
-          </Form.Group>
+          </Form.Group> */}
           <Form.Group className="mb-3">
             <Form.Label>Mô tả</Form.Label>
             <Form.Control

@@ -30,6 +30,8 @@ import PaymentMethodPage from "./pages/PaymentMethod/PaymentMethodPage";
 import PaymentMethodAdd from "./pages/PaymentMethod/PaymentMethodAdd/PaymentMethodAdd.page";
 import Loading from "./components/Loading/Loading.component";
 import ForgotPass from "./pages/auth/ForgotPass/ForgotPass.page";
+import RequestTeacherPage from "./pages/RequestTeacher/RequestTeacherPage";
+import OrderPage from "./pages/Orders/OrderPage";
 function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -105,7 +107,15 @@ function App() {
           <Route path="payments/add" element={<PaymentMethodAdd />} />
           <Route path="payments/:id" element={<PaymentMethodAdd />} />
 
+          {/* Order route */}
+          <Route path="orders" element={<Outlet />}>
+            <Route path="" element={<OrderPage />} />
+            <Route path=":id" element={<ReviewAdd isEdit={true} />} />
+          </Route>
+
           <Route path="customers" element={<Blank />} />
+          <Route path="requestteacher" element={<RequestTeacherPage />} />
+
           <Route path="settings" element={<Blank />} />
           <Route path="stats" element={<Blank />} />
         </Route>

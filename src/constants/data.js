@@ -24,7 +24,7 @@ const data = {
     },
     {
       title: "Giảng viên",
-      subtitle: "Tổng số giảng viên tạo khóa học",
+      subtitle: "Tổng số giảng viên ",
       value: "50/100",
       color: "#a23275",
       icon: <GrUserManager />,

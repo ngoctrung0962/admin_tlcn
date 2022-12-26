@@ -25,10 +25,10 @@ const sidebarNav = [
     text: "Reviews",
   },
   {
-    link: "/customers",
-    section: "customers",
+    link: "/orders",
+    section: "orders",
     icon: <i className="bx bx-user"></i>,
-    text: "Tài khoản",
+    text: "Đơn hàng",
   },
   {
     link: "/coupons",
@@ -41,6 +41,12 @@ const sidebarNav = [
     section: "payments",
     icon: <i className="bx bx-message-rounded-dots"></i>,
     text: "Phương thức thanh toán",
+  },
+  {
+    link: "/requestteacher",
+    section: "requestteacher",
+    icon: <i className="bx bx-user"></i>,
+    text: "Yêu cầu trở thành giảng viên",
   },
   // {
   //   link: "/stats",
