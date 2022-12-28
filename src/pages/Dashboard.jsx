@@ -95,7 +95,7 @@ const Dashboard = () => {
           icon: <GrUserManager />,
         },
         {
-          title: "Yêu cầu trở thành giảng viên",
+          title: "Yêu cầu giảng viên",
           subtitle: "Tổng số yêu cầu",
           value: `${res.data.requestToTeacher}`,
           color: "#F44336",

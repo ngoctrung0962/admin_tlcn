@@ -96,36 +96,46 @@ export default function RequestOpening() {
       selector: (row) => row.email,
       sortable: true,
       reorder: true,
+      width: "300px",
+      wrap: true,
     },
     {
       name: "Địa chỉ",
       selector: (row) => row.address,
       sortable: true,
       reorder: true,
+      width: "200px",
+      wrap: true,
     },
     {
       name: "Chủ đề giảng dạy",
       selector: (row) => row.teachingTopic,
       sortable: true,
       reorder: true,
+      width: "300px",
+      wrap: true,
     },
     {
       name: "Kinh nghiệm giảng dạy",
       selector: (row) => row.expDescribe,
       sortable: true,
       reorder: true,
+      width: "300px",
+      wrap: true,
     },
     {
       name: "Nghề nghiệp hiện tại",
       selector: (row) => row.currentJob,
       sortable: true,
       reorder: true,
+      width: "300px",
+      wrap: true,
     },
   ];
   //Navigate to edit page
   const handleEdit = (row) => {};
   return (
-    <div>
+    <div className="container__table">
       <CustomDataTable
         columns={columns}
         data={listOpenning}

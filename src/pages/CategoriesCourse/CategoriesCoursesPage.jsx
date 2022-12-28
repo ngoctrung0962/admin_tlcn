@@ -140,7 +140,7 @@ const CategoriesCoursesPage = () => {
           </button>
         </div>
       </div>
-      <div className="container">
+      <div className="container__table">
         <CustomDataTable
           columns={columns}
           data={listCategoriesCourses}

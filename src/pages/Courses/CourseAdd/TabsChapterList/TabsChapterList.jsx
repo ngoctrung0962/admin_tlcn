@@ -129,7 +129,7 @@ export default function TabsChapterList({ course, getValues }) {
           </button>
         </div>
       </div>
-      <div className="container">
+      <div className="container__table">
         <CustomDataTable
           onRowDoubleClicked={(row) => handleEdit(row)}
           columns={columns}

@@ -105,7 +105,7 @@ const ReviewPage = () => {
           </button>
         </div>
       </div>
-      <div className="container">
+      <div className="container__table">
         {columns && (
           <CustomDataTable
             columns={columns}

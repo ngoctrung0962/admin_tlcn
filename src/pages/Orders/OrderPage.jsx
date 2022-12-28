@@ -157,7 +157,7 @@ const OrderPage = () => {
         <h3 className="content__title ">Tất cả đơn hàng</h3>
         <div className="content__tool">{/* O */}</div>
       </div>
-      <div className="container">
+      <div className="container__table">
         {columns && (
           <CustomDataTable
             columns={columns}

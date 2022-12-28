@@ -176,7 +176,7 @@ const CoursesPage = () => {
           </button>
         </div>
       </div>
-      <div className="container">
+      <div className="container__table">
         <CustomDataTable
           onRowDoubleClicked={(row) => handleEdit(row)}
           columns={columns}
