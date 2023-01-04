@@ -151,8 +151,12 @@ export default function ModalChapter({
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleSubmit(onSubmit)}>Lưu</Button>
-        <Button onClick={onHide}>Hủy</Button>
+        <Button className="main__btn-save" onClick={handleSubmit(onSubmit)}>
+          Lưu
+        </Button>
+        <Button className="main__btn-cancel" onClick={onHide}>
+          Hủy
+        </Button>
       </Modal.Footer>
     </Modal>
   );

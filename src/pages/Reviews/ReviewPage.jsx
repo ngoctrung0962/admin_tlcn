@@ -36,10 +36,10 @@ const ReviewPage = () => {
       center: true,
       cell: (row) => (
         <Dropdown>
-          <MenuItem onClick={() => handleEdit(row)}>
+          {/* <MenuItem onClick={() => handleEdit(row)}>
             <AiFillEye />
             Xem
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem>
             <AiFillDelete />
             Xóa

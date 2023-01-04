@@ -29,6 +29,38 @@ body {
   color: #fff;
   background-color: #00693e;
 }
+.main__btn-save {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  border: 2px solid #00693e;
+  background-color: #fff;
+  color: #00693e;
+  border-radius: 3px;
+  padding: 7px 15px;
+}
+.main__btn-save:hover {
+  transition: 0.4s;
+  color: #fff;
+  background-color: #00693e;
+}
+.main__btn-cancel {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  border: 2px solid #00693e;
+  background-color: #00693e;
+  color: #fff;
+  border-radius: 3px;
+  padding: 7px 15px;
+}
+.main__btn-cancel:hover {
+  transition: 0.4s;
+  color: #00693e;
+  background-color: #fff;
+}
 .signin__page {
   background-image: linear-gradient(rgba(0, 0, 0, 0.725), rgba(0, 0, 0, 0.7)),
     url("https://utex.hcmute.edu.vn/pluginfile.php/1/theme_maker/loginbgimage/1634220818/57f4e15cb6bc4be212ad.jpg");

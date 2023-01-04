@@ -295,10 +295,18 @@ export default function ModalVideo({
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>
+        <Button
+          className="main__btn-save"
+          onClick={handleSubmit(onSubmit)}
+          disabled={isSubmitting}
+        >
           {isSubmitting ? "Đang lưu..." : "Lưu"}
         </Button>
-        <Button onClick={onHide} disabled={isSubmitting}>
+        <Button
+          className="main__btn-cancel"
+          onClick={onHide}
+          disabled={isSubmitting}
+        >
           Hủy
         </Button>
       </Modal.Footer>
