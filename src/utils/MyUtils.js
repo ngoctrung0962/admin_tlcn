@@ -7,7 +7,6 @@ import moment from "moment/moment";
 
 export const formatVND = (price) => {
   const formatPrice = new Intl.NumberFormat("vi-VN", {
-    style: "currency",
     currency: "VND",
   }).format(price);
   return formatPrice;

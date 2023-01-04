@@ -103,19 +103,18 @@ const CoursesPage = () => {
     },
     {
       name: "Giá",
-      selector: (row) => formatVND(row.price),
+      selector: (row) => formatVND(row.price) + " VNĐ",
       sortable: true,
       reorder: true,
-      minWidth: "100px",
-      maxWidth: "100px",
+      minWidth: "200px",
+      maxWidth: "200px",
     },
     {
       name: "Giảng viên",
       selector: (row) => row.accountName,
       sortable: true,
       reorder: true,
-      minWidth: "100px",
-      maxWidth: "100px",
+      width: "200px",
     },
     {
       name: "SL tham gia",
@@ -154,15 +153,15 @@ const CoursesPage = () => {
       minWidth: "150px",
       maxWidth: "150px",
     },
-    {
-      name: "Mô tả khóa học",
-      selector: (row) => row.description,
-      sortable: true,
-      reorder: true,
-      minWidth: "200px",
-      maxWidth: "200px",
-      wrap: true,
-    },
+    // {
+    //   name: "Mô tả khóa học",
+    //   selector: (row) => row.description,
+    //   sortable: true,
+    //   reorder: true,
+    //   minWidth: "200px",
+    //   maxWidth: "200px",
+    //   wrap: true,
+    // },
   ];
 
   const nav = useNavigate();
