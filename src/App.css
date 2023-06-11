@@ -234,3 +234,103 @@ button:disabled {
     0px 1px 5px 0px rgb(145 158 171 / 50%);
   border-radius: 10px;
 }
+.step__title {
+  display: flex;
+  align-items: center;
+  margin: 10px 0px 30px 0px;
+}
+
+.step__title .step__id {
+  background-color: #00693e;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 50%;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.step__title h5 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #00693e;
+  margin: 0;
+  display: block;
+  background-color: #fff;
+  padding: 0px 10px;
+}
+.step__content {
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 1px -2px rgb(145 158 171 / 20%),
+    0px 2px 2px 0px rgb(145 158 171 / 14%),
+    0px 1px 5px 0px rgb(145 158 171 / 50%);
+}
+
+.chapter__box {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 1px -2px rgb(145 158 171 / 20%),
+    0px 2px 2px 0px rgb(145 158 171 / 14%),
+    0px 1px 5px 0px rgb(145 158 171 / 50%);
+  margin-bottom: 40px;
+  background-color: #f5f5f5;
+}
+.chapter__box .chapter__name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #00693e;
+  margin: 0;
+}
+.chapter__box .chapter__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.chapter__box .chapter__tool {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.btn__add__chapter button {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  border: 2px solid #00693e;
+  background-color: #fff;
+  color: #00693e;
+  border-radius: 3px;
+  padding: 7px 15px;
+}
+
+.lecture__box {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 1px -2px rgb(145 158 171 / 20%),
+    0px 2px 2px 0px rgb(145 158 171 / 14%),
+    0px 1px 5px 0px rgb(145 158 171 / 50%);
+  margin-bottom: 30px;
+  background-color: #f5f5f5;
+}
+.lecture__box .lecture__name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #00693e;
+  margin: 0;
+}
+.lecture__box .lecture__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.lecture__box .lecture__tool {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}

@@ -9,7 +9,6 @@ const TopNav = () => {
   const openSidebar = () => {
     document.body.classList.add("sidebar-open");
   };
-  console.log(currentUser);
   return (
     <div className="topnav">
       <UserInfo user={currentUser} />

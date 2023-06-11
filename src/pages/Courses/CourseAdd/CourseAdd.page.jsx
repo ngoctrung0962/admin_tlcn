@@ -16,6 +16,8 @@ import Swal from "sweetalert2";
 import TabsVideoCourseList from "./TabsVideoCourseList/TabsVideoCourseList";
 import TabsChapterList from "./TabsChapterList/TabsChapterList";
 import { useSelector } from "react-redux";
+import TabsContentList from "./TabsContent/TabsContentList";
+import Steps from "./Steps";
 export default function CourseAdd({ isEdit }) {
   const { currentUser } = useSelector((state) => state.user);
   const courseId = useLocation().pathname.split("/")[2];
@@ -122,13 +124,13 @@ export default function CourseAdd({ isEdit }) {
     } catch (error) {}
   };
   return (
-    <div className="container">
+    <div className="containerr mx-3">
       <div className="content__head d-flex  justify-content-between">
         <h3 className="content__title mb-3">
           {isEdit ? "Sửa khóa học" : "Thêm khóa học"}
         </h3>
 
-        <div className="content__tool ">
+        {/* <div className="content__tool ">
           <button
             className="main__btn me-2"
             onClick={() => nav(-1)}
@@ -143,34 +145,24 @@ export default function CourseAdd({ isEdit }) {
           >
             {isSubmitting ? "Đang lưu..." : "Lưu"}
           </button>
-        </div>
+        </div> */}
       </div>
       <div className="">
-        <Tabs
+        <Steps />
+        {/* <Tabs
           defaultActiveKey="home"
           id="uncontrolled-tab-example"
           className="mb-3"
         >
           <Tab eventKey="home" title="Thông tin chính">
-            <TabsCourseInfo
-              course={course}
-              register={register}
-              handleSubmit={handleSubmit}
-              errors={errors}
-              control={control}
-              isEdit={isEdit}
-              reset={reset}
-              getValues={getValues}
-              setValue={setValue}
-              onSubmit={onSubmit}
-              watch={watch}
-            />
+            <Steps />
           </Tab>
           {isEdit && (
             <Tab eventKey="chapter" title="Danh sách chapter">
               <TabsChapterList course={course} getValues={getValues} />
             </Tab>
           )}
+
           {isEdit && (
             <Tab
               eventKey="profile"
@@ -180,7 +172,12 @@ export default function CourseAdd({ isEdit }) {
               <TabsVideoCourseList course={course} getValues={getValues} />
             </Tab>
           )}
-        </Tabs>
+          {isEdit && (
+            <Tab eventKey="content" title="Nội dung khóa học">
+              <TabsContentList course={course} getValues={getValues} />
+            </Tab>
+          )}
+        </Tabs> */}
       </div>
     </div>
   );

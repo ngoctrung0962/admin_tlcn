@@ -37,22 +37,43 @@ export default function TabsCourseInfo({
   const buttonChooseFile = useRef();
 
   const handleUploadImageBefore = async (files, info, uploadHandler) => {
-    // console.log(files, info, uploadHandler);
     // uploadHandler(files);
-    // const formData = new FormData();
-    // formData.append("file", files[0]);
-    // const url = await uploadFileApi.uploadFile(formData);
-    // const response = {
-    //   // The response must have a "result" array.
-    //   result: [
-    //     {
-    //       url: url.data[0],
-    //       name: files[0].name,
-    //       size: files[0].size,
-    //     },
-    //   ],
-    // };
-    // uploadHandler(uploadHandler(response));
+    console.log("handleUploadImageBefore", uploadHandler);
+    console.log("info", info);
+    const formData = new FormData();
+    formData.append("files", files[0]);
+    const promise = new Promise((resolve, reject) => {
+      const addImage = async () => {
+        try {
+          const res = await uploadFileApi.upLoadFile(formData);
+          resolve(res.data[0]);
+        } catch (error) {
+          reject(error);
+        }
+      };
+      addImage();
+    });
+
+    promise
+      .then((res) => {
+        const data = {
+          // The response must have a "result" array.
+          result: [
+            {
+              url: res,
+              name: files[0].name,
+              size: files[0].size,
+            },
+          ],
+        };
+        uploadHandler(data);
+        return undefined;
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+
+    return undefined;
   };
   const handleImageUpload = async (
     targetImgElement,
@@ -61,7 +82,10 @@ export default function TabsCourseInfo({
     imageInfo,
     remainingFilesCount
   ) => {
-    // console.log(targetImgElement, index, state, imageInfo, remainingFilesCount);
+    console.log("target", targetImgElement);
+    console.log("image", imageInfo);
+    // Thay đổi đường dẫn ảnh
+    // targetImgElement.src = imageInfo.src;
   };
   return (
     <Form id="form_course_add" onSubmit={handleSubmit(onSubmit)}>
@@ -178,7 +202,6 @@ export default function TabsCourseInfo({
 
           <Form.Group className="mb-3">
             <Form.Label>Ngôn ngữ</Form.Label>
-
             <SimpleSelect
               control={control}
               field={"language"}
@@ -189,36 +212,14 @@ export default function TabsCourseInfo({
               ]}
               required={true}
             />
-            {/* <Form.Control
-              type="text"
-              {...register("language", { required: true })}
-            /> */}
+
             {errors.language && <p className="form__error">Vui lòng nhập</p>}
           </Form.Group>
-          {/* <Form.Group className="mb-3">
-            <Form.Label>Giảng viên</Form.Label>
-            <SelectAsync
-              control={control}
-              field={"accountName"}
-              placeholder="Chọn giảng viên"
-              api={"accounts"}
-              valueField={"username"}
-              labelField={"username"}
-              isClearable={true}
-              required={true}
-            />
-            {errors.category && <p className="form__error">Vui lòng nhập</p>}
-          </Form.Group> */}
         </Col>
       </Row>
       <Row>
         <Form.Group className="mb-3">
           <Form.Label>Mô tả</Form.Label>
-          {/* <Form.Control
-              as="textarea"
-              {...register("description", { required: true })}
-            />
-            {errors.description && <p className="form__error">Vui lòng nhập</p>} */}
 
           <SunEditor
             setOptions={{

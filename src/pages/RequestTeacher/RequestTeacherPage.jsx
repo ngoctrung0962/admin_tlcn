@@ -148,24 +148,22 @@ const RequestTeacherPage = () => {
         </h3>
         <div className="content__tool"></div>
       </div>
-      <div className="container">
-        <Tabs
-          defaultActiveKey="openning"
-          id="uncontrolled-tab-example"
-          className="mb-3"
-          unmountOnExit
-        >
-          <Tab eventKey="openning" title="Chưa phê duyệt">
-            <RequestOpening />
-          </Tab>
-          <Tab eventKey="approved" title="Đã phê duyệt">
-            <RequestAccept />
-          </Tab>
-          <Tab eventKey="rejected" title="Đã từ chối">
-            <RequestReject />
-          </Tab>
-        </Tabs>
-      </div>
+      <Tabs
+        defaultActiveKey="openning"
+        id="uncontrolled-tab-example"
+        className="mb-3"
+        unmountOnExit
+      >
+        <Tab eventKey="openning" title="Chưa phê duyệt">
+          <RequestOpening />
+        </Tab>
+        <Tab eventKey="approved" title="Đã phê duyệt">
+          <RequestAccept />
+        </Tab>
+        <Tab eventKey="rejected" title="Đã từ chối">
+          <RequestReject />
+        </Tab>
+      </Tabs>
     </div>
   );
 };
