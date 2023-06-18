@@ -6,4 +6,13 @@ export const Enums = {
     DOCUMENT: "DOCUMENT",
     QUIZ: "QUIZ",
   },
+  typePresentation: {
+    TEXT: "TEXT",
+    FILE: "FILE",
+  },
+  ROLE: {
+    ADMIN: "ROLE_01",
+    TEACHER: "TEACHER",
+    REVIEWER: "REVIEWER",
+  },
 };

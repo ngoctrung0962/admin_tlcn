@@ -32,10 +32,16 @@ import Loading from "./components/Loading/Loading.component";
 import ForgotPass from "./pages/auth/ForgotPass/ForgotPass.page";
 import RequestTeacherPage from "./pages/RequestTeacher/RequestTeacherPage";
 import OrderPage from "./pages/Orders/OrderPage";
+import MyCoursesPage from "./pages/MyCourses/MyCoursesPage";
+import CourseEdit from "./pages/MyCourses/CourseEdit/CourseEdit.page";
+import { Enums } from "./utils/Enums";
+import ReviewCoursesPage from "./pages/ReviewCourse/ReviewCoursesPage";
+import ReviewCourseEdit from "./pages/ReviewCourse/CourseEdit/ReviewCourseEdit.page";
 function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
+  console.log("user", user);
   useEffect(() => {
     setLoading(true);
     const getUser = async () => {
@@ -80,10 +86,23 @@ function App() {
         />
         <Route path="/" element={user ? <MainLayout /> : <SignIn />}>
           <Route index element={<Dashboard />} />
+
+          {(user?.role === Enums.ROLE.REVIEWER ||
+            user?.role === Enums.ROLE.ADMIN) && (
+            <Route path="reviewcourses" element={<Outlet />}>
+              <Route path="" element={<ReviewCoursesPage />} />
+              <Route path="edit" element={<ReviewCourseEdit isEdit={true} />} />
+            </Route>
+          )}
           {/* Course route start*/}
           <Route path="courses" element={<CoursesPage />} />
           <Route path="courses/:id" element={<CourseAdd isEdit={true} />} />
           <Route path="courses/add" element={<CourseAdd />} />
+
+          {/* Course route start*/}
+          <Route path="mycourses" element={<MyCoursesPage />} />
+          <Route path="mycourses/edit" element={<CourseEdit isEdit={true} />} />
+          <Route path="mycourses/add" element={<CourseAdd />} />
 
           {/* Review route */}
           <Route path="reviews" element={<Outlet />}>

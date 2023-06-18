@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { formatDateDisplay, formatVND } from "../../utils/MyUtils";
 import Swal from "sweetalert2";
 const CoursesPage = () => {
+  const [loading, setLoading] = useState(false);
   const [listCourses, setListCourses] = useState([]);
   const [paginate, setPaginate] = useState({
     page: 0,
@@ -18,9 +19,11 @@ const CoursesPage = () => {
   const [totalCourses, setTotalCourses] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const res = await coursesApi.getAll(paginate.page);
       setListCourses(res.data.content);
       setTotalCourses(res.data.totalElements);
+      setLoading(false);
     };
     fetchData();
   }, [paginate]);
@@ -183,6 +186,7 @@ const CoursesPage = () => {
           paginate={paginate}
           setPaginate={setPaginate}
           count={totalCourses}
+          loading={loading}
         />
       </div>
     </div>

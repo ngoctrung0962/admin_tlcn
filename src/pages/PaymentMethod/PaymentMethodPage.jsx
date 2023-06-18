@@ -10,6 +10,7 @@ import CustomDataTable from "../../components/CustomDataTable/CustomDataTable.co
 import Dropdown from "../../components/Dropdown/Dropdown.component";
 
 const PaymentMethodPage = () => {
+  const [loading, setLoading] = useState(false);
   const [listPayments, setlistPayments] = useState([]);
   const [totalPayments, settotalPayments] = useState(0);
   const [paginate, setPaginate] = useState({
@@ -20,9 +21,11 @@ const PaymentMethodPage = () => {
   }, [paginate]);
 
   const fetchData = async () => {
+    setLoading(true);
     const res = await paymentApi.getAll(paginate.page);
     setlistPayments(res.data.content);
     settotalPayments(res.data?.totalElements);
+    setLoading(false);
   };
 
   //Navigate to edit page
@@ -159,6 +162,7 @@ const PaymentMethodPage = () => {
           setPaginate={setPaginate}
           count={totalPayments}
           handleDeleteRowSelected={handleDeleteRowSelected}
+          loading={loading}
         />
       </div>
     </div>

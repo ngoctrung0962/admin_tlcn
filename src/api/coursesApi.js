@@ -15,7 +15,7 @@ const coursesApi = {
     return axiosClient.post(url, data);
   },
 
-  update(id,data) {
+  update(id, data) {
     const url = `/course/update/${id}`;
     return axiosClient.put(url, data);
   },
@@ -24,38 +24,59 @@ const coursesApi = {
     const url = `/course/delete/${id}`;
     return axiosClient.delete(url);
   },
-  getproductbybrandId(brandId, quantity) {
-    const url = `/products/brand/${brandId}/${quantity}`;
-    return axiosClient.get(url);
+  // getproductbybrandId(brandId, quantity) {
+  //   const url = `/products/brand/${brandId}/${quantity}`;
+  //   return axiosClient.get(url);
+  // },
+  // //get top 8 products newest
+  // getTop8ProductsNewest() {
+  //   const url = `/products/newest/8`;
+  //   return axiosClient.get(url);
+  // },
+  // //get min price
+  // getMinPrice() {
+  //   const url = `/products/price/min`;
+  //   return axiosClient.get(url);
+  // },
+  // //get max price
+  // getMaxPrice() {
+  //   const url = `/products/price/max`;
+  //   return axiosClient.get(url);
+  // },
+  // //get top seller
+  // getTopSeller() {
+  //   const url = `/products/topseller`;
+  //   return axiosClient.get(url);
+  // },
+  // //get top featured
+  // getTopFeatured() {
+  //   const url = `/products/topfeature`;
+  //   return axiosClient.get(url);
+  // },
+  // //get hot trend
+  // getHotTrend() {
+  //   const url = `/products/hottrend`;
+  //   return axiosClient.get(url);
+  // },
+
+  initSection() {
+    const url = `/register-course/init-session`;
+    return axiosClient.post(url);
   },
-  //get top 8 products newest
-  getTop8ProductsNewest() {
-    const url = `/products/newest/8`;
-    return axiosClient.get(url);
+  submitSumary(data) {
+    const url = `/register-course/submit-summary-info?isFinish=true`;
+    return axiosClient.post(url, data);
   },
-  //get min price
-  getMinPrice() {
-    const url = `/products/price/min`;
-    return axiosClient.get(url);
+  submitContent(data) {
+    const url = `/register-course/submit-content?isFinish=true`;
+    return axiosClient.post(url, data);
   },
-  //get max price
-  getMaxPrice() {
-    const url = `/products/price/max`;
-    return axiosClient.get(url);
+  submitRequest(sessionId) {
+    const url = `/register-course/submit-request?sessionId=${sessionId}`;
+    return axiosClient.post(url);
   },
-  //get top seller
-  getTopSeller() {
-    const url = `/products/topseller`;
-    return axiosClient.get(url);
-  },
-  //get top featured
-  getTopFeatured() {
-    const url = `/products/topfeature`;
-    return axiosClient.get(url);
-  },
-  //get hot trend
-  getHotTrend() {
-    const url = `/products/hottrend`;
+  getListCourseRegister() {
+    const url = `/register-course/inquire?status=DRAFT`;
     return axiosClient.get(url);
   },
 };

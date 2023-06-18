@@ -8,6 +8,7 @@ import CustomDataTable from "../../../components/CustomDataTable/CustomDataTable
 import Dropdown from "../../../components/Dropdown/Dropdown.component";
 
 export default function RequestOpening() {
+  const [loading, setLoading] = useState(false);
   const [listOpenning, setListOpenning] = useState([]);
   const [totalOpenning, setTotalOpennig] = useState(0);
   const [paginate, setPaginate] = useState({
@@ -18,9 +19,11 @@ export default function RequestOpening() {
   }, [paginate]);
 
   const fetchData = async () => {
+    setLoading(true);
     const res = await requestTeacherApi.getOpeningRequest(paginate.page);
     setListOpenning(res.data.content);
     setTotalOpennig(res.data?.totalElements);
+    setLoading(false);
   };
 
   const handleAccept = async (id) => {
@@ -143,6 +146,7 @@ export default function RequestOpening() {
         setPaginate={setPaginate}
         count={totalOpenning}
         selectableRows={false}
+        loading={loading}
       />
     </div>
   );

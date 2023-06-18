@@ -6,10 +6,12 @@ import { CgMenuGridR } from "react-icons/cg";
 import sidebarNav from "../../configs/sidebarNav";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteDetailUser } from "../../redux/userRedux";
 
 const Sidebar = () => {
+  const user = useSelector((state) => state.user.currentUser);
+
   const [activeIndex, setActiveIndex] = useState(0);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -57,19 +59,22 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="sidebar__menu">
-        {sidebarNav.map((nav, index) => (
-          <Link
-            to={nav.link}
-            key={`nav-${index}`}
-            className={`sidebar__menu__item ${
-              activeIndex === index && "active"
-            }`}
-            onClick={closeSidebar}
-          >
-            <div className="sidebar__menu__item__icon">{nav.icon}</div>
-            <div className="sidebar__menu__item__txt">{nav.text}</div>
-          </Link>
-        ))}
+        {sidebarNav.map((nav, index) => {
+          if (nav.role.includes(user?.role))
+            return (
+              <Link
+                to={nav.link}
+                key={`nav-${index}`}
+                className={`sidebar__menu__item ${
+                  activeIndex === index && "active"
+                }`}
+                onClick={closeSidebar}
+              >
+                <div className="sidebar__menu__item__icon">{nav.icon}</div>
+                <div className="sidebar__menu__item__txt">{nav.text}</div>
+              </Link>
+            );
+        })}
         <div className="sidebar__menu__item">
           <div className="sidebar__menu__item__icon">
             <i className="bx bx-log-out"></i>

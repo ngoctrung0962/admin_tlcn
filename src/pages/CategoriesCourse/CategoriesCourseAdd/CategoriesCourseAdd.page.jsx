@@ -7,12 +7,11 @@ import categoriescoursesApi from "../../../api/categoriescoursesApi";
 
 export default function CategoriesCourseAdd(props) {
   const { state } = useLocation();
-  console.log(state);
   const isEdit = state && state.data ? true : false;
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: isEdit ? state.data : {},
   });
@@ -29,7 +28,6 @@ export default function CategoriesCourseAdd(props) {
   const handleAdd = async (data) => {
     try {
       const res = await categoriescoursesApi.add(data);
-      console.log("A", res.errorCode);
       if (res.errorCode === "") {
         Swal.fire({
           icon: "success",
@@ -74,7 +72,7 @@ export default function CategoriesCourseAdd(props) {
     } catch (error) {}
   };
   return (
-    <div className="container">
+    <div className="px-2">
       <div className="content__head d-flex  justify-content-between">
         <h3 className="content__title mb-3">
           {isEdit ? "SỬA LOẠI KHÓA HỌC" : "THÊM MỚI LOẠI KHÓA HỌC"}
@@ -83,7 +81,11 @@ export default function CategoriesCourseAdd(props) {
           <button className="main__btn me-2" onClick={() => nav(-1)}>
             Hủy
           </button>
-          <button className="main__btn" onClick={handleSubmit(onSubmit)}>
+          <button
+            className="main__btn"
+            onClick={handleSubmit(onSubmit)}
+            disabled={isSubmitting}
+          >
             Lưu
           </button>
         </div>

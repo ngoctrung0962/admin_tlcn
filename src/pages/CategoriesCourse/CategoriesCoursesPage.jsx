@@ -12,6 +12,7 @@ import categoriescoursesApi from "../../api/categoriescoursesApi";
 import Swal from "sweetalert2";
 
 const CategoriesCoursesPage = () => {
+  const [loading, setLoading] = useState(false);
   const [listCategoriesCourses, setListCategoriesCourses] = useState([]);
   const [totalCategoriesCourses, setTotalCategoriesCourses] = useState(0);
   const [paginate, setPaginate] = useState({
@@ -25,9 +26,11 @@ const CategoriesCoursesPage = () => {
   };
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const res = await categoriescoursesApi.getAll(paginate.page);
       setListCategoriesCourses(res.data.content);
       setTotalCategoriesCourses(res.data.totalElements);
+      setLoading(false);
     };
     fetchData();
   }, [paginate]);
@@ -148,6 +151,7 @@ const CategoriesCoursesPage = () => {
           setPaginate={setPaginate}
           count={totalCategoriesCourses}
           handleDeleteRowSelected={handleDeleteRowSelected}
+          loading={loading}
         />
       </div>
     </div>

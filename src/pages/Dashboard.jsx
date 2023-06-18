@@ -161,6 +161,7 @@ const Dashboard = () => {
 export default Dashboard;
 
 const RevenueByMonthsChart = () => {
+  const [loading1, setLoading1] = useState(false);
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -196,6 +197,7 @@ const RevenueByMonthsChart = () => {
   };
 
   const fetchDataRevenueByMonth = async (month, year) => {
+    setLoading1(true);
     const res = await reportApi.getDataReportByMonth(month, year);
 
     const ArrayData = [];
@@ -213,7 +215,7 @@ const RevenueByMonthsChart = () => {
         },
       ],
     });
-
+    setLoading1(false);
     //Gắn data vào chart
   };
 
@@ -265,7 +267,11 @@ const RevenueByMonthsChart = () => {
           {errors.month && (
             <span className="text-danger">Tháng không hợp lệ</span>
           )}
-          <button className="filter__button" onClick={handleSubmit(onSubmit)}>
+          <button
+            className="filter__button"
+            onClick={handleSubmit(onSubmit)}
+            disabled={loading1}
+          >
             Lọc
           </button>
         </div>
@@ -279,6 +285,7 @@ const RevenueByMonthsChart = () => {
 };
 
 const RevenueByYearsChart = () => {
+  const [loading, setLoading] = useState(false);
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -314,6 +321,7 @@ const RevenueByYearsChart = () => {
   };
 
   const fetchDataRevenueByYear = async (year) => {
+    setLoading(true);
     const res = await reportApi.getDataReportByYear(year);
 
     const ArrayData = [];
@@ -331,7 +339,7 @@ const RevenueByYearsChart = () => {
         },
       ],
     });
-
+    setLoading(false);
     //Gắn data vào chart
   };
 
@@ -353,7 +361,6 @@ const RevenueByYearsChart = () => {
       year: moment().year(),
     },
   });
-
   const onSubmit = (data) => {
     fetchDataRevenueByYear(data.year);
   };
@@ -370,7 +377,11 @@ const RevenueByYearsChart = () => {
             {...register("year", { required: true })}
             className="filter__input"
           />
-          <button className="filter__button" onClick={handleSubmit(onSubmit)}>
+          <button
+            className="filter__button"
+            onClick={handleSubmit(onSubmit)}
+            disabled={loading}
+          >
             Lọc
           </button>
         </div>

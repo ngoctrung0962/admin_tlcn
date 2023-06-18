@@ -15,6 +15,7 @@ import RequestOpening from "./components/RequestOpening";
 import RequestReject from "./components/RequestReject";
 
 const RequestTeacherPage = () => {
+  const [loading, setLoading] = useState(false);
   const [listPayments, setlistPayments] = useState([]);
   const [totalPayments, settotalPayments] = useState(0);
   const [paginate, setPaginate] = useState({
@@ -25,9 +26,11 @@ const RequestTeacherPage = () => {
   }, [paginate]);
 
   const fetchData = async () => {
+    setLoading(true);
     const res = await requestTeacherApi.getOpeningRequest(paginate.page);
     setlistPayments(res.data.content);
     settotalPayments(res.data?.totalElements);
+    setLoading(false);
   };
 
   //Navigate to edit page

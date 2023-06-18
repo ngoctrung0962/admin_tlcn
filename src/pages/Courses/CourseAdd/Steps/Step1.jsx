@@ -8,8 +8,15 @@ import SunEditor from "suneditor-react";
 import { useForm } from "react-hook-form";
 import { useRef } from "react";
 import uploadFileApi from "../../../../api/uploadFileApi";
+import coursesApi from "../../../../api/coursesApi";
+import Swal from "sweetalert2";
 
-export default function Step1({ currentStep, setCurrentStep }) {
+export default function Step1({
+  currentStep,
+  setCurrentStep,
+  dataCourseTemp,
+  setDataCourseTemp,
+}) {
   const {
     register,
     handleSubmit,
@@ -19,7 +26,21 @@ export default function Step1({ currentStep, setCurrentStep }) {
     setValue,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm({});
+  } = useForm({
+    defaultValues: {
+      sectionId: dataCourseTemp?.id,
+      name: dataCourseTemp?.summaryInfo?.name,
+      category: {
+        value: dataCourseTemp?.summaryInfo?.category.id,
+      },
+      price: dataCourseTemp?.summaryInfo?.price,
+      activeWhenApproved: dataCourseTemp?.summaryInfo?.activeWhenApproved,
+      language: dataCourseTemp?.summaryInfo?.language,
+      avatar: dataCourseTemp?.summaryInfo?.avatar,
+      description: dataCourseTemp?.summaryInfo?.description,
+      isPublic: dataCourseTemp?.summaryInfo?.isPublic,
+    },
+  });
 
   const buttonChooseFile = useRef();
 
@@ -75,7 +96,47 @@ export default function Step1({ currentStep, setCurrentStep }) {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // format data before send to server
+
+    data.category = data?.category?.value;
+    if (data.avatarFile?.[0]) {
+      data.avatar = data.avatarFile?.[0];
+    }
+    data.sessionId = dataCourseTemp?.id;
+    delete data.avatarFile;
+    if (data.avatar === undefined) {
+      Swal.fire({
+        icon: "error",
+        title: "Có lỗi xảy ra",
+        text: "Vui lòng chọn ảnh đại diện",
+      });
+      return;
+    }
+    // Chuyển sang formData
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+
+    // log formData
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+    try {
+      const res = await coursesApi.submitSumary(formData);
+      if (res.errorCode === "") {
+        setDataCourseTemp(res.data);
+        setCurrentStep(currentStep + 1);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Có lỗi xảy ra",
+          text: res.message,
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
   };
   return (
     <div>
@@ -88,11 +149,15 @@ export default function Step1({ currentStep, setCurrentStep }) {
                 hidden
                 accept="image/*"
                 type="file"
-                ref={buttonChooseFile}
                 onChange={(e) => {
                   setValue("avatarFile", e.target.files);
                 }}
+                {...register("avatarFile", { required: true })}
+                ref={buttonChooseFile}
               />
+              {errors.avatarFile && (
+                <p className="form__error">Vui lòng chọn ảnh đại diện</p>
+              )}
               <img
                 src={
                   watch("avatarFile")?.[0]
@@ -181,14 +246,34 @@ export default function Step1({ currentStep, setCurrentStep }) {
               <Form.Label>Public</Form.Label>
               <SimpleSelect
                 control={control}
-                field={"public"}
+                field={"isPublic"}
                 placeholder="Chọn trạng thái"
                 options={[
                   { value: true, label: "Miễn phí" },
                   { value: false, label: "Có phí" },
                 ]}
+                onChangeOption={(e) => {
+                  if (e.value === true) {
+                    setValue("price", 0);
+                  }
+                }}
               />
-              {errors.public && <p className="form__error">Vui lòng nhập</p>}
+              {errors.isPublic && <p className="form__error">Vui lòng nhập</p>}
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Cho phép bán ngay khi được phê duyệt</Form.Label>
+              <SimpleSelect
+                control={control}
+                field={"activeWhenApproved"}
+                placeholder="Chọn trạng thái"
+                options={[
+                  { value: true, label: "Cho phép" },
+                  { value: false, label: "Không cho phép" },
+                ]}
+              />
+              {errors.activeWhenApproved && (
+                <p className="form__error">Vui lòng nhập</p>
+              )}
             </Form.Group>
 
             <Form.Group className="mb-3">
@@ -254,10 +339,7 @@ export default function Step1({ currentStep, setCurrentStep }) {
           gap: "10px",
         }}
       >
-        <button
-          className="main__btn"
-          onClick={() => setCurrentStep(currentStep + 1)}
-        >
+        <button className="main__btn" onClick={() => handleSubmit(onSubmit)()}>
           Next
         </button>
         <button

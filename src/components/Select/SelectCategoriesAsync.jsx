@@ -12,6 +12,7 @@ export default function SelectCategoriesAsync({
   field,
   isDisabled,
   placeholder,
+  defaultOptions,
   isClearable,
   valueField = "id",
   labelField = "name",
@@ -42,7 +43,7 @@ export default function SelectCategoriesAsync({
       },
     };
   };
-
+  console.log("hi", control?.defaultValuesRef?.current?.[field]);
   return (
     <Controller
       name={field}
@@ -56,7 +57,11 @@ export default function SelectCategoriesAsync({
           isDisabled={isDisabled}
           placeholder={placeholder}
           value={value}
-          onChange={onChange}
+          defaultValue={control?.defaultValuesRef?.current?.[field] || null}
+          defaultOptions={defaultOptions || null}
+          onChange={(e) => {
+            onChange(e);
+          }}
           cacheOptions
           loadOptions={loadMoreOptions}
           components

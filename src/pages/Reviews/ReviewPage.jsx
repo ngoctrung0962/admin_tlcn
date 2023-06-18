@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { formatDateDisplay } from "../../utils/MyUtils";
 
 const ReviewPage = () => {
+  const [loading, setLoading] = useState(false);
   const [listReviews, setListReviews] = useState([]);
   const [paginate, setPaginate] = useState({
     page: 0,
@@ -17,10 +18,12 @@ const ReviewPage = () => {
   const [totalReview, setTotalReview] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const res = await reviewApi.getAll(paginate.page);
       console.log(res);
       setListReviews(res.data.content);
       setTotalReview(res.data.totalElements);
+      setLoading(false);
     };
     fetchData();
   }, [paginate]);
@@ -113,6 +116,7 @@ const ReviewPage = () => {
             paginate={paginate}
             setPaginate={setPaginate}
             count={totalReview}
+            loading={loading}
           />
         )}
       </div>

@@ -7,6 +7,7 @@ import CustomDataTable from "../../../components/CustomDataTable/CustomDataTable
 import Dropdown from "../../../components/Dropdown/Dropdown.component";
 
 export default function RequestReject() {
+  const [loading, setLoading] = useState(false);
   const [listReject, setlistReject] = useState([]);
   const [totalReject, setTotalOpennig] = useState(0);
   const [paginate, setPaginate] = useState({
@@ -17,9 +18,11 @@ export default function RequestReject() {
   }, [paginate]);
 
   const fetchData = async () => {
+    setLoading(true);
     const res = await requestTeacherApi.getRejectedRequest(paginate.page);
     setlistReject(res.data.content);
     setTotalOpennig(res.data?.totalElements);
+    setLoading(false);
   };
 
   const columns = [
@@ -87,6 +90,7 @@ export default function RequestReject() {
         setPaginate={setPaginate}
         count={totalReject}
         selectableRows={false}
+        loading={loading}
       />
     </div>
   );

@@ -12,6 +12,7 @@ import { formatDateDisplay } from "../../utils/MyUtils";
 import couponsApi from "../../api/couponsApi";
 
 const CouponPage = () => {
+  const [loading, setLoading] = useState(false);
   const [listCoupons, setlistCoupons] = useState([]);
   const [totalCoupons, settotalCoupons] = useState(0);
   const [paginate, setPaginate] = useState({
@@ -22,9 +23,11 @@ const CouponPage = () => {
   }, [paginate]);
 
   const fetchData = async () => {
+    setLoading(true);
     const res = await couponsApi.getAll(paginate.page);
     setlistCoupons(res.data.content);
     settotalCoupons(res.data?.totalElements);
+    setLoading(false);
   };
 
   //Navigate to edit page
@@ -215,6 +218,7 @@ const CouponPage = () => {
           setPaginate={setPaginate}
           count={totalCoupons}
           handleDeleteRowSelected={handleDeleteRowSelected}
+          loading={loading}
         />
       </div>
     </div>

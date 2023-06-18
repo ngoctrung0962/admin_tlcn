@@ -10,6 +10,7 @@ import { formatDateDisplay } from "../../utils/MyUtils";
 import orderApi from "../../api/orderApi";
 
 const OrderPage = () => {
+  const [loading, setLoading] = useState(false);
   const [listOrders, setListOrders] = useState([]);
   const [paginate, setPaginate] = useState({
     page: 0,
@@ -17,9 +18,11 @@ const OrderPage = () => {
   const [totalOrder, setTotalOrder] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const res = await orderApi.getAllListHistoryOrder(paginate.page);
       setListOrders(res.data.content);
       setTotalOrder(res.data.totalElements);
+      setLoading(false);
     };
     fetchData();
   }, [paginate]);
@@ -166,6 +169,7 @@ const OrderPage = () => {
             setPaginate={setPaginate}
             count={totalOrder}
             selectableRows={false}
+            loading={loading}
           />
         )}
       </div>
