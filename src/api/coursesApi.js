@@ -79,6 +79,23 @@ const coursesApi = {
     const url = `/register-course/inquire?status=DRAFT`;
     return axiosClient.get(url);
   },
+  getListCourseRegisterByStatus(status) {
+    const url = `/register-course/my-requests?status=${status}`;
+    return axiosClient.get(url);
+  },
+  // api for reviewer
+  getListCourseNotHaveReviewer() {
+    const url = `/reviewer/register-course/tasks`;
+    return axiosClient.get(url);
+  },
+  reviewerGetCourseDetail(courseId) {
+    const url = `/register-course?sessionId=${courseId}`;
+    return axiosClient.get(url);
+  },
+  reviewerApproveCourse(data) {
+    const url = `/register-course/submit-result-review`;
+    return axiosClient.post(url, data);
+  },
 };
 
 export default coursesApi;

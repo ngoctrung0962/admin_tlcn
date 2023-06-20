@@ -5,6 +5,7 @@ import SimpleSelect from "../../../../components/Select/SimpleSelect";
 import SunEditor from "suneditor-react";
 import SelectCategoriesAsync from "../../../../components/Select/SelectCategoriesAsync";
 export default function TabInformation({ summaryInfo }) {
+  console.log("summaryInfo", summaryInfo);
   const {
     register,
     handleSubmit,

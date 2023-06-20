@@ -20,7 +20,7 @@ const ReviewCoursesPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const res = await coursesApi.getListCourseRegister();
+      const res = await coursesApi.getListCourseNotHaveReviewer();
       setListCourses(res.data);
       setTotalCourses(res.data.length);
       setLoading(false);
@@ -29,7 +29,7 @@ const ReviewCoursesPage = () => {
   }, [paginate]);
 
   const handleEdit = (row) => {
-    nav(`/reviewcourses/edit`, { state: row });
+    nav(`/reviewcourses/${row.id}`);
   };
 
   const handleDelete = async (row) => {
@@ -83,8 +83,6 @@ const ReviewCoursesPage = () => {
       selector: (row) => row.id,
       sortable: true,
       reorder: true,
-      minWidth: "100px",
-      maxWidth: "100px",
     },
     {
       name: "Tên khóa học",
@@ -112,21 +110,7 @@ const ReviewCoursesPage = () => {
       minWidth: "200px",
       maxWidth: "200px",
     },
-    {
-      name: "Giảng viên",
-      selector: (row) => row.accountName,
-      sortable: true,
-      reorder: true,
-      width: "200px",
-    },
-    {
-      name: "SL tham gia",
-      selector: (row) => row.numStudents,
-      sortable: true,
-      reorder: true,
-      minWidth: "150px",
-      maxWidth: "150px",
-    },
+
     {
       name: "Pulic",
       selector: (row) => {

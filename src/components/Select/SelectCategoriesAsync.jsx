@@ -43,7 +43,6 @@ export default function SelectCategoriesAsync({
       },
     };
   };
-  console.log("hi", control?.defaultValuesRef?.current?.[field]);
   return (
     <Controller
       name={field}

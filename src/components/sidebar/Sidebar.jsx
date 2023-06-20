@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./sidebar.scss";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { images } from "../../constants";
 import { CgMenuGridR } from "react-icons/cg";
 import sidebarNav from "../../configs/sidebarNav";
@@ -15,6 +15,7 @@ const Sidebar = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const location = useLocation();
   const dispatch = useDispatch();
+  const nav = useNavigate();
   const handleLogout = async () => {
     Swal.fire({
       title: "Bạn chắc chắn muốn đăng xuất?",
@@ -27,6 +28,7 @@ const Sidebar = () => {
         await Cookies.remove("username");
         await dispatch(deleteDetailUser());
         Swal.fire("Đăng xuất thành công!", "", "success");
+        nav("/signin");
       }
     });
   };

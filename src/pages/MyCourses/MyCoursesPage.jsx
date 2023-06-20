@@ -20,7 +20,7 @@ const MyCoursesPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const res = await coursesApi.getListCourseRegister();
+      const res = await coursesApi.getListCourseRegisterByStatus("DRAFT");
       setListCourses(res.data);
       setTotalCourses(res.data.length);
       setLoading(false);
@@ -83,12 +83,10 @@ const MyCoursesPage = () => {
       selector: (row) => row.id,
       sortable: true,
       reorder: true,
-      minWidth: "100px",
-      maxWidth: "100px",
     },
     {
       name: "Tên khóa học",
-      selector: (row) => row.name,
+      selector: (row) => row?.summaryInfo?.name,
       sortable: true,
       reorder: true,
       minWidth: "200px",
@@ -97,49 +95,14 @@ const MyCoursesPage = () => {
     },
     {
       name: "Loại khóa học",
-      selector: (row) => row.category?.name,
+      selector: (row) => row?.summaryInfo?.category?.name,
       sortable: true,
       reorder: true,
       minWidth: "200px",
       maxWidth: "200px",
       wrap: true,
     },
-    {
-      name: "Giá",
-      selector: (row) => formatVND(row.price) + " VNĐ",
-      sortable: true,
-      reorder: true,
-      minWidth: "200px",
-      maxWidth: "200px",
-    },
-    {
-      name: "Giảng viên",
-      selector: (row) => row.accountName,
-      sortable: true,
-      reorder: true,
-      width: "200px",
-    },
-    {
-      name: "SL tham gia",
-      selector: (row) => row.numStudents,
-      sortable: true,
-      reorder: true,
-      minWidth: "150px",
-      maxWidth: "150px",
-    },
-    {
-      name: "Pulic",
-      selector: (row) => {
-        if (row.public === true) {
-          return "Miễn phí";
-        }
-        return "Có phí";
-      },
-      sortable: true,
-      reorder: true,
-      minWidth: "100px",
-      maxWidth: "100px",
-    },
+
     {
       name: "Ngày tạo",
       selector: (row) => formatDateDisplay(row.createDate),
@@ -164,7 +127,7 @@ const MyCoursesPage = () => {
       <div className="content__head d-flex  justify-content-between">
         <h3 className="content__title mb-3">Tất cả khóa học</h3>
         <div className="content__tool">
-          <button className="main__btn" onClick={() => nav("/courses/add")}>
+          <button className="main__btn" onClick={() => nav("/mycourses/add")}>
             Thêm mới <MdOutlineAdd size={15} color="#00693e" />
           </button>
         </div>

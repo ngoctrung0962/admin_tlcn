@@ -20,7 +20,7 @@ const sidebarNav = [
     section: "reviewcourses",
     icon: <i className="bx bx-cube"></i>,
     text: "Phê duyệt khóa học",
-    role: [Enums.ROLE.ADMIN, Enums.ROLE.REVIEWER],
+    role: [Enums.ROLE.REVIEWER],
   },
   {
     link: "/mycourses",

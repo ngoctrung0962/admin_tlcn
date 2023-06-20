@@ -191,7 +191,6 @@ export default function Step1({
                   aria-label="add"
                   variant="extended"
                   onClick={() => {
-                    console.log("log");
                     buttonChooseFile.current?.click();
                   }}
                 >

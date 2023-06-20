@@ -18,7 +18,7 @@ import TabsChapterList from "./TabsChapterList/TabsChapterList";
 import { useSelector } from "react-redux";
 import TabsContentList from "./TabsContent/TabsContentList";
 import Steps from "./Steps";
-export default function CourseAdd({ isEdit }) {
+export default function MyCourseAdd({ isEdit }) {
   const { currentUser } = useSelector((state) => state.user);
   const courseId = useLocation().pathname.split("/")[2];
   const [course, setCourse] = useState();

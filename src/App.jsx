@@ -37,6 +37,7 @@ import CourseEdit from "./pages/MyCourses/CourseEdit/CourseEdit.page";
 import { Enums } from "./utils/Enums";
 import ReviewCoursesPage from "./pages/ReviewCourse/ReviewCoursesPage";
 import ReviewCourseEdit from "./pages/ReviewCourse/CourseEdit/ReviewCourseEdit.page";
+import MyCourseAdd from "./pages/MyCourses/MyCourseAdd/MyCourseAdd.page";
 function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -91,7 +92,7 @@ function App() {
             user?.role === Enums.ROLE.ADMIN) && (
             <Route path="reviewcourses" element={<Outlet />}>
               <Route path="" element={<ReviewCoursesPage />} />
-              <Route path="edit" element={<ReviewCourseEdit isEdit={true} />} />
+              <Route path=":id" element={<ReviewCourseEdit />} />
             </Route>
           )}
           {/* Course route start*/}
@@ -99,10 +100,10 @@ function App() {
           <Route path="courses/:id" element={<CourseAdd isEdit={true} />} />
           <Route path="courses/add" element={<CourseAdd />} />
 
-          {/* Course route start*/}
+          {/* My Course route start*/}
           <Route path="mycourses" element={<MyCoursesPage />} />
           <Route path="mycourses/edit" element={<CourseEdit isEdit={true} />} />
-          <Route path="mycourses/add" element={<CourseAdd />} />
+          <Route path="mycourses/add" element={<MyCourseAdd />} />
 
           {/* Review route */}
           <Route path="reviews" element={<Outlet />}>

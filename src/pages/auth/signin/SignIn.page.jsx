@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import userApi from "../../../api/userApi";
 import { loginSuccess, saveToken } from "../../../redux/userRedux";
+import { Enums } from "../../../utils/Enums";
 export default function SignIn() {
   const {
     register,
@@ -28,8 +29,9 @@ export default function SignIn() {
         if (isDoneLogin) {
           const resGetUser = await userApi.get(res.data.username);
           if (
-            resGetUser.data.role === "ROLE_01" ||
-            resGetUser.data.role === "TEACHER"
+            resGetUser.data.role === Enums.ROLE.ADMIN ||
+            resGetUser.data.role === Enums.ROLE.TEACHER ||
+            resGetUser.data.role === Enums.ROLE.REVIEWER
           ) {
             dispatch(loginSuccess(resGetUser.data));
             await Cookies.set("username", res.data.username);
@@ -39,7 +41,11 @@ export default function SignIn() {
               title: "Đăng nhập thành công",
               text: "Chào mừng bạn đến với trang quản lý của chúng tôi",
             });
-            navigate("/");
+            if (resGetUser.data.role === Enums.ROLE.REVIEWER) {
+              navigate("/reviewcourses");
+            } else {
+              navigate("/");
+            }
           }
         }
       } else {
