@@ -23,100 +23,27 @@ export default function ReviewCourseEdit() {
     setLoading(false);
   };
   const nav = useNavigate();
-  const hanleApprove = async () => {
-    Swal.fire({
-      title: "Bạn có chắc chắn muốn duyệt khóa học này?",
-      showCancelButton: true,
-      confirmButtonText: `OK`,
-      cancelButtonText: `Cancel`,
-    }).then(async (result) => {
-      console.log("result", result);
-      if (result.isConfirmed) {
-        try {
-          const res = await coursesApi.reviewerApproveCourse({
-            id: id,
-            result: "APPROVED",
-            reason: null,
-          });
-          if (res.errorCode === "") {
-            Swal.fire({
-              icon: "success",
-              title: "Duyệt thành công",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            nav("/reviewcourses");
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Duyệt thất bại",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
-        } catch (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Duyệt thất bại",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      }
-    });
-  };
 
-  const handleReject = () => {
-    Swal.fire({
-      title: "Xác nhận từ chối",
-      text: "Bạn có chắc muốn từ chối khóa học này?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "OK",
-      cancelButtonText: "Hủy",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Nếu người dùng nhấn OK, hiển thị form điền lý do
+  const hanleAssignToMe = async () => {
+    try {
+      const res = await coursesApi.assingTaskToReviewer(id);
+      if (res.errorCode == "") {
         Swal.fire({
-          title: "Nhập lý do từ chối",
-          input: "text",
-          inputAttributes: {
-            autocapitalize: "off",
-          },
-          showCancelButton: true,
-          confirmButtonText: "OK",
-          cancelButtonText: "Hủy",
-          showLoaderOnConfirm: true,
-          preConfirm: async (reason) => {
-            console.log("reason", reason);
-            // Gửi dữ liệu lên server
-            // Ví dụ:
-            const res = await coursesApi.reviewerApproveCourse({
-              id: id,
-              result: "REJECTED",
-              reason: reason,
-            });
-            if (res.errorCode === "") {
-              Swal.fire({
-                icon: "success",
-                title: "Từ chối thành công",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-              nav("/reviewcourses");
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "Từ chối thất bại",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-            }
-          },
-          allowOutsideClick: () => !Swal.isLoading(),
+          icon: "success",
+          iconHtml: "👍",
+          title: "Nhận nhiệm vụ thành công",
+          text: "Bạn đã nhận nhiệm vụ thành công",
+        });
+        nav("/reviewcourses");
+      } else {
+        Swal.fire({
+          icon: "error",
+          iconHtml: "👎",
+          title: "Nhận nhiệm vụ thất bại",
+          text: "Bạn đã nhận nhiệm vụ thất bại",
         });
       }
-    });
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -128,11 +55,8 @@ export default function ReviewCourseEdit() {
       <div className="content__head d-flex  justify-content-between">
         <h3 className="content__title mb-3">Review khóa học</h3>
         <div className="content__tool">
-          <button className="main__btn me-3" onClick={() => hanleApprove()}>
-            Duyệt
-          </button>
-          <button className="main__btn" onClick={() => handleReject()}>
-            Từ chối
+          <button className="main__btn me-3" onClick={() => hanleAssignToMe()}>
+            Nhận nhiệm vụ
           </button>
         </div>
       </div>

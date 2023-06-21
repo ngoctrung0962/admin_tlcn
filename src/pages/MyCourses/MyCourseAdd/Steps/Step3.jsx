@@ -124,7 +124,7 @@ export default function Step3({
           showConfirmButton: false,
           timer: 5000,
         });
-        nav("/courses");
+        nav("/mycourses");
       } else {
         Swal.fire({
           icon: "error",

@@ -17,14 +17,14 @@ const ReviewCoursesPage = () => {
     page: 0,
   });
   const [totalCourses, setTotalCourses] = useState(0);
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await coursesApi.getListCourseNotHaveReviewer();
+    setListCourses(res.data);
+    setTotalCourses(res.data.length);
+    setLoading(false);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const res = await coursesApi.getListCourseNotHaveReviewer();
-      setListCourses(res.data);
-      setTotalCourses(res.data.length);
-      setLoading(false);
-    };
     fetchData();
   }, [paginate]);
 
@@ -32,25 +32,23 @@ const ReviewCoursesPage = () => {
     nav(`/reviewcourses/${row.id}`);
   };
 
-  const handleDelete = async (row) => {
+  const hanleAssignToMe = async (row) => {
     try {
-      const resDelete = await coursesApi.remove(row.id);
-      if (resDelete.errorCode === "") {
+      const res = await coursesApi.assingTaskToReviewer(row.id);
+      if (res.errorCode == "") {
         Swal.fire({
           icon: "success",
-          title: "Xóa thành công",
-          showConfirmButton: false,
-          timer: 1500,
+          iconHtml: "👍",
+          title: "Nhận nhiệm vụ thành công",
+          text: "Bạn đã nhận nhiệm vụ thành công",
         });
-        const res = await coursesApi.getAll(paginate.page);
-        setListCourses(res.data.content);
-        setTotalCourses(res.data.totalElements);
+        fetchData();
       } else {
         Swal.fire({
           icon: "error",
-          title: "Xóa thất bại",
-          showConfirmButton: false,
-          timer: 1500,
+          iconHtml: "👎",
+          title: "Nhận nhiệm vụ thất bại",
+          text: "Bạn đã nhận nhiệm vụ thất bại",
         });
       }
     } catch (error) {}
@@ -58,28 +56,43 @@ const ReviewCoursesPage = () => {
   const columns = [
     {
       name: "Action",
-      minWidth: "100px",
-      maxWidth: "100px",
       center: true,
+      width: "250px",
       cell: (row) => (
-        <Dropdown>
-          <MenuItem onClick={() => handleEdit(row)}>
-            <AiFillEye />
+        // <Dropdown>
+        //   <MenuItem onClick={() => handleEdit(row)}>
+        //     <AiFillEye />
+        //     Xem
+        //   </MenuItem>
+        //   {/* <MenuItem onClick={() => handleDelete(row)}>
+        //     <AiFillDelete />
+        //     Xóa
+        //   </MenuItem>
+        //   <MenuItem>
+        //     <BiHistory />
+        //     Lịch sử
+        //   </MenuItem> */}
+        // </Dropdown>
+        <div>
+          <button
+            className="btn__action"
+            onClick={() => handleEdit(row)}
+            style={{ marginRight: "10px" }}
+          >
             Xem
-          </MenuItem>
-          {/* <MenuItem onClick={() => handleDelete(row)}>
-            <AiFillDelete />
-            Xóa
-          </MenuItem>
-          <MenuItem>
-            <BiHistory />
-            Lịch sử
-          </MenuItem> */}
-        </Dropdown>
+          </button>
+          <button
+            className="btn__action"
+            onClick={() => hanleAssignToMe(row)}
+            style={{ marginRight: "10px" }}
+          >
+            Nhận nhiệm vụ
+          </button>
+        </div>
       ),
     },
     {
-      name: "ID",
+      name: "Mã yêu cầu",
       selector: (row) => row.id,
       sortable: true,
       reorder: true,
@@ -103,8 +116,8 @@ const ReviewCoursesPage = () => {
       wrap: true,
     },
     {
-      name: "Giá",
-      selector: (row) => formatVND(row?.summaryInfo?.price) + " VNĐ",
+      name: "Người tạo khóa học",
+      selector: (row) => row?.registerUser?.fullname,
       sortable: true,
       reorder: true,
       minWidth: "200px",
@@ -125,16 +138,8 @@ const ReviewCoursesPage = () => {
       maxWidth: "100px",
     },
     {
-      name: "Ngày tạo",
+      name: "Ngày gửi",
       selector: (row) => formatDateDisplay(row.createDate),
-      sortable: true,
-      reorder: true,
-      minWidth: "150px",
-      maxWidth: "150px",
-    },
-    {
-      name: "Ngày cập nhật",
-      selector: (row) => formatDateDisplay(row.updateDate),
       sortable: true,
       reorder: true,
       minWidth: "150px",
@@ -158,6 +163,7 @@ const ReviewCoursesPage = () => {
           setPaginate={setPaginate}
           count={totalCourses}
           loading={loading}
+          selectableRows={false}
         />
       </div>
     </div>

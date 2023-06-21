@@ -104,7 +104,7 @@
         --size: 40px;
         width: var(--size);
         height: var(--size);
-        margin-right: 3rem;
+        margin-right: 2rem;
         @include flex(center, center);
 
         @include tablet {

@@ -38,11 +38,12 @@ import { Enums } from "./utils/Enums";
 import ReviewCoursesPage from "./pages/ReviewCourse/ReviewCoursesPage";
 import ReviewCourseEdit from "./pages/ReviewCourse/CourseEdit/ReviewCourseEdit.page";
 import MyCourseAdd from "./pages/MyCourses/MyCourseAdd/MyCourseAdd.page";
+import TaskOfReviewerPage from "./pages/TaskOfReviewer/TaskOfReviewerPage";
+import TaskOfReviewerEdit from "./pages/TaskOfReviewer/TaskOfReviewerEdit/TaskOfReviewerEdit.page";
 function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
-  console.log("user", user);
   useEffect(() => {
     setLoading(true);
     const getUser = async () => {
@@ -95,6 +96,13 @@ function App() {
               <Route path=":id" element={<ReviewCourseEdit />} />
             </Route>
           )}
+          {(user?.role === Enums.ROLE.REVIEWER ||
+            user?.role === Enums.ROLE.ADMIN) && (
+            <Route path="taskofreviewer" element={<Outlet />}>
+              <Route path="" element={<TaskOfReviewerPage />} />
+              <Route path=":id" element={<TaskOfReviewerEdit />} />
+            </Route>
+          )}
           {/* Course route start*/}
           <Route path="courses" element={<CoursesPage />} />
           <Route path="courses/:id" element={<CourseAdd isEdit={true} />} />
@@ -102,7 +110,7 @@ function App() {
 
           {/* My Course route start*/}
           <Route path="mycourses" element={<MyCoursesPage />} />
-          <Route path="mycourses/edit" element={<CourseEdit isEdit={true} />} />
+          <Route path="mycourses/:id" element={<CourseEdit />} />
           <Route path="mycourses/add" element={<MyCourseAdd />} />
 
           {/* Review route */}

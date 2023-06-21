@@ -79,15 +79,6 @@ export default function Step2({
   };
 
   const hanleSubtmit = async () => {
-    // Nếu trạng thái là đã bị từ chối hoặc đợi duyệt thì chỉ next step
-    if (
-      dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._REJECTED ||
-      dataCourseTemp?.status ===
-        Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW
-    ) {
-      setCurrentStep(currentStep + 1);
-      return;
-    }
     // Xử lý dữ liệu
     listContentCourseData.forEach((chapter, index) => {
       chapter.offset = index;
@@ -216,87 +207,75 @@ export default function Step2({
           chapterId={chapterId}
         />
       )}
-      <div
-        style={{
-          pointerEvents:
-            dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._REJECTED ||
-            dataCourseTemp?.status ===
-              Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW
-              ? "none"
-              : "auto",
-        }}
-      >
-        {listContentCourseData.map((chapter, index) => {
-          return (
-            <div className="chapter__box" key={index}>
-              <div className="chapter__head">
-                <h5 className="chapter__name">
-                  {" "}
-                  Tên chapter: {" " + chapter.chapterName}
-                </h5>
+      {listContentCourseData.map((chapter, index) => {
+        return (
+          <div className="chapter__box" key={index}>
+            <div className="chapter__head">
+              <h5 className="chapter__name">
+                {" "}
+                Tên chapter: {" " + chapter.chapterName}
+              </h5>
 
-                <Dropdown>
-                  <MenuItem onClick={() => handleEditChapter(chapter)}>
-                    <AiFillEye className="me-1" />
-                    Chỉnh sửa
-                  </MenuItem>
-                  <MenuItem onClick={() => handleDeleteChapter(chapter.id)}>
-                    <AiFillDelete className="me-1" />
-                    Xóa
-                  </MenuItem>
-                </Dropdown>
-              </div>
-              <div className="chapter__body">
-                {chapter?.lectures?.map((lecture, indexLecture) => {
-                  return (
-                    // <div className="lecture__box" key={indexLecture}>
-                    //   <div className="lecture__head">
-                    //     <h5 className="lecture__name">{lecture.name} </h5>
-                    //     <Dropdown>
-                    //       <MenuItem onClick={() => handleEditLecture(lecture)}>
-                    //         <AiFillEye className="me-1" />
-                    //         Chỉnh sửa
-                    //       </MenuItem>
-                    //       <MenuItem
-                    //         onClick={() => handleDeleteLecture(lecture.id)}
-                    //       >
-                    //         <AiFillDelete className="me-1" />
-                    //         Xóa
-                    //       </MenuItem>
-                    //     </Dropdown>
-                    //   </div>
-                    //   <div className="lecture__body">
-                    //     <div className="lecture__info">
-                    //       <span className="lecture__time">
-                    //         {lecture.time} phút
-                    //       </span>
-                    //     </div>
-                    //   </div>
-                    // </div>
-                    renderLecture(lecture)
-                  );
-                })}
-                <div className="btn__add__chapter">
-                  <button
-                    className=""
-                    onClick={() => handleAddLecture(chapter?.id)}
-                  >
-                    <i className="fas fa-plus"></i>
-                    Thêm bài học
-                  </button>
-                </div>
+              <Dropdown>
+                <MenuItem onClick={() => handleEditChapter(chapter)}>
+                  <AiFillEye className="me-1" />
+                  Chỉnh sửa
+                </MenuItem>
+                <MenuItem onClick={() => handleDeleteChapter(chapter.id)}>
+                  <AiFillDelete className="me-1" />
+                  Xóa
+                </MenuItem>
+              </Dropdown>
+            </div>
+            <div className="chapter__body">
+              {chapter?.lectures?.map((lecture, indexLecture) => {
+                return (
+                  // <div className="lecture__box" key={indexLecture}>
+                  //   <div className="lecture__head">
+                  //     <h5 className="lecture__name">{lecture.name} </h5>
+                  //     <Dropdown>
+                  //       <MenuItem onClick={() => handleEditLecture(lecture)}>
+                  //         <AiFillEye className="me-1" />
+                  //         Chỉnh sửa
+                  //       </MenuItem>
+                  //       <MenuItem
+                  //         onClick={() => handleDeleteLecture(lecture.id)}
+                  //       >
+                  //         <AiFillDelete className="me-1" />
+                  //         Xóa
+                  //       </MenuItem>
+                  //     </Dropdown>
+                  //   </div>
+                  //   <div className="lecture__body">
+                  //     <div className="lecture__info">
+                  //       <span className="lecture__time">
+                  //         {lecture.time} phút
+                  //       </span>
+                  //     </div>
+                  //   </div>
+                  // </div>
+                  renderLecture(lecture)
+                );
+              })}
+              <div className="btn__add__chapter">
+                <button
+                  className=""
+                  onClick={() => handleAddLecture(chapter?.id)}
+                >
+                  <i className="fas fa-plus"></i>
+                  Thêm bài học
+                </button>
               </div>
             </div>
-          );
-        })}{" "}
-        <div className="btn__add__chapter">
-          <button className="" onClick={handleAddChapter}>
-            <i className="fas fa-plus"></i>
-            Add Chapter
-          </button>
-        </div>
+          </div>
+        );
+      })}
+      <div className="btn__add__chapter">
+        <button className="" onClick={handleAddChapter}>
+          <i className="fas fa-plus"></i>
+          Add Chapter
+        </button>
       </div>
-
       <div
         style={{
           display: "flex",

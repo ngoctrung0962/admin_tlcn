@@ -15,4 +15,18 @@ export const Enums = {
     TEACHER: "TEACHER",
     REVIEWER: "REVIEWER",
   },
+  STATUS_REGISTER_COURSE: {
+    _DRAFT: "DRAFT",
+    _SUBMITTED: "SUBMITTED",
+    _APPROVED: "APPROVED",
+    _REJECTED: "REJECTED",
+    _WAITING_FOR_REVIEW: "WAITING_FOR_REVIEW",
+    _NEED_EDIT: "NEED_EDIT",
+    ["DRAFT"]: "Bản phát thảo",
+    ["SUBMITTED"]: "Đã nộp",
+    ["APPROVED"]: "Đã duyệt",
+    ["REJECTED"]: "Đã từ chối",
+    ["WAITING_FOR_REVIEW"]: "Đang chờ duyệt",
+    ["NEED_EDIT"]: "Cần chỉnh sửa",
+  },
 };

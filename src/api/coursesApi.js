@@ -88,6 +88,10 @@ const coursesApi = {
     const url = `/reviewer/register-course/tasks`;
     return axiosClient.get(url);
   },
+  getListTaskOfReviewer(status) {
+    const url = `/reviewer/register-course/my-tasks?status=${status}`;
+    return axiosClient.get(url);
+  },
   reviewerGetCourseDetail(courseId) {
     const url = `/register-course?sessionId=${courseId}`;
     return axiosClient.get(url);
@@ -95,6 +99,10 @@ const coursesApi = {
   reviewerApproveCourse(data) {
     const url = `/register-course/submit-result-review`;
     return axiosClient.post(url, data);
+  },
+  assingTaskToReviewer(sessionId) {
+    const url = `/reviewer/register-course/assign-task/${sessionId}`;
+    return axiosClient.post(url);
   },
 };
 

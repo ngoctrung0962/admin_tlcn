@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import userApi from "../../../api/userApi";
 import { loginSuccess, saveToken } from "../../../redux/userRedux";
 import { Enums } from "../../../utils/Enums";
+import { useState } from "react";
 export default function SignIn() {
   const {
     register,
@@ -16,10 +17,12 @@ export default function SignIn() {
     watch,
     formState: { errors },
   } = useForm();
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       const res = await userApi.loginAdminOrTeacher(data);
       if (!res.errorCode) {
         await Cookies.set("token", res.data.token);
@@ -57,6 +60,7 @@ export default function SignIn() {
           allowOutsideClick: true,
         });
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -110,8 +114,17 @@ export default function SignIn() {
                 className="btn_login mt-3"
                 variant="outlined"
                 onClick={handleSubmit(onSubmit)}
+                disabled={loading}
               >
                 Đăng nhập
+                {loading && (
+                  <div
+                    className="spinner-border spinner-border-sm ms-2"
+                    role="status"
+                  >
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                )}
               </Button>
             </Form>
           </div>

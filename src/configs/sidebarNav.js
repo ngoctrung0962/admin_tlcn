@@ -23,10 +23,17 @@ const sidebarNav = [
     role: [Enums.ROLE.REVIEWER],
   },
   {
+    link: "/taskofreviewer",
+    section: "taskofreviewer",
+    icon: <i className="bx bx-cube"></i>,
+    text: "Nhiệm vụ của tôi",
+    role: [Enums.ROLE.REVIEWER],
+  },
+  {
     link: "/mycourses",
     section: "mycourses",
     icon: <i className="bx bx-cube"></i>,
-    text: "Khóa học của tôi",
+    text: "Yêu cầu phê duyệt",
     role: [Enums.ROLE.ADMIN, Enums.ROLE.TEACHER],
   },
   {

@@ -10,7 +10,6 @@ import { useRef } from "react";
 import uploadFileApi from "../../../../api/uploadFileApi";
 import coursesApi from "../../../../api/coursesApi";
 import Swal from "sweetalert2";
-import { Enums } from "../../../../utils/Enums";
 
 export default function Step1({
   currentStep,
@@ -98,15 +97,6 @@ export default function Step1({
   };
 
   const onSubmit = async (data) => {
-    // Nếu trạng thái là đã bị từ chối hoặc đợi duyệt thì chỉ next step
-    if (
-      dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._REJECTED ||
-      dataCourseTemp?.status ===
-        Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW
-    ) {
-      setCurrentStep(currentStep + 1);
-      return;
-    }
     // format data before send to server
 
     data.category = data?.category?.value;
@@ -150,18 +140,7 @@ export default function Step1({
   };
   return (
     <div>
-      <Form
-        id="form_course_add"
-        onSubmit={handleSubmit(onSubmit)}
-        style={{
-          pointerEvents:
-            dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._REJECTED ||
-            dataCourseTemp?.status ===
-              Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW
-              ? "none"
-              : "auto",
-        }}
-      >
+      <Form id="form_course_add" onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col md={6} sm={12}>
             <Form.Group className="mb-3 d-flex justify-content-center flex-column">

@@ -385,3 +385,14 @@ button:disabled {
   margin-bottom: 20px;
   height: 50vh;
 }
+
+.btn__action {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  border: none;
+  background-color: #e6c511;
+  color: #fff;
+  border-radius: 3px;
+  padding: 7px 15px;
+}

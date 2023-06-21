@@ -5,7 +5,6 @@ import TabContent from "../../components/FormReviewCourse/TabContent";
 import coursesApi from "../../../../api/coursesApi";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { Enums } from "../../../../utils/Enums";
 export default function Step3({
   currentStep,
   setCurrentStep,
@@ -23,7 +22,7 @@ export default function Step3({
           showConfirmButton: false,
           timer: 5000,
         });
-        nav("/mycourses");
+        nav("/courses");
       } else {
         Swal.fire({
           icon: "error",
@@ -51,20 +50,9 @@ export default function Step3({
           gap: "10px",
         }}
       >
-        {
-          // Nếu trạng thái là đã bị từ chối hoặc đang chờ duyệt thì chỉ next step
-          dataCourseTemp?.status !== Enums.STATUS_REGISTER_COURSE._REJECTED &&
-            dataCourseTemp?.status !==
-              Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW && (
-              <button
-                className="main__btn"
-                onClick={() => handleSubmitRequest()}
-              >
-                Finish
-              </button>
-            )
-        }
-
+        <button className="main__btn" onClick={() => handleSubmitRequest()}>
+          Finish
+        </button>
         <button
           className="main__btn"
           onClick={() => setCurrentStep(currentStep - 1)}
