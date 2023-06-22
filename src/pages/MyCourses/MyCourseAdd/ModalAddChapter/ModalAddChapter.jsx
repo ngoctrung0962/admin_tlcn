@@ -17,7 +17,6 @@ export default function ModalAddChapter({
   } = useForm({
     defaultValues: dataEditChapter,
   });
-  console.log(dataEditChapter);
   const onSubmit = (data) => {
     if (dataEditChapter) {
       handleEdit(data);
@@ -28,7 +27,7 @@ export default function ModalAddChapter({
 
   const handleEdit = (data) => {
     const newListChapter = listContentCourseData.map((chapter) => {
-      if (chapter.id === data.id) {
+      if (chapter.temp_id === data.temp_id) {
         return {
           ...chapter,
           chapterName: data.chapterName,
@@ -43,7 +42,7 @@ export default function ModalAddChapter({
   };
   const hanleAdd = (data) => {
     const newChapter = {
-      id: listContentCourseData.length + 1,
+      temp_id: listContentCourseData.length + 1,
       chapterName: data.chapterName,
       lectures: [],
     };

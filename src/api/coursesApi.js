@@ -63,10 +63,23 @@ const coursesApi = {
     const url = `/register-course/init-session`;
     return axiosClient.post(url);
   },
+
+
+  submitNewSumary(data) {
+    const url = `/register-course/register-new-summary-info?isFinish=true`;
+    return axiosClient.post(url, data);
+  },
+  updateSumaryInfo(sessionId,data) {
+    const url = `/register-course/update-summary-info/${sessionId}?isFinish=true`;
+    return axiosClient.post(url, data);
+  },
   submitSumary(data) {
     const url = `/register-course/submit-summary-info?isFinish=true`;
     return axiosClient.post(url, data);
   },
+
+
+
   submitContent(data) {
     const url = `/register-course/submit-content?isFinish=true`;
     return axiosClient.post(url, data);

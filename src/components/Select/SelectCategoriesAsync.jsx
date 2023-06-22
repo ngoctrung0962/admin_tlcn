@@ -10,6 +10,8 @@ export default function SelectCategoriesAsync({
   control,
   required,
   field,
+  onChange: onChangeProp,
+  onChangeOption,
   isDisabled,
   placeholder,
   defaultOptions,
@@ -56,10 +58,12 @@ export default function SelectCategoriesAsync({
           isDisabled={isDisabled}
           placeholder={placeholder}
           value={value}
-          defaultValue={control?.defaultValuesRef?.current?.[field] || null}
           defaultOptions={defaultOptions || null}
           onChange={(e) => {
+            console.log(e);
+            onChangeOption?.(e.value);
             onChange(e);
+            onChangeProp?.(e.value);
           }}
           cacheOptions
           loadOptions={loadMoreOptions}

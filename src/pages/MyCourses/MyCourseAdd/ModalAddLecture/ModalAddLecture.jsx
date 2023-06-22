@@ -7,6 +7,7 @@ import { Enums } from "../../../../utils/Enums";
 import { useRef } from "react";
 import MUIAddIcon from "@mui/icons-material/Add";
 import { Fab } from "@mui/material";
+import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 
 const optionsTypeLecture = [
   {
@@ -42,7 +43,7 @@ export default function ModalAddLecture({
   hanleExitModal,
   chapterId,
 }) {
-  console.log(chapterId);
+  console.log("chapterId", chapterId);
   const {
     register,
     handleSubmit,
@@ -54,38 +55,47 @@ export default function ModalAddLecture({
   } = useForm({
     defaultValues: dataEditLecture,
   });
-  console.log(dataEditLecture);
   const onSubmit = (data) => {
-    hanleAdd(data);
+    if (dataEditLecture) {
+      handleEdit(data);
+    } else {
+      hanleAdd(data);
+    }
   };
 
   const handleEdit = (data) => {
     const newListChapter = listContentCourseData.map((chapter) => {
-      if (chapter.id === data.id) {
+      if (chapter.temp_id === chapterId) {
         return {
           ...chapter,
-          name: data.name,
+          lectures: chapter.lectures.map((lecture) => {
+            if (lecture.temp_id === data.temp_id) {
+              return {
+                ...lecture,
+                ...data,
+              };
+            }
+            return lecture;
+          }),
         };
       }
       return chapter;
     });
-
     setListContentCourseData(newListChapter);
     reset();
     hanleExitModal();
   };
 
   const hanleAdd = (data) => {
-    console.log("data", data);
     const newListChapter = listContentCourseData.map((chapter) => {
-      if (chapter.id === chapterId) {
+      if (chapter.temp_id === chapterId) {
         return {
           ...chapter,
           lectures: [
             ...chapter.lectures,
             {
               ...data,
-              id: new Date().getTime(),
+              temp_id: new Date().getTime(),
             },
           ],
         };
@@ -149,9 +159,11 @@ export default function ModalAddLecture({
     // targetImgElement.src = imageInfo.src;
   };
 
-  const [typeLecture, setTypeLecture] = useState(Enums.typeLecture.VIDEO);
+  const [typeLecture, setTypeLecture] = useState(
+    dataEditLecture ? dataEditLecture?.lectureType : Enums.typeLecture.VIDEO
+  );
   const [typePresentation, setTypePresentation] = useState(
-    Enums.typePresentation.TEXT
+    dataEditLecture ? dataEditLecture?.type : Enums.typePresentation.TEXT
   );
   const buttonChooseFile = useRef();
 
@@ -189,14 +201,7 @@ export default function ModalAddLecture({
             />
             {errors.title && <p className="form__error">Vui lòng nhập</p>}
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Tóm tắt</Form.Label>
-            <Form.Control
-              type="text"
-              {...register("summary", { required: true })}
-            />
-            {errors.summary && <p className="form__error">Vui lòng nhập</p>}
-          </Form.Group>
+
           <Form.Group className="mb-3">
             <Form.Label>Loại bài học</Form.Label>
             <Form.Select
@@ -205,6 +210,7 @@ export default function ModalAddLecture({
               onChange={(e) => {
                 setTypeLecture(e.target.value);
               }}
+              disabled={dataEditLecture ? true : false}
             >
               {optionsTypeLecture.map((option) => {
                 return <option value={option.value}>{option.label}</option>;
@@ -212,43 +218,44 @@ export default function ModalAddLecture({
             </Form.Select>
             {errors.lectureType && <p className="form__error">Vui lòng nhập</p>}
           </Form.Group>
+          {typeLecture !== Enums.typeLecture.QUIZ && (
+            <Form.Group className="mb-3">
+              <Form.Label>Mô tả</Form.Label>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Mô tả</Form.Label>
-
-            <SunEditor
-              setOptions={{
-                buttonList: [
-                  ["undo", "redo"],
-                  ["font", "fontSize", "formatBlock"],
-                  ["paragraphStyle", "blockquote"],
-                  [
-                    "bold",
-                    "underline",
-                    "italic",
-                    "strike",
-                    "subscript",
-                    "superscript",
+              <SunEditor
+                setOptions={{
+                  buttonList: [
+                    ["undo", "redo"],
+                    ["font", "fontSize", "formatBlock"],
+                    ["paragraphStyle", "blockquote"],
+                    [
+                      "bold",
+                      "underline",
+                      "italic",
+                      "strike",
+                      "subscript",
+                      "superscript",
+                    ],
+                    ["fontColor", "hiliteColor", "textStyle"],
+                    ["removeFormat"],
+                    ["outdent", "indent"],
+                    ["align", "horizontalRule", "list", "lineHeight"],
+                    ["table", "link", "image", "video", "audio"],
+                    ["fullScreen", "showBlocks", "codeView"],
+                    ["preview", "print"],
                   ],
-                  ["fontColor", "hiliteColor", "textStyle"],
-                  ["removeFormat"],
-                  ["outdent", "indent"],
-                  ["align", "horizontalRule", "list", "lineHeight"],
-                  ["table", "link", "image", "video", "audio"],
-                  ["fullScreen", "showBlocks", "codeView"],
-                  ["preview", "print"],
-                ],
-              }}
-              setContents={getValues("description")}
-              onChange={(content) => {
-                setValue("description", content);
-              }}
-              height="100%"
-              setDefaultStyle="font-family: 'Readex Pro', sans-serif; "
-              onImageUploadBefore={handleUploadImageBefore}
-              onImageUpload={handleImageUpload}
-            />
-          </Form.Group>
+                }}
+                setContents={getValues("description")}
+                onChange={(content) => {
+                  setValue("description", content);
+                }}
+                height="100%"
+                setDefaultStyle="font-family: 'Readex Pro', sans-serif; "
+                onImageUploadBefore={handleUploadImageBefore}
+                onImageUpload={handleImageUpload}
+              />
+            </Form.Group>
+          )}
 
           {typeLecture === Enums.typeLecture.VIDEO && (
             <Form.Group className="mb-3 d-flex justify-content-center flex-column">
@@ -292,6 +299,7 @@ export default function ModalAddLecture({
                   onClick={() => {
                     buttonChooseFile.current?.click();
                   }}
+                  disabled={dataEditLecture ? true : false}
                 >
                   <MUIAddIcon fontSize="9" />
                   <p
@@ -319,6 +327,7 @@ export default function ModalAddLecture({
                   onChange={(e) => {
                     setTypePresentation(e.target.value);
                   }}
+                  disabled={dataEditLecture ? true : false}
                 >
                   {optionsTypePRESENTATION.map((option) => {
                     return <option value={option.value}>{option.label}</option>;
@@ -341,29 +350,61 @@ export default function ModalAddLecture({
               )}
 
               {typePresentation === Enums.typePresentation.FILE && (
-                <Form.Group className="mb-3 d-flex justify-content-center flex-column">
-                  <Form.Label>File bài học</Form.Label>
-                  <Form.Control
-                    accept="*"
-                    type="file"
-                    onChange={(e) => {
-                      hanleUploadFile(e.target.files[0]);
-                    }}
-                  />
-                </Form.Group>
+                <div>
+                  <Form.Group className="mb-3 d-flex justify-content-center flex-column">
+                    <Form.Label>File bài học</Form.Label>
+                    <Form.Control
+                      accept="*"
+                      type="file"
+                      onChange={(e) => {
+                        hanleUploadFile(e.target.files[0]);
+                      }}
+                      disabled={dataEditLecture ? true : false}
+                    />
+                  </Form.Group>
+                  <div className="lecture__doc">
+                    <DocViewer
+                      documents={[
+                        {
+                          uri: dataEditLecture?.link,
+                        },
+                      ]}
+                      pluginRenderers={DocViewerRenderers}
+                      prefetchMethod="GET"
+                      requestHeaders={{
+                        Origin: "http://localhost:3000",
+                        //"My-Custom-Header": "my-custom-value",
+                      }}
+                      disableFilename={true}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
+                </div>
               )}
             </>
           )}
 
           {typeLecture === Enums.typeLecture.QUIZ && (
-            <Form.Group className="mb-3">
-              <Form.Label>Số câu vượt qua tối thiểu</Form.Label>
-              <Form.Control
-                type="text"
-                {...register("numToPass", { required: true })}
-              />
-              {errors.numToPass && <p className="form__error">Vui lòng nhập</p>}
-            </Form.Group>
+            <>
+              <Form.Group className="mb-3">
+                <Form.Label>Số câu vượt qua tối thiểu</Form.Label>
+                <Form.Control
+                  type="text"
+                  {...register("numToPass", { required: true })}
+                />
+                {errors.numToPass && (
+                  <p className="form__error">Vui lòng nhập</p>
+                )}
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Tóm tắt</Form.Label>
+                <Form.Control
+                  type="text"
+                  {...register("summary", { required: true })}
+                />
+                {errors.summary && <p className="form__error">Vui lòng nhập</p>}
+              </Form.Group>
+            </>
           )}
         </Form>
       </Modal.Body>

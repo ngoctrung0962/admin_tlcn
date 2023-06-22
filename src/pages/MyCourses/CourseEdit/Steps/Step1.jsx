@@ -29,7 +29,6 @@ export default function Step1({
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      sessionId: dataCourseTemp?.id,
       name: dataCourseTemp?.summaryInfo?.name,
       category: {
         value: dataCourseTemp?.summaryInfo?.category?.id,
@@ -43,7 +42,6 @@ export default function Step1({
       isPublic: dataCourseTemp?.summaryInfo?.isPublic,
     },
   });
-
   const buttonChooseFile = useRef();
 
   const handleUploadImageBefore = async (files, info, uploadHandler) => {
@@ -112,16 +110,11 @@ export default function Step1({
     data.category = data?.category?.value;
     if (data.avatarFile?.[0]) {
       data.avatar = data.avatarFile?.[0];
+    } else {
+      delete data.avatar;
     }
     delete data.avatarFile;
-    if (data.avatar === undefined) {
-      Swal.fire({
-        icon: "error",
-        title: "Có lỗi xảy ra",
-        text: "Vui lòng chọn ảnh đại diện",
-      });
-      return;
-    }
+
     // Chuyển sang formData
     const formData = new FormData();
     for (const key in data) {
@@ -133,8 +126,16 @@ export default function Step1({
       console.log(pair[0] + ", " + pair[1]);
     }
     try {
-      const res = await coursesApi.submitSumary(formData);
+      const res = await coursesApi.updateSumaryInfo(
+        dataCourseTemp?.id,
+        formData
+      );
       if (res.errorCode === "") {
+        Swal.fire({
+          icon: "success",
+          title: "Thành công",
+          text: "Cập nhật thành công",
+        });
         setDataCourseTemp(res.data);
         setCurrentStep(currentStep + 1);
       } else {

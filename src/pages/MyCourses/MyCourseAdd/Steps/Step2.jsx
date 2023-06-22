@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import ModalAddChapter from "../ModalAddChapter/ModalAddChapter";
 import Dropdown from "../../../../components/Dropdown/Dropdown.component";
@@ -19,14 +19,14 @@ export default function Step2({
   const [listContentCourseData, setListContentCourseData] = useState(
     dataCourseTemp?.content ? dataCourseTemp?.content : []
   );
-  console.log(listContentCourseData);
+  console.log("listContentCourseData", listContentCourseData);
   const handleAddChapter = () => {
     setIsShowModal(true);
   };
 
-  const handleDeleteChapter = (id) => {
+  const handleDeleteChapter = (temp_id) => {
     const newListChapter = listContentCourseData.filter((chapter) => {
-      return chapter.id !== id;
+      return chapter.temp_id !== temp_id;
     });
     setListContentCourseData(newListChapter);
   };
@@ -47,9 +47,11 @@ export default function Step2({
 
   const [dataEditLecture, setDataEditLecture] = useState();
 
-  const handleEditLecture = (lecture) => {
+  const handleEditLecture = (lecture, chapter) => {
+    console.log(lecture);
     setDataEditLecture(lecture);
     setIsShowModalLecture(true);
+    setChapterId(chapter.temp_id);
   };
 
   const [chapterId, setChapterId] = useState();
@@ -58,13 +60,13 @@ export default function Step2({
     setIsShowModalLecture(true);
   };
 
-  const handleDeleteLecture = (id) => {
+  const handleDeleteLecture = (temp_id, chapter) => {
     const newListLecture = listContentCourseData.map((chapter) => {
-      if (chapter.id === id) {
+      if (chapter.temp_id === chapter.temp_id) {
         return {
           ...chapter,
-          listLecture: chapter.listLecture.filter((lecture) => {
-            return lecture.id !== id;
+          lectures: chapter.lectures.filter((lecture) => {
+            return lecture.temp_id !== temp_id;
           }),
         };
       }
@@ -79,20 +81,28 @@ export default function Step2({
   };
 
   const hanleSubtmit = async () => {
+    // Nếu trạng thái là đã bị từ chối hoặc đợi duyệt thì chỉ next step
+    if (
+      dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._REJECTED ||
+      dataCourseTemp?.status ===
+        Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW
+    ) {
+      setCurrentStep(currentStep + 1);
+      return;
+    }
     // Xử lý dữ liệu
     listContentCourseData.forEach((chapter, index) => {
       chapter.offset = index;
       chapter?.lectures?.forEach((lecture, indexLecture) => {
-        delete lecture.id;
+        delete lecture.temp_id;
         lecture.offset = indexLecture;
       });
-      delete chapter.id;
+      delete chapter.temp_id;
     });
     let dataPost = {
       sessionId: dataCourseTemp?.id,
       chapters: listContentCourseData,
     };
-    console.log(dataPost);
     try {
       const res = await coursesApi.submitContent(dataPost);
       if (res.errorCode == "") {
@@ -102,20 +112,22 @@ export default function Step2({
     } catch (error) {}
   };
 
-  const renderLecture = (lecture) => {
+  const renderLecture = (lecture, chapter) => {
     return (
-      <div className="lecture__box" key={lecture?.id}>
+      <div className="lecture__box" key={lecture?.temp_id}>
         <div className="lecture__head">
           <div className="lecture__name">
             <p className="">Tiêu đề: {lecture?.title}</p>
           </div>
 
           <Dropdown>
-            <MenuItem onClick={() => handleEditLecture(lecture)}>
+            <MenuItem onClick={() => handleEditLecture(lecture, chapter)}>
               <AiFillEye className="me-1" />
               Chỉnh sửa
             </MenuItem>
-            <MenuItem onClick={() => handleDeleteLecture(lecture.id)}>
+            <MenuItem
+              onClick={() => handleDeleteLecture(lecture.temp_id, chapter)}
+            >
               <AiFillDelete className="me-1" />
               Xóa
             </MenuItem>
@@ -123,22 +135,34 @@ export default function Step2({
         </div>
         <div className="lecture__body">
           <div className="lecture__info">
-            <p className="lecture__summary">Tóm tắt: {lecture?.summary}</p>
-            <p
-              dangerouslySetInnerHTML={
-                lecture?.description
-                  ? { __html: "Mô tả: " + lecture?.description }
-                  : { __html: "Không có mô tả" }
-              }
-              className="lecture__description"
-            ></p>
-
             {lecture?.lectureType === Enums.typeLecture.VIDEO && (
-              <video src={lecture?.link} controls className="lecture__video" />
+              <>
+                <video
+                  src={lecture?.link}
+                  controls
+                  className="lecture__video"
+                />
+                <p
+                  dangerouslySetInnerHTML={
+                    lecture?.description
+                      ? { __html: "Mô tả: " + lecture?.description }
+                      : { __html: "Không có mô tả" }
+                  }
+                  className="lecture__description"
+                ></p>
+              </>
             )}
             {lecture?.lectureType === Enums.typeLecture.PRESENTATION &&
               (lecture?.type === Enums.typePresentation.TEXT ? (
                 <div className="lecture__content">
+                  <p
+                    dangerouslySetInnerHTML={
+                      lecture?.description
+                        ? { __html: "Mô tả: " + lecture?.description }
+                        : { __html: "Không có mô tả" }
+                    }
+                    className="lecture__description"
+                  ></p>
                   <p
                     dangerouslySetInnerHTML={{
                       __html: "Nội dung: " + lecture?.content,
@@ -146,33 +170,38 @@ export default function Step2({
                   ></p>
                 </div>
               ) : (
-                <div className="lecture__doc">
-                  <DocViewer
-                    documents={[
-                      {
-                        uri: lecture?.link,
-                      },
-                    ]}
-                    pluginRenderers={DocViewerRenderers}
-                    // config={{
-                    //     header: {
-                    //         //disableHeader: false,
-                    //         disableFileName: true,
-                    //         retainURLParams: false,
-                    //     },
-                    // }}
-                    prefetchMethod="GET"
-                    requestHeaders={{
-                      Origin: "http://localhost:3000",
-                      //"My-Custom-Header": "my-custom-value",
-                    }}
-                    disableFilename={true}
-                    style={{ width: "100%", height: "100%" }}
-                  />
+                <div>
+                  <p
+                    dangerouslySetInnerHTML={
+                      lecture?.description
+                        ? { __html: "Mô tả: " + lecture?.description }
+                        : { __html: "Không có mô tả" }
+                    }
+                    className="lecture__description"
+                  ></p>
+                  <div className="lecture__doc">
+                    <DocViewer
+                      documents={[
+                        {
+                          uri: lecture?.link,
+                        },
+                      ]}
+                      pluginRenderers={DocViewerRenderers}
+                      prefetchMethod="GET"
+                      requestHeaders={{
+                        Origin: "http://localhost:3000",
+                        //"My-Custom-Header": "my-custom-value",
+                      }}
+                      disableFilename={true}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
                 </div>
               ))}
             {lecture?.lectureType === Enums.typeLecture.QUIZ && (
               <div className="lecture__content">
+                <p className="lecture__summary">Tóm tắt: {lecture?.summary}</p>
+
                 <p className="lecture__numtopass">
                   Số câu vượt qua tối thiểu: {lecture?.numToPass}
                 </p>
@@ -183,6 +212,18 @@ export default function Step2({
       </div>
     );
   };
+
+  useEffect(() => {
+    if (dataCourseTemp?.content) {
+      // gán lại temp_id cho chapter và lecture băng filed id
+      listContentCourseData.forEach((chapter, index) => {
+        chapter.temp_id = chapter.id;
+        chapter?.lectures?.forEach((lecture, indexLecture) => {
+          lecture.temp_id = lecture.id;
+        });
+      });
+    }
+  }, []);
   return (
     <div>
       {isShowModal && (
@@ -207,75 +248,89 @@ export default function Step2({
           chapterId={chapterId}
         />
       )}
-      {listContentCourseData.map((chapter, index) => {
-        return (
-          <div className="chapter__box" key={index}>
-            <div className="chapter__head">
-              <h5 className="chapter__name">
-                {" "}
-                Tên chapter: {" " + chapter.chapterName}
-              </h5>
+      <div
+        style={{
+          pointerEvents:
+            dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._REJECTED ||
+            dataCourseTemp?.status ===
+              Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW
+              ? "none"
+              : "auto",
+        }}
+      >
+        {listContentCourseData.map((chapter, index) => {
+          return (
+            <div className="chapter__box" key={index}>
+              <div className="chapter__head">
+                <h5 className="chapter__name">
+                  {" "}
+                  Tên chapter: {" " + chapter.chapterName}
+                </h5>
 
-              <Dropdown>
-                <MenuItem onClick={() => handleEditChapter(chapter)}>
-                  <AiFillEye className="me-1" />
-                  Chỉnh sửa
-                </MenuItem>
-                <MenuItem onClick={() => handleDeleteChapter(chapter.id)}>
-                  <AiFillDelete className="me-1" />
-                  Xóa
-                </MenuItem>
-              </Dropdown>
-            </div>
-            <div className="chapter__body">
-              {chapter?.lectures?.map((lecture, indexLecture) => {
-                return (
-                  // <div className="lecture__box" key={indexLecture}>
-                  //   <div className="lecture__head">
-                  //     <h5 className="lecture__name">{lecture.name} </h5>
-                  //     <Dropdown>
-                  //       <MenuItem onClick={() => handleEditLecture(lecture)}>
-                  //         <AiFillEye className="me-1" />
-                  //         Chỉnh sửa
-                  //       </MenuItem>
-                  //       <MenuItem
-                  //         onClick={() => handleDeleteLecture(lecture.id)}
-                  //       >
-                  //         <AiFillDelete className="me-1" />
-                  //         Xóa
-                  //       </MenuItem>
-                  //     </Dropdown>
-                  //   </div>
-                  //   <div className="lecture__body">
-                  //     <div className="lecture__info">
-                  //       <span className="lecture__time">
-                  //         {lecture.time} phút
-                  //       </span>
-                  //     </div>
-                  //   </div>
-                  // </div>
-                  renderLecture(lecture)
-                );
-              })}
-              <div className="btn__add__chapter">
-                <button
-                  className=""
-                  onClick={() => handleAddLecture(chapter?.id)}
-                >
-                  <i className="fas fa-plus"></i>
-                  Thêm bài học
-                </button>
+                <Dropdown>
+                  <MenuItem onClick={() => handleEditChapter(chapter)}>
+                    <AiFillEye className="me-1" />
+                    Chỉnh sửa
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => handleDeleteChapter(chapter.temp_id)}
+                  >
+                    <AiFillDelete className="me-1" />
+                    Xóa
+                  </MenuItem>
+                </Dropdown>
+              </div>
+              <div className="chapter__body">
+                {chapter?.lectures?.map((lecture, indexLecture) => {
+                  return (
+                    // <div className="lecture__box" key={indexLecture}>
+                    //   <div className="lecture__head">
+                    //     <h5 className="lecture__name">{lecture.name} </h5>
+                    //     <Dropdown>
+                    //       <MenuItem onClick={() => handleEditLecture(lecture)}>
+                    //         <AiFillEye className="me-1" />
+                    //         Chỉnh sửa
+                    //       </MenuItem>
+                    //       <MenuItem
+                    //         onClick={() => handleDeleteLecture(lecture.id)}
+                    //       >
+                    //         <AiFillDelete className="me-1" />
+                    //         Xóa
+                    //       </MenuItem>
+                    //     </Dropdown>
+                    //   </div>
+                    //   <div className="lecture__body">
+                    //     <div className="lecture__info">
+                    //       <span className="lecture__time">
+                    //         {lecture.time} phút
+                    //       </span>
+                    //     </div>
+                    //   </div>
+                    // </div>
+                    renderLecture(lecture, chapter)
+                  );
+                })}
+                <div className="btn__add__chapter">
+                  <button
+                    className=""
+                    onClick={() => handleAddLecture(chapter?.temp_id)}
+                  >
+                    <i className="fas fa-plus"></i>
+                    Thêm bài học
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
-      <div className="btn__add__chapter">
-        <button className="" onClick={handleAddChapter}>
-          <i className="fas fa-plus"></i>
-          Add Chapter
-        </button>
+          );
+        })}{" "}
+        <div className="btn__add__chapter">
+          <button className="" onClick={handleAddChapter}>
+            <i className="fas fa-plus"></i>
+            Add Chapter
+          </button>
+        </div>
       </div>
+
       <div
         style={{
           display: "flex",
@@ -283,15 +338,14 @@ export default function Step2({
           gap: "10px",
         }}
       >
+        <button className="main__btn" onClick={() => hanleSubtmit()}>
+          Next
+        </button>
         <button
           className="main__btn"
           onClick={() => setCurrentStep(currentStep - 1)}
         >
           Prev
-        </button>
-
-        <button className="main__btn" onClick={() => hanleSubtmit()}>
-          Next
         </button>
       </div>
     </div>

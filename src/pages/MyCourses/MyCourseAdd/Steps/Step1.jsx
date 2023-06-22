@@ -1,5 +1,5 @@
 import { Fab } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import MUIAddIcon from "@mui/icons-material/Add";
 import SelectCategoriesAsync from "../../../../components/Select/SelectCategoriesAsync";
@@ -10,6 +10,7 @@ import { useRef } from "react";
 import uploadFileApi from "../../../../api/uploadFileApi";
 import coursesApi from "../../../../api/coursesApi";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 export default function Step1({
   currentStep,
@@ -25,13 +26,13 @@ export default function Step1({
     getValues,
     setValue,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     defaultValues: {
-      sectionId: dataCourseTemp?.id,
       name: dataCourseTemp?.summaryInfo?.name,
       category: {
-        value: dataCourseTemp?.summaryInfo?.category,
+        value: dataCourseTemp?.summaryInfo?.category?.id,
+        label: dataCourseTemp?.summaryInfo?.category?.name,
       },
       price: dataCourseTemp?.summaryInfo?.price,
       activeWhenApproved: dataCourseTemp?.summaryInfo?.activeWhenApproved,
@@ -42,6 +43,7 @@ export default function Step1({
     },
   });
 
+  const [isEdit, setIsEdit] = useState(false);
   const buttonChooseFile = useRef();
 
   const handleUploadImageBefore = async (files, info, uploadHandler) => {
@@ -100,15 +102,18 @@ export default function Step1({
 
     data.category = data?.category?.value;
     data.avatar = data.avatarFile?.[0];
-    data.sessionId = dataCourseTemp?.id;
     delete data.avatarFile;
     if (data.avatar === undefined) {
-      Swal.fire({
-        icon: "error",
-        title: "Có lỗi xảy ra",
-        text: "Vui lòng chọn ảnh đại diện",
-      });
-      return;
+      if (isEdit) {
+        delete data.avatar;
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Có lỗi xảy ra",
+          text: "Vui lòng chọn ảnh đại diện",
+        });
+        return;
+      }
     }
     // Chuyển sang formData
     const formData = new FormData();
@@ -116,26 +121,53 @@ export default function Step1({
       formData.append(key, data[key]);
     }
 
-    // log formData
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
     try {
-      const res = await coursesApi.submitSumary(formData);
-      if (res.errorCode === "") {
-        setDataCourseTemp(res.data);
-        setCurrentStep(currentStep + 1);
+      if (isEdit) {
+        const res = await coursesApi.updateSumaryInfo(
+          dataCourseTemp?.id,
+          formData
+        );
+        if (res.errorCode === "") {
+          Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: "Cập nhật thành công",
+          });
+          setDataCourseTemp(res.data);
+          setCurrentStep(currentStep + 1);
+          setIsEdit(true);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Có lỗi xảy ra",
+            text: res.message,
+          });
+        }
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Có lỗi xảy ra",
-          text: res.message,
-        });
+        const res = await coursesApi.submitNewSumary(formData);
+        if (res.errorCode === "") {
+          setDataCourseTemp(res.data);
+          setCurrentStep(currentStep + 1);
+          setIsEdit(true);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Có lỗi xảy ra",
+            text: res.message,
+          });
+        }
       }
     } catch (error) {
       console.log("error", error);
     }
   };
+  console.log("isEdit", isEdit);
+  useEffect(() => {
+    if (dataCourseTemp?.summaryInfo) {
+      console.log("Edited");
+      setIsEdit(true);
+    }
+  }, [dataCourseTemp]);
   return (
     <div>
       <Form id="form_course_add" onSubmit={handleSubmit(onSubmit)}>
@@ -335,12 +367,6 @@ export default function Step1({
       >
         <button className="main__btn" onClick={() => handleSubmit(onSubmit)()}>
           Next
-        </button>
-        <button
-          className="main__btn"
-          onClick={() => setCurrentStep(currentStep - 1)}
-        >
-          Prev
         </button>
       </div>
     </div>

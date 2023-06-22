@@ -3,25 +3,12 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import { useState } from "react";
-import StepBegin from "./StepBegin";
 
 export default function Steps() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(1);
   const [dataCourseTemp, setDataCourseTemp] = useState();
   console.log("dataCourseTemp", dataCourseTemp);
   const listSteps = [
-    {
-      id: 0,
-      name: "Bắt đầu",
-      component: (
-        <StepBegin
-          currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
-          dataCourseTemp={dataCourseTemp}
-          setDataCourseTemp={setDataCourseTemp}
-        />
-      ),
-    },
     {
       id: 1,
       name: "Thông tin chính",
