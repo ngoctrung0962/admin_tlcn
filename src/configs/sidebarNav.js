@@ -8,13 +8,13 @@ const sidebarNav = [
     text: "Dashboard",
     role: [Enums.ROLE.ADMIN, Enums.ROLE.TEACHER],
   },
-  {
-    link: "/courses",
-    section: "courses",
-    icon: <i className="bx bx-cube"></i>,
-    text: "Khóa học",
-    role: [Enums.ROLE.ADMIN, Enums.ROLE.TEACHER],
-  },
+  // {
+  //   link: "/courses",
+  //   section: "courses",
+  //   icon: <i className="bx bx-cube"></i>,
+  //   text: "Khóa học",
+  //   role: [Enums.ROLE.ADMIN, Enums.ROLE.TEACHER],
+  // },
   {
     link: "/reviewcourses",
     section: "reviewcourses",
@@ -36,6 +36,14 @@ const sidebarNav = [
     text: "Yêu cầu phê duyệt",
     role: [Enums.ROLE.ADMIN, Enums.ROLE.TEACHER],
   },
+  {
+    link: "/coursemanagement",
+    section: "coursemanagement",
+    icon: <i className="bx bx-cube"></i>,
+    text: "Quản lí khóa học",
+    role: [Enums.ROLE.ADMIN, Enums.ROLE.TEACHER],
+  },
+
   {
     link: "/categories",
     section: "categories",
@@ -78,6 +86,20 @@ const sidebarNav = [
     icon: <i className="bx bx-user"></i>,
     text: "Yêu cầu trở thành giảng viên",
     role: [Enums.ROLE.ADMIN],
+  },
+  {
+    link: "/profile",
+    section: "profile",
+    icon: <i className="bx bx-cube"></i>,
+    text: "Quản lí tài khoản",
+    role: [Enums.ROLE.ADMIN, Enums.ROLE.TEACHER],
+  },
+  {
+    link: "/changepassword",
+    section: "changepassword",
+    icon: <i className="bx bx-cube"></i>,
+    text: "Đổi mật khẩu",
+    role: [Enums.ROLE.ADMIN, Enums.ROLE.TEACHER],
   },
 ];
 

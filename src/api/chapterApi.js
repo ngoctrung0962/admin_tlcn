@@ -20,6 +20,20 @@ const chapterApi = {
     const url = `/courses/${courseId}/chapters/${chapterId}`;
     return axiosClient.delete(url);
   },
+
+  // Teacher api
+  teacherUpdateChapter(data) {
+    const url = `/teacher/my-courses/update-chapter`;
+    return axiosClient.put(url, data);
+  },
+  teacherAddChapter(data) {
+    const url = `/teacher/my-courses/add-chapter`;
+    return axiosClient.post(url, data);
+  },
+  teacherDeleteChapter(chapterId) {
+    const url = `/teacher/my-courses/delete-chapter/${chapterId}`;
+    return axiosClient.delete(url);
+  },
 };
 
 export default chapterApi;

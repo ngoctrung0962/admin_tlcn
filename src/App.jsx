@@ -40,10 +40,15 @@ import ReviewCourseEdit from "./pages/ReviewCourse/CourseEdit/ReviewCourseEdit.p
 import MyCourseAdd from "./pages/MyCourses/MyCourseAdd/MyCourseAdd.page";
 import TaskOfReviewerPage from "./pages/TaskOfReviewer/TaskOfReviewerPage";
 import TaskOfReviewerEdit from "./pages/TaskOfReviewer/TaskOfReviewerEdit/TaskOfReviewerEdit.page";
+import CourseManagementPage from "./pages/CourseManagement/CourseManagementPage";
+import ProfilePage from "./pages/Profile/ProfilePage";
+import ChangePassword from "./pages/ChangePassword/ChangePassword";
+import CourseManagementEdit from "./pages/CourseManagement/CourseEdit/CourseManagementEdit";
 function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
+  console.log("user", user);
   useEffect(() => {
     setLoading(true);
     const getUser = async () => {
@@ -96,6 +101,15 @@ function App() {
               <Route path=":id" element={<ReviewCourseEdit />} />
             </Route>
           )}
+
+          {(user?.role === Enums.ROLE.TEACHER ||
+            user?.role === Enums.ROLE.ADMIN) && (
+            <Route path="coursemanagement" element={<Outlet />}>
+              <Route path="" element={<CourseManagementPage />} />
+              <Route path=":id" element={<CourseManagementEdit />} />
+            </Route>
+          )}
+
           {(user?.role === Enums.ROLE.REVIEWER ||
             user?.role === Enums.ROLE.ADMIN) && (
             <Route path="taskofreviewer" element={<Outlet />}>
@@ -139,6 +153,14 @@ function App() {
           <Route path="orders" element={<Outlet />}>
             <Route path="" element={<OrderPage />} />
             <Route path=":id" element={<ReviewAdd isEdit={true} />} />
+          </Route>
+
+          <Route path="profile" element={<Outlet />}>
+            <Route path="" element={<ProfilePage />} />
+          </Route>
+
+          <Route path="changepassword" element={<Outlet />}>
+            <Route path="" element={<ChangePassword />} />
           </Route>
 
           <Route path="customers" element={<Blank />} />

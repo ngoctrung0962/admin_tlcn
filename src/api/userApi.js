@@ -15,6 +15,10 @@ const userApi = {
     const url = `/account/detail/${username}`;
     return axiosClient.get(url);
   },
+  changeInfo(username, data) {
+    const url = `/account/${username}`;
+    return axiosClient.put(url, data);
+  },
   update(username, data) {
     const url = `/users/${username}`;
     return axiosClient.put(url, data);
@@ -27,8 +31,12 @@ const userApi = {
     const url = `/login/admin`;
     return axiosClient.post(url, data);
   },
-  changepassword(username, data) {
-    const url = `/change-password/${username}`;
+  changepassword(data) {
+    const url = `/account/changePassword`;
+    return axiosClient.post(url, data);
+  },
+  changeAvatar(username, data) {
+    const url = `/account/${username}/avatar`;
     return axiosClient.post(url, data);
   },
   forgotPassword(username, email) {

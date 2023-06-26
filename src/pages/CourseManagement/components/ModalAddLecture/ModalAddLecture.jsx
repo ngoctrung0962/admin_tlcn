@@ -8,6 +8,8 @@ import { useRef } from "react";
 import MUIAddIcon from "@mui/icons-material/Add";
 import { Fab } from "@mui/material";
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+import lectureApi from "../../../../api/lectureApi";
+import Swal from "sweetalert2";
 
 const optionsTypeLecture = [
   {
@@ -35,15 +37,60 @@ const optionsTypePRESENTATION = [
   },
 ];
 export default function ModalAddLecture({
-  setIsShowModal,
-  listContentCourseData,
-  setListContentCourseData,
   dataEditLecture,
-  setDataEditLecture,
   hanleExitModal,
-  chapterId,
+  fetchData,
 }) {
-  console.log("chapterId", chapterId);
+  const [loading, setLoading] = useState(false);
+
+  console.log("dataEditLecture", dataEditLecture);
+  const [isEdit, setIsEdit] = useState(dataEditLecture ? true : false);
+  const [typeLecture, setTypeLecture] = useState(
+    dataEditLecture ? dataEditLecture?.lectureType : Enums.typeLecture.VIDEO
+  );
+  const [typePresentation, setTypePresentation] = useState(
+    dataEditLecture ? dataEditLecture?.type : Enums.typePresentation.TEXT
+  );
+  const findDefaultValueByLectureType = (lectureType) => {
+    switch (lectureType) {
+      case Enums.typeLecture.VIDEO:
+        return {
+          id: dataEditLecture?.id,
+          title: dataEditLecture?.title,
+          lectureType: dataEditLecture?.lectureType,
+          description: dataEditLecture?.description,
+          link: dataEditLecture?.link,
+          offset: dataEditLecture?.offset,
+          chapterId: dataEditLecture?.chapterId,
+        };
+      case Enums.typeLecture.PRESENTATION:
+        return {
+          id: dataEditLecture?.id,
+          title: dataEditLecture?.title,
+          lectureType: dataEditLecture?.lectureType,
+          description: dataEditLecture?.description,
+          type: dataEditLecture?.type,
+          content: dataEditLecture?.content,
+          link: dataEditLecture?.link,
+          offset: dataEditLecture?.offset,
+          chapterId: dataEditLecture?.chapterId,
+        };
+      case Enums.typeLecture.QUIZ:
+        return {
+          id: dataEditLecture?.id,
+          title: dataEditLecture?.title,
+          lectureType: dataEditLecture?.lectureType,
+          description: dataEditLecture?.description,
+          numToPass: dataEditLecture?.numToPass,
+          summary: dataEditLecture?.summary,
+          offset: dataEditLecture?.offset,
+          chapterId: dataEditLecture?.chapterId,
+        };
+      default:
+        return {};
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -53,56 +100,46 @@ export default function ModalAddLecture({
     watch,
     formState: { errors },
   } = useForm({
-    defaultValues: dataEditLecture,
+    defaultValues:
+      //  Xử lí default value ở đây
+      dataEditLecture
+        ? findDefaultValueByLectureType(dataEditLecture?.lectureType)
+        : {},
   });
+
   const onSubmit = (data) => {
-    if (dataEditLecture) {
+    if (isEdit) {
       handleEdit(data);
     } else {
       hanleAdd(data);
     }
   };
 
-  const handleEdit = (data) => {
-    const newListChapter = listContentCourseData.map((chapter) => {
-      if (chapter.temp_id === chapterId) {
-        return {
-          ...chapter,
-          lectures: chapter.lectures.map((lecture) => {
-            if (lecture.temp_id === data.temp_id) {
-              return {
-                ...lecture,
-                ...data,
-              };
-            }
-            return lecture;
-          }),
-        };
+  const handleEdit = async (data) => {
+    setLoading(true);
+    try {
+      const res = await lectureApi.teacherUpdateLecture(data);
+      if (res.errorCode == "") {
+        Swal.fire({
+          icon: "success",
+          title: "Thành công",
+          text: "Cập nhật thành công",
+        });
+        fetchData();
+        reset();
+        hanleExitModal();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Thất bại",
+          text: "Cập nhật thất bại",
+        });
       }
-      return chapter;
-    });
-    setListContentCourseData(newListChapter);
-    reset();
-    hanleExitModal();
+    } catch (error) {}
+    setLoading(false);
   };
 
   const hanleAdd = (data) => {
-    const newListChapter = listContentCourseData.map((chapter) => {
-      if (chapter.temp_id === chapterId) {
-        return {
-          ...chapter,
-          lectures: [
-            ...chapter.lectures,
-            {
-              ...data,
-              temp_id: new Date().getTime(),
-            },
-          ],
-        };
-      }
-      return chapter;
-    });
-    setListContentCourseData(newListChapter);
     reset();
     hanleExitModal();
   };
@@ -159,12 +196,6 @@ export default function ModalAddLecture({
     // targetImgElement.src = imageInfo.src;
   };
 
-  const [typeLecture, setTypeLecture] = useState(
-    dataEditLecture ? dataEditLecture?.lectureType : Enums.typeLecture.VIDEO
-  );
-  const [typePresentation, setTypePresentation] = useState(
-    dataEditLecture ? dataEditLecture?.type : Enums.typePresentation.TEXT
-  );
   const buttonChooseFile = useRef();
 
   const hanleUploadFile = async (files) => {
@@ -408,11 +439,30 @@ export default function ModalAddLecture({
               </Form.Group>
             </>
           )}
+          <Form.Group className="mb-3">
+            <Form.Label>Thứ tự</Form.Label>
+            <Form.Control
+              type="number"
+              {...register("offset", { required: true })}
+            />
+            {errors.offset && <p className="form__error">Vui lòng nhập</p>}
+          </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <button className="btn btn-secondary" onClick={handleSubmit(onSubmit)}>
+        <button
+          className="btn btn-secondary"
+          onClick={handleSubmit(onSubmit)}
+          disabled={loading}
+        >
           {dataEditLecture ? "Cập nhật" : "Thêm mới"}
+          {loading && (
+            <span
+              className="spinner-border spinner-border-sm ms-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          )}
         </button>
       </Modal.Footer>
     </Modal>

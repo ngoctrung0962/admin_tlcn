@@ -64,12 +64,11 @@ const coursesApi = {
     return axiosClient.post(url);
   },
 
-
   submitNewSumary(data) {
     const url = `/register-course/register-new-summary-info?isFinish=true`;
     return axiosClient.post(url, data);
   },
-  updateSumaryInfo(sessionId,data) {
+  updateSumaryInfo(sessionId, data) {
     const url = `/register-course/update-summary-info/${sessionId}?isFinish=true`;
     return axiosClient.post(url, data);
   },
@@ -77,8 +76,6 @@ const coursesApi = {
     const url = `/register-course/submit-summary-info?isFinish=true`;
     return axiosClient.post(url, data);
   },
-
-
 
   submitContent(data) {
     const url = `/register-course/submit-content?isFinish=true`;
@@ -116,6 +113,20 @@ const coursesApi = {
   assingTaskToReviewer(sessionId) {
     const url = `/reviewer/register-course/assign-task/${sessionId}`;
     return axiosClient.post(url);
+  },
+
+  // Teacher api
+  getListCourseOfTeacher(paginate) {
+    const url = `/teacher/my-courses?page=${paginate.page}&limit=${paginate.limit}`;
+    return axiosClient.get(url);
+  },
+  teacherGetCourseDetail(courseId) {
+    const url = `/teacher/my-courses/${courseId}`;
+    return axiosClient.get(url);
+  },
+  teacherUpdateSumaryInfo(data) {
+    const url = `/teacher/my-courses/update-summary`;
+    return axiosClient.post(url, data);
   },
 };
 
