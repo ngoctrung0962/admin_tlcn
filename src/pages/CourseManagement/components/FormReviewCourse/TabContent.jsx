@@ -9,6 +9,7 @@ import Loading from "../../../../components/Loading/Loading.component";
 import ModalAddChapter from "../ModalAddChapter/ModalAddChapter";
 import ModalAddLecture from "../ModalAddLecture/ModalAddLecture";
 import Swal from "sweetalert2";
+import lectureApi from "../../../../api/lectureApi";
 
 export default function TabContent({ idCourse }) {
   const [loading, setLoading] = useState(false);
@@ -71,6 +72,29 @@ export default function TabContent({ idCourse }) {
     setIsShowModalLecture(true);
   };
 
+  const handleDeleteLecture = async (idLecture) => {
+    try {
+      const res = await lectureApi.teacherDeleteLecture(idLecture);
+      if (!res.errorCode) {
+        Swal.fire({
+          icon: "success",
+          title: "Thành công",
+          text: "Xóa thành công",
+        });
+        fetchDataContent();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Thất bại",
+          text: "Xóa thất bại",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // ChapterId để add lecture
+  const [chapterId, setChapterId] = useState();
   const renderLecture = (lecture, chapter) => {
     return (
       <div className="lecture__box" key={lecture?.temp_id}>
@@ -84,7 +108,7 @@ export default function TabContent({ idCourse }) {
               <AiFillEye className="me-1" />
               Chỉnh sửa
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={() => handleDeleteLecture(lecture.id)}>
               <AiFillDelete className="me-1" />
               Xóa
             </MenuItem>
@@ -189,6 +213,7 @@ export default function TabContent({ idCourse }) {
           setDataEditLecture={setDataEditLecture}
           hanleExitModal={hanleExitModalLecture}
           fetchData={fetchDataContent}
+          chapterIdProp={chapterId}
         />
       )}
 
@@ -228,6 +253,7 @@ export default function TabContent({ idCourse }) {
                     <button
                       className=""
                       onClick={() => {
+                        setChapterId(chapter.id);
                         setIsShowModalLecture(true);
                       }}
                     >

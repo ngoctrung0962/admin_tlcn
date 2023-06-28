@@ -40,6 +40,7 @@ export default function ModalAddLecture({
   dataEditLecture,
   hanleExitModal,
   fetchData,
+  chapterIdProp,
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -60,7 +61,7 @@ export default function ModalAddLecture({
           lectureType: dataEditLecture?.lectureType,
           description: dataEditLecture?.description,
           link: dataEditLecture?.link,
-          offset: dataEditLecture?.offset,
+          offset: Number(dataEditLecture?.offset),
           chapterId: dataEditLecture?.chapterId,
         };
       case Enums.typeLecture.PRESENTATION:
@@ -72,7 +73,7 @@ export default function ModalAddLecture({
           type: dataEditLecture?.type,
           content: dataEditLecture?.content,
           link: dataEditLecture?.link,
-          offset: dataEditLecture?.offset,
+          offset: Number(dataEditLecture?.offset),
           chapterId: dataEditLecture?.chapterId,
         };
       case Enums.typeLecture.QUIZ:
@@ -83,7 +84,7 @@ export default function ModalAddLecture({
           description: dataEditLecture?.description,
           numToPass: dataEditLecture?.numToPass,
           summary: dataEditLecture?.summary,
-          offset: dataEditLecture?.offset,
+          offset: Number(dataEditLecture?.offset),
           chapterId: dataEditLecture?.chapterId,
         };
       default:
@@ -108,6 +109,8 @@ export default function ModalAddLecture({
   });
 
   const onSubmit = (data) => {
+    data.offset = Number(data.offset);
+
     if (isEdit) {
       handleEdit(data);
     } else {
@@ -139,9 +142,31 @@ export default function ModalAddLecture({
     setLoading(false);
   };
 
-  const hanleAdd = (data) => {
-    reset();
-    hanleExitModal();
+  const hanleAdd = async (data) => {
+    data.chapterId = chapterIdProp;
+    console.log("data", data);
+
+    setLoading(true);
+    try {
+      const res = await lectureApi.teacherAddLecture(data);
+      if (res.errorCode == "") {
+        Swal.fire({
+          icon: "success",
+          title: "Thành công",
+          text: "Thêm mới thành công",
+        });
+        fetchData();
+        reset();
+        hanleExitModal();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Thất bại",
+          text: "Thêm mới thất bại",
+        });
+      }
+    } catch (error) {}
+    setLoading(false);
   };
 
   const handleUploadImageBefore = async (files, info, uploadHandler) => {
@@ -422,7 +447,7 @@ export default function ModalAddLecture({
               <Form.Group className="mb-3">
                 <Form.Label>Số câu vượt qua tối thiểu</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="number"
                   {...register("numToPass", { required: true })}
                 />
                 {errors.numToPass && (
