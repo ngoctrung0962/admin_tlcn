@@ -558,7 +558,9 @@ export default function ModalAddLecture({
                   <Form.Group className="mb-3">
                     <Form.Label>Nội dung</Form.Label>
                     <Form.Control
-                      type="text"
+                      // type="text"
+                      as="textarea"
+                      rows={4}
                       {...register("content", { required: true })}
                     />
                     {errors.content && (
@@ -632,9 +634,17 @@ export default function ModalAddLecture({
               <Form.Label>Thứ tự</Form.Label>
               <Form.Control
                 type="number"
-                {...register("offset", { required: true })}
+                {...register("offset", {
+                  required: true,
+                  min: 1,
+                })}
               />
-              {errors.offset && <p className="form__error">Vui lòng nhập</p>}
+              {errors.offset?.type === "required" && (
+                <p className="form__error">Vui lòng nhập</p>
+              )}
+              {errors.offset?.type === "min" && (
+                <p className="form__error">Vui lòng nhập số lớn hơn 0</p>
+              )}
             </Form.Group>
 
             {typeLecture === Enums.typeLecture.QUIZ && (
@@ -768,7 +778,7 @@ export default function ModalAddLecture({
         </Modal.Body>
         <Modal.Footer>
           <button
-            className="btn btn-secondary"
+            className="btn btn-secondary btn__footer__modal"
             onClick={handleSubmit(onSubmit)}
             disabled={loading}
           >

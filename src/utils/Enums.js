@@ -29,4 +29,14 @@ export const Enums = {
     ["WAITING_FOR_REVIEW"]: "Đang chờ duyệt",
     ["NEED_EDIT"]: "Cần chỉnh sửa",
   },
+  newTypeLecture: {
+    _VIDEO: "VIDEO",
+    _PRESENTATION: "PRESENTATION",
+    _DOCUMENT: "DOCUMENT",
+    _QUIZ: "QUIZ",
+    ["VIDEO"]: "Video bài giảng",
+    ["PRESENTATION"]: "File bài giảng",
+    ["DOCUMENT"]: "Tài liệu",
+    ["QUIZ"]: "Bài kiểm tra",
+  },
 };
