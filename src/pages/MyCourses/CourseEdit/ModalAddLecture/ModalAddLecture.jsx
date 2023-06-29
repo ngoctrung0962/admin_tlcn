@@ -411,7 +411,10 @@ export default function ModalAddLecture({
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <button className="btn btn-secondary" onClick={handleSubmit(onSubmit)}>
+        <button
+          className="btn btn-secondary btn__footer__modal"
+          onClick={handleSubmit(onSubmit)}
+        >
           {dataEditLecture ? "Cập nhật" : "Thêm mới"}
         </button>
       </Modal.Footer>

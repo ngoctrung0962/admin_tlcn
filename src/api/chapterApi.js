@@ -1,8 +1,12 @@
 import axiosClient from "./axiosClient";
 
 const chapterApi = {
+  // getbycourseId(courseId) {
+  //   const url = `/courses/${courseId}/chapters`;
+  //   return axiosClient.get(url);
+  // },
   getbycourseId(courseId) {
-    const url = `/courses/${courseId}/chapters`;
+    const url = `/manager-course/${courseId}/chapters`;
     return axiosClient.get(url);
   },
 

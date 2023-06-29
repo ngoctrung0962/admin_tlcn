@@ -100,6 +100,7 @@ export default function TabContent({ idCourse }) {
       <div className="lecture__box" key={lecture?.temp_id}>
         <div className="lecture__head">
           <div className="lecture__name">
+            <p className="lecture__tag">{Enums.newTypeLecture[lecture?.lectureType]}</p>
             <p className="">Tiêu đề: {lecture?.title}</p>
           </div>
 

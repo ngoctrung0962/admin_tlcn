@@ -124,7 +124,7 @@ export default function ModalAddChapter({
       </Modal.Body>
       <Modal.Footer>
         <button
-          className="btn btn-secondary"
+          className="btn btn-secondary  btn__footer__modal"
           onClick={handleSubmit(onSubmit)}
           disabled={loading}
         >
