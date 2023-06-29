@@ -44,6 +44,7 @@ import CourseManagementPage from "./pages/CourseManagement/CourseManagementPage"
 import ProfilePage from "./pages/Profile/ProfilePage";
 import ChangePassword from "./pages/ChangePassword/ChangePassword";
 import CourseManagementEdit from "./pages/CourseManagement/CourseEdit/CourseManagementEdit";
+import ResetPasswordPage from "./pages/auth/ForgotPass/ResetPassword.page";
 function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -85,6 +86,10 @@ function App() {
         <Route
           path="/signup"
           element={user ? <Navigate to="/" /> : <SignUp />}
+        />
+        <Route
+            path="/reset-pass"
+            element={<ResetPasswordPage />}
         />
 
         <Route
