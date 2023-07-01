@@ -47,6 +47,20 @@ const userApi = {
     const url = `/reset-password?token=${token}&password=${newPass}`;
     return axiosClient.post(url);
   },
+
+  // Teacher
+  teacherGetProfile(username) {
+    const url = `teacher/profile/${username}`;
+    return axiosClient.get(url);
+  },
+  teacherUpdateProfile(data) {
+    const url = `teacher/update-profile`;
+    return axiosClient.put(url, data);
+  },
+  teacherRegisterProfile(data) {
+    const url = `/teacher/register-profile`;
+    return axiosClient.post(url, data);
+  },
 };
 
 export default userApi;

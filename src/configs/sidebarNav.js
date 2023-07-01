@@ -34,7 +34,7 @@ const sidebarNav = [
     section: "mycourses",
     icon: <i className="bx bx-cube"></i>,
     text: "Yêu cầu phê duyệt",
-    role: [Enums.ROLE.ADMIN, Enums.ROLE.TEACHER],
+    role: [Enums.ROLE.TEACHER],
   },
   {
     link: "/coursemanagement",
@@ -85,6 +85,13 @@ const sidebarNav = [
     section: "requestteacher",
     icon: <i className="bx bx-user"></i>,
     text: "Yêu cầu trở thành giảng viên",
+    role: [Enums.ROLE.ADMIN],
+  },
+  {
+    link: "/managementreviewer",
+    section: "managementreviewer",
+    icon: <i className="bx bx-user"></i>,
+    text: "Quản lý người kiểm duyệt",
     role: [Enums.ROLE.ADMIN],
   },
   {

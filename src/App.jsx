@@ -44,11 +44,12 @@ import CourseManagementPage from "./pages/CourseManagement/CourseManagementPage"
 import ProfilePage from "./pages/Profile/ProfilePage";
 import ChangePassword from "./pages/ChangePassword/ChangePassword";
 import CourseManagementEdit from "./pages/CourseManagement/CourseEdit/CourseManagementEdit";
+import ReviewerManagement from "./pages/ReviewerManagement/ReviewerManagement";
+import ReviewerAdd from "./pages/ReviewerManagement/ReviewerAdd/ReviewerAdd.page";
 function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
-  console.log("user", user);
   useEffect(() => {
     setLoading(true);
     const getUser = async () => {
@@ -131,6 +132,13 @@ function App() {
           <Route path="reviews" element={<Outlet />}>
             <Route path="" element={<ReviewPage />} />
             <Route path="add" element={<ReviewAdd />} />
+            <Route path=":id" element={<ReviewAdd isEdit={true} />} />
+          </Route>
+
+          {/* Review route */}
+          <Route path="managementreviewer" element={<Outlet />}>
+            <Route path="" element={<ReviewerManagement />} />
+            <Route path="add" element={<ReviewerAdd />} />
             <Route path=":id" element={<ReviewAdd isEdit={true} />} />
           </Route>
 

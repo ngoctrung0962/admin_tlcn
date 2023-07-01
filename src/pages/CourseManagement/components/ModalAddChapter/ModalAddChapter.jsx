@@ -116,9 +116,14 @@ export default function ModalAddChapter({
             <Form.Label>Thứ tự </Form.Label>
             <Form.Control
               type="number"
-              {...register("offset", { required: true })}
+              {...register("offset", { required: true, min: 1 })}
             />
-            {errors.offset && <p className="form__error">Vui lòng nhập</p>}
+            {errors.offset?.type === "required" && (
+              <p className="form__error">Vui lòng nhập</p>
+            )}
+            {errors.offset?.type === "min" && (
+              <p className="form__error">Vui lòng nhập số lớn hơn 0</p>
+            )}
           </Form.Group>
         </Form>
       </Modal.Body>
