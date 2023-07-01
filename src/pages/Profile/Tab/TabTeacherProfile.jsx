@@ -19,7 +19,6 @@ export default function TabTeacherProfile({ user }) {
     control,
   } = useForm();
   const [teacherProfile, setTeacherProfile] = useState(null);
-  console.log("teacherProfile", teacherProfile);
   const fetchDataProfile = async () => {
     setLoading(true);
     try {
@@ -90,7 +89,7 @@ export default function TabTeacherProfile({ user }) {
         <div>
           <div
             style={{
-              display: "flex",
+              display: !teacherProfile ? "none" : "flex",
               justifyContent: "flex-end",
             }}
           >
@@ -110,55 +109,60 @@ export default function TabTeacherProfile({ user }) {
               )}
             </button>
           </div>
-
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Row>
-              <Col md={6} sm={12}>
-                <Form.Group className="mb-3 d-flex justify-content-center flex-column">
-                  <Form.Label>Giới thiệu bản thân </Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    {...register("aboutMe")}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3 d-flex justify-content-center flex-column">
-                  <Form.Label>Chú thích </Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    {...register("caption")}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6} sm={12}>
-                <Form.Group className="mb-3 d-flex justify-content-center flex-column">
-                  <Form.Label>Link Facebook </Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    {...register("facebookLink")}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3 d-flex justify-content-center flex-column">
-                  <Form.Label>Link Youtobe </Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    {...register("youtubeLink")}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3 d-flex justify-content-center flex-column">
-                  <Form.Label>Link Linked </Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    {...register("linkedinLink")}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-          </Form>
+          {teacherProfile !== null ? (
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              <Row>
+                <Col md={6} sm={12}>
+                  <Form.Group className="mb-3 d-flex justify-content-center flex-column">
+                    <Form.Label>Giới thiệu bản thân </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      {...register("aboutMe")}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3 d-flex justify-content-center flex-column">
+                    <Form.Label>Chú thích </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      {...register("caption")}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6} sm={12}>
+                  <Form.Group className="mb-3 d-flex justify-content-center flex-column">
+                    <Form.Label>Link Facebook </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      {...register("facebookLink")}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3 d-flex justify-content-center flex-column">
+                    <Form.Label>Link Youtobe </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      {...register("youtubeLink")}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3 d-flex justify-content-center flex-column">
+                    <Form.Label>Link Linked </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      {...register("linkedinLink")}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Form>
+          ) : (
+            <div className="d-flex justify-content-center">
+              <h3>Bạn chưa đăng ký thông tin giảng viên</h3>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -115,6 +115,7 @@ export default function SignIn() {
                 variant="outlined"
                 onClick={handleSubmit(onSubmit)}
                 disabled={loading}
+                type="submit"
               >
                 Đăng nhập
                 {loading && (

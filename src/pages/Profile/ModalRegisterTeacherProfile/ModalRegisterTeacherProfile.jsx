@@ -58,7 +58,7 @@ export default function ModalRegisterTeacherProfile({
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)} className="px-3">
           <Row>
             <Col md={6} sm={12}>
               <Form.Group className="mb-3 d-flex justify-content-center flex-column">

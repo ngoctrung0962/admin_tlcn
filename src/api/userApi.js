@@ -55,7 +55,7 @@ const userApi = {
   },
   teacherUpdateProfile(data) {
     const url = `teacher/update-profile`;
-    return axiosClient.put(url, data);
+    return axiosClient.post(url, data);
   },
   teacherRegisterProfile(data) {
     const url = `/teacher/register-profile`;
