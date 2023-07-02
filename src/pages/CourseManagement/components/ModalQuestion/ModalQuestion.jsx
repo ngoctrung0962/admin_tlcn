@@ -67,7 +67,7 @@ export default function ModalQuestion({
       name: "1 câu trả lời",
     },
     {
-      value: "MULTIPLE_CHOICE",
+      value: "MULTI_CHOICE",
       name: "Nhiều câu trả lời",
     },
   ];
