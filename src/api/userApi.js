@@ -61,6 +61,10 @@ const userApi = {
     const url = `/teacher/register-profile`;
     return axiosClient.post(url, data);
   },
+  resetNewPass(token, data) {
+    const url = `/account/resetPassword?token=${token}`
+    return axiosClient.post(url, data)
+  }
 };
 
 export default userApi;
