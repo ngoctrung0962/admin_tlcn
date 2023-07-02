@@ -25,7 +25,7 @@ jobs:
         run: npm i --force
 
       - name: Build
-        run: CI=false npm run build
+        run: CI=false npm run build:deploy
 
       - name: List workspace contents
         run: ls -R
