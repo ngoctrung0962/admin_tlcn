@@ -136,12 +136,21 @@ export default function CouponAdd(props) {
                       <p className="form__error">Vui lòng nhập</p>
                     )}
                   </Form.Group>
-                  
+
                   <Form.Group className="mb-3">
                     <Form.Label>Loại</Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
                       type="text"
                       {...register("type", { required: true })}
+                    /> */}
+                    <SimpleSelect
+                      control={control}
+                      field={"type"}
+                      placeholder="Chọn loại coupon"
+                      options={[
+                        { value: "%", label: "Giảm theo phần trăm hóa đơn" },
+                        { value: "vnd", label: "Giảm theo số tiền cố định" },
+                      ]}
                     />
                     {errors.type && (
                       <p className="form__error">Vui lòng nhập</p>

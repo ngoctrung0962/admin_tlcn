@@ -73,10 +73,10 @@ const PaymentMethodPage = () => {
             <AiFillDelete />
             Xóa
           </MenuItem>
-          <MenuItem>
+          {/* <MenuItem>
             <BiHistory />
             Lịch sử
-          </MenuItem>
+          </MenuItem> */}
         </Dropdown>
       ),
     },
