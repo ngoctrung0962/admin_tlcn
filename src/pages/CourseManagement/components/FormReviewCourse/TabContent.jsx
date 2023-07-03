@@ -13,8 +13,8 @@ import lectureApi from "../../../../api/lectureApi";
 
 export default function TabContent({ idCourse }) {
   const [loading, setLoading] = useState(false);
-
   const [content, setContent] = useState();
+  const [listLectureOfChapter, setListLectureOfChapter] = useState();
   const fetchDataContent = async () => {
     setLoading(true);
     try {
@@ -34,6 +34,7 @@ export default function TabContent({ idCourse }) {
     setIsShowModalChapter(false);
     setDataEditChapter(null);
   };
+
   const handleEditChapter = (chapter) => {
     setDataEditChapter(chapter);
     setIsShowModalChapter(true);
@@ -67,7 +68,8 @@ export default function TabContent({ idCourse }) {
     setDataEditLecture(null);
   };
 
-  const handleEditLecture = (lecture) => {
+  const handleEditLecture = (lecture, chapter) => {
+    setListLectureOfChapter(chapter.lectures);
     setDataEditLecture(lecture);
     setIsShowModalLecture(true);
   };
@@ -100,12 +102,14 @@ export default function TabContent({ idCourse }) {
       <div className="lecture__box" key={lecture?.temp_id}>
         <div className="lecture__head">
           <div className="lecture__name">
-            <p className="lecture__tag">{Enums.newTypeLecture[lecture?.lectureType]}</p>
+            <p className="lecture__tag">
+              {Enums.newTypeLecture[lecture?.lectureType]}
+            </p>
             <p className="">Tiêu đề: {lecture?.title}</p>
           </div>
 
           <Dropdown>
-            <MenuItem onClick={() => handleEditLecture(lecture)}>
+            <MenuItem onClick={() => handleEditLecture(lecture, chapter)}>
               <AiFillEye className="me-1" />
               Chỉnh sửa
             </MenuItem>
@@ -205,6 +209,7 @@ export default function TabContent({ idCourse }) {
           setDataEditChapter={setDataEditChapter}
           hanleExitModal={hanleExitModalChapter}
           fetchData={fetchDataContent}
+          listchapters={content}
         />
       )}
 
@@ -215,6 +220,7 @@ export default function TabContent({ idCourse }) {
           hanleExitModal={hanleExitModalLecture}
           fetchData={fetchDataContent}
           chapterIdProp={chapterId}
+          listLectures={listLectureOfChapter}
         />
       )}
 
@@ -256,6 +262,7 @@ export default function TabContent({ idCourse }) {
                       onClick={() => {
                         setChapterId(chapter.id);
                         setIsShowModalLecture(true);
+                        setListLectureOfChapter(chapter.lectures);
                       }}
                     >
                       <i className="fas fa-plus"></i>

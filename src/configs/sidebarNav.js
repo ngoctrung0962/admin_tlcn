@@ -33,7 +33,7 @@ const sidebarNav = [
     link: "/mycourses",
     section: "mycourses",
     icon: <i className="bx bx-cube"></i>,
-    text: "Yêu cầu phê duyệt",
+    text: "Đăng ký khóa học",
     role: [Enums.ROLE.TEACHER],
   },
   {
@@ -71,7 +71,7 @@ const sidebarNav = [
     section: "coupons",
     icon: <i className="bx bx-message-rounded-dots"></i>,
     text: "Coupons",
-    role: [Enums.ROLE.TEACHER, Enums.ROLE.ADMIN],
+    role: [Enums.ROLE.ADMIN],
   },
   {
     link: "/payments",

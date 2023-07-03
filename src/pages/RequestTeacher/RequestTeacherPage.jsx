@@ -72,10 +72,6 @@ const RequestTeacherPage = () => {
             <AiFillDelete />
             Xóa
           </MenuItem>
-          <MenuItem>
-            <BiHistory />
-            Lịch sử
-          </MenuItem>
         </Dropdown>
       ),
     },

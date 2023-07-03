@@ -27,7 +27,7 @@ export default function CourseEdit() {
   return (
     <div className="containerr mx-3">
       <div className="content__head d-flex  justify-content-between">
-        <h3 className="content__title mb-3">Sửa khóa học</h3>
+        <h3 className="content__title mb-3">ĐĂNG KÝ KHÓA HỌC</h3>
       </div>
       <div>
         {!loading && (
@@ -88,14 +88,12 @@ export default function CourseEdit() {
                     borderTopRightRadius: "5px",
                   }}
                 >
-                  Ngày{" "}
+                  Ngày duyệt:
                   <span
                     style={{
                       textTransform: "lowercase",
                     }}
-                  >
-                    {Enums.STATUS_REGISTER_COURSE[course?.status]}:{"  "}
-                  </span>{" "}
+                  ></span>{" "}
                   {formatDateDisplay(course?.updateStatusTime)}
                 </div>
                 <div
