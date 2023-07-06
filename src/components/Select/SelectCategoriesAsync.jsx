@@ -58,9 +58,8 @@ export default function SelectCategoriesAsync({
           isDisabled={isDisabled}
           placeholder={placeholder}
           value={value}
-          defaultOptions={defaultOptions || null}
+          defaultOptions={defaultOptions}
           onChange={(e) => {
-            console.log(e);
             onChangeOption?.(e.value);
             onChange(e);
             onChangeProp?.(e.value);
