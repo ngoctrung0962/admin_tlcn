@@ -255,7 +255,7 @@ export default function Step1({
             <Form.Group className="mb-3">
               <Form.Label>Giá</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 {...register("price", { required: true })}
               />
               {errors.price && <p className="form__error">Vui lòng nhập</p>}
