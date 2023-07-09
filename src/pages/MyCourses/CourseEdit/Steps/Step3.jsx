@@ -55,7 +55,9 @@ export default function Step3({
           // Nếu trạng thái là đã bị từ chối hoặc đang chờ duyệt thì chỉ next step
           dataCourseTemp?.status !== Enums.STATUS_REGISTER_COURSE._REJECTED &&
             dataCourseTemp?.status !==
-              Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW && (
+              Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW &&
+            dataCourseTemp?.status !==
+              Enums.STATUS_REGISTER_COURSE._APPROVED && (
               <button
                 className="main__btn"
                 onClick={() => handleSubmitRequest()}

@@ -85,7 +85,8 @@ export default function Step2({
     if (
       dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._REJECTED ||
       dataCourseTemp?.status ===
-        Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW
+        Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW ||
+      dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._APPROVED
     ) {
       setCurrentStep(currentStep + 1);
       return;
@@ -253,7 +254,8 @@ export default function Step2({
           pointerEvents:
             dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._REJECTED ||
             dataCourseTemp?.status ===
-              Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW
+              Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW ||
+            dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._APPROVED
               ? "none"
               : "auto",
         }}
