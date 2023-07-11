@@ -47,9 +47,7 @@ const CourseManagementPage = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        const res = await coursesApi.getAll(paginate.page);
-        setListCourses(res.data.content);
-        setTotalCourses(res.data.totalElements);
+        fetchData();
       } else {
         Swal.fire({
           icon: "error",
@@ -74,11 +72,7 @@ const CourseManagementPage = () => {
           </MenuItem>
           <MenuItem onClick={() => handleDelete(row)}>
             <AiFillDelete />
-            Xóa
-          </MenuItem>
-          <MenuItem>
-            <BiHistory />
-            Lịch sử
+            Khóa khóa học
           </MenuItem>
         </Dropdown>
       ),

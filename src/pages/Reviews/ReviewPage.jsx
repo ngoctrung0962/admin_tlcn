@@ -39,18 +39,14 @@ const ReviewPage = () => {
       center: true,
       cell: (row) => (
         <Dropdown>
-          {/* <MenuItem onClick={() => handleEdit(row)}>
+          <MenuItem onClick={() => handleEdit(row)}>
             <AiFillEye />
             Xem
-          </MenuItem> */}
-          <MenuItem>
+          </MenuItem>
+          {/* <MenuItem>
             <AiFillDelete />
             Xóa
-          </MenuItem>
-          <MenuItem>
-            <BiHistory />
-            Lịch sử
-          </MenuItem>
+          </MenuItem> */}
         </Dropdown>
       ),
     },
@@ -117,6 +113,7 @@ const ReviewPage = () => {
             setPaginate={setPaginate}
             count={totalReview}
             loading={loading}
+            selectableRows={false}
           />
         )}
       </div>

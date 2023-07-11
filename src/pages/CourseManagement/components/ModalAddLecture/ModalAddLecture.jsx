@@ -12,6 +12,7 @@ import lectureApi from "../../../../api/lectureApi";
 import Swal from "sweetalert2";
 import ModalQuestion from "../ModalQuestion/ModalQuestion";
 import ModalOption from "../ModalOption/ModalOption";
+import SimpleSelect from "../../../../components/Select/SimpleSelect";
 
 const optionsTypeLecture = [
   {
@@ -43,10 +44,11 @@ export default function ModalAddLecture({
   hanleExitModal,
   fetchData,
   chapterIdProp,
+  listLectures,
 }) {
+  const [listOptions, setListOptions] = useState(listLectures);
   const [loading, setLoading] = useState(false);
 
-  console.log("dataEditLecture", dataEditLecture);
   const [isEdit, setIsEdit] = useState(dataEditLecture ? true : false);
   const [typeLecture, setTypeLecture] = useState(
     dataEditLecture ? dataEditLecture?.lectureType : Enums.typeLecture.VIDEO
@@ -102,6 +104,7 @@ export default function ModalAddLecture({
     getValues,
     setValue,
     watch,
+    control,
     formState: { errors },
   } = useForm({
     defaultValues:
@@ -254,6 +257,7 @@ export default function ModalAddLecture({
   const buttonChooseFile = useRef();
 
   const hanleUploadFile = async (files) => {
+    setLoading(true);
     try {
       const formData = new FormData();
       formData.append("files", files);
@@ -262,6 +266,7 @@ export default function ModalAddLecture({
         setValue("link", res.data[0]);
       }
     } catch (error) {}
+    setLoading(false);
   };
 
   // Xử lí phần nếu lectureType là Quiz
@@ -367,6 +372,64 @@ export default function ModalAddLecture({
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (isEdit) {
+      setListOptions(
+        listLectures?.map((item) => {
+          if (item.offset === 1)
+            return {
+              value: item.offset,
+              label: "Đầu chapter",
+            };
+          else if (item.offset === listLectures.length)
+            return {
+              value: item.offset,
+              label: "Cuối chapter",
+            };
+          else
+            return {
+              value: item.offset,
+              label: `Trước  ${
+                listLectures.find(
+                  (lecture) => lecture.offset === item.offset + 1
+                )?.title
+              }`,
+            };
+        }) || []
+      );
+    } else {
+      setListOptions(
+        listLectures
+          ?.map((item) => {
+            if (item.offset === 1)
+              return {
+                value: item.offset,
+                label: "Đầu chapter",
+              };
+            else if (item.offset === listLectures.length)
+              return {
+                value: item.offset,
+                label: `Trước cuối chapter`,
+              };
+            else
+              return {
+                value: item.offset,
+                label: `Trước  ${
+                  listLectures.find(
+                    (lecture) => lecture.offset === item.offset + 1
+                  )?.title
+                }`,
+              };
+          })
+          .concat({
+            value: listLectures.length + 1,
+            label: "Cuối chapter",
+          }) || []
+      );
+    }
+  }, [listLectures]);
+
   return (
     <>
       {isShowModalQuestion && (
@@ -515,7 +578,8 @@ export default function ModalAddLecture({
                     onClick={() => {
                       buttonChooseFile.current?.click();
                     }}
-                    disabled={dataEditLecture ? true : false}
+                    disabled={loading}
+                    hidden={dataEditLecture ? true : false}
                   >
                     <MUIAddIcon fontSize="9" />
                     <p
@@ -526,6 +590,14 @@ export default function ModalAddLecture({
                       }}
                     >
                       Tải lên video
+                      {loading && (
+                        <div
+                          className="spinner-border spinner-border-sm ms-2"
+                          role="status"
+                        >
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      )}
                     </p>
                   </Fab>
                 </div>
@@ -632,12 +704,19 @@ export default function ModalAddLecture({
             )}
             <Form.Group className="mb-3">
               <Form.Label>Thứ tự</Form.Label>
-              <Form.Control
+              {/* <Form.Control
                 type="number"
                 {...register("offset", {
                   required: true,
                   min: 1,
                 })}
+              /> */}
+              <SimpleSelect
+                control={control}
+                required={true}
+                field={"offset"}
+                placeholder="Chọn thứ tự"
+                options={listOptions}
               />
               {errors.offset?.type === "required" && (
                 <p className="form__error">Vui lòng nhập</p>

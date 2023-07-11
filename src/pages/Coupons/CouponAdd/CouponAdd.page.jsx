@@ -136,12 +136,22 @@ export default function CouponAdd(props) {
                       <p className="form__error">Vui lòng nhập</p>
                     )}
                   </Form.Group>
-                  
+
                   <Form.Group className="mb-3">
                     <Form.Label>Loại</Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
                       type="text"
                       {...register("type", { required: true })}
+                    /> */}
+                    <SimpleSelect
+                      control={control}
+                      required={true}
+                      field={"type"}
+                      placeholder="Chọn loại coupon"
+                      options={[
+                        { value: "%", label: "Giảm theo phần trăm hóa đơn" },
+                        { value: "vnd", label: "Giảm theo số tiền cố định" },
+                      ]}
                     />
                     {errors.type && (
                       <p className="form__error">Vui lòng nhập</p>
@@ -169,7 +179,11 @@ export default function CouponAdd(props) {
                 <Col md={6} sm={12}>
                   <Form.Group className="mb-3">
                     <Form.Label>Ngày bắt đầu</Form.Label>
-                    <CustomDatePicker control={control} field={"startDate"} />
+                    <CustomDatePicker
+                      required={true}
+                      control={control}
+                      field={"startDate"}
+                    />
                     {errors.startDate && (
                       <p className="form__error">Vui lòng nhập</p>
                     )}
@@ -179,6 +193,7 @@ export default function CouponAdd(props) {
                     <CustomDatePicker
                       control={control}
                       field={"expiredDate"}
+                      required={true}
                       validate={(value) => {
                         return (
                           !value ||
@@ -189,10 +204,13 @@ export default function CouponAdd(props) {
                         );
                       }}
                     />
-                    {errors.expiredDate && (
+                    {errors.expiredDate?.type === "validate" && (
                       <p className="form__error">
-                        Ngày kết thúc phải lớn hơn ngày bắt đầu
+                        Ngày kết thúc phải sau ngày bắt đầu
                       </p>
+                    )}
+                    {errors.expiredDate?.type === "required" && (
+                      <p className="form__error">Vui lòng nhập</p>
                     )}
                   </Form.Group>
                   <Form.Group className="mb-3">

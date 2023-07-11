@@ -5,16 +5,26 @@ import { useForm } from "react-hook-form";
 import chapterApi from "../../../../api/chapterApi";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
+import SimpleSelect from "../../../../components/Select/SimpleSelect";
+import { useEffect } from "react";
 
 export default function ModalAddChapter({
   dataEditChapter,
   hanleExitModal,
   fetchData,
+  listchapters,
 }) {
+  // Bỏ option trùng với chapter đang edit ra khỏi list option
+
+  const [listOptions, setListOptions] = useState(listchapters);
+
+  console.log("listOptions", listOptions);
+
   const {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: dataEditChapter
@@ -41,6 +51,7 @@ export default function ModalAddChapter({
 
   const handleEdit = async (data) => {
     setLoading(true);
+    console.log("data", data);
     try {
       const res = await chapterApi.teacherUpdateChapter(data);
       if (res.errorCode == "") {
@@ -87,8 +98,66 @@ export default function ModalAddChapter({
         });
       }
     } catch (error) {}
+    console.log("data", data);
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (isEdit) {
+      setListOptions(
+        listchapters?.map((item) => {
+          if (item.offset === 1)
+            return {
+              value: item.offset,
+              label: "Đầu khóa học",
+            };
+          else if (item.offset === listchapters.length)
+            return {
+              value: item.offset,
+              label: "Cuối khóa học",
+            };
+          else
+            return {
+              value: item.offset,
+              label: `Trước  ${
+                listchapters.find(
+                  (chapter) => chapter.offset === item.offset + 1
+                )?.chapterName
+              }`,
+            };
+        }) || []
+      );
+    } else {
+      setListOptions(
+        listchapters
+          ?.map((item) => {
+            if (item.offset === 1)
+              return {
+                value: item.offset,
+                label: "Đầu khóa học",
+              };
+            else if (item.offset === listchapters.length)
+              return {
+                value: item.offset,
+                label: `Trước cuối khóa học`,
+              };
+            else
+              return {
+                value: item.offset,
+                label: `Trước  ${
+                  listchapters.find(
+                    (chapter) => chapter.offset === item.offset + 1
+                  )?.chapterName
+                }`,
+              };
+          })
+          .concat({
+            value: listchapters.length + 1,
+            label: "Cuối khóa học",
+          }) || []
+      );
+    }
+  }, [listchapters]);
   return (
     <Modal
       show="true"
@@ -114,10 +183,18 @@ export default function ModalAddChapter({
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Thứ tự </Form.Label>
-            <Form.Control
+            {/* <Form.Control
               type="number"
               {...register("offset", { required: true, min: 1 })}
+            /> */}
+            <SimpleSelect
+              control={control}
+              required={true}
+              field={"offset"}
+              placeholder="Chọn thứ tự"
+              options={listOptions}
             />
+
             {errors.offset?.type === "required" && (
               <p className="form__error">Vui lòng nhập</p>
             )}

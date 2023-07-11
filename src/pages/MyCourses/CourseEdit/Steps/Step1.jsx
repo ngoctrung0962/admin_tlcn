@@ -100,7 +100,8 @@ export default function Step1({
     if (
       dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._REJECTED ||
       dataCourseTemp?.status ===
-        Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW
+        Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW ||
+      dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._APPROVED
     ) {
       setCurrentStep(currentStep + 1);
       return;
@@ -158,7 +159,8 @@ export default function Step1({
           pointerEvents:
             dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._REJECTED ||
             dataCourseTemp?.status ===
-              Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW
+              Enums.STATUS_REGISTER_COURSE._WAITING_FOR_REVIEW ||
+            dataCourseTemp?.status === Enums.STATUS_REGISTER_COURSE._APPROVED
               ? "none"
               : "auto",
         }}
@@ -255,7 +257,7 @@ export default function Step1({
             <Form.Group className="mb-3">
               <Form.Label>Giá</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 {...register("price", { required: true })}
               />
               {errors.price && <p className="form__error">Vui lòng nhập</p>}

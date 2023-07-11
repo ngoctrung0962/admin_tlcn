@@ -152,6 +152,9 @@ export default function Step3({
           gap: "10px",
         }}
       >
+          <button className="main__btn" onClick={() => handleSubmitRequest()}>
+          Finish
+        </button>
         <button
           className="main__btn"
           onClick={() => setCurrentStep(currentStep - 1)}
@@ -159,9 +162,7 @@ export default function Step3({
           Prev
         </button>
 
-        <button className="main__btn" onClick={() => handleSubmitRequest()}>
-          Finish
-        </button>
+      
       </div>
     </div>
   );

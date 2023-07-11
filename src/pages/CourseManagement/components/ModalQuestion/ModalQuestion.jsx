@@ -42,7 +42,7 @@ export default function ModalQuestion({
     };
     setListDataQuiz([...listDataQuiz, newQuestion]);
     reset();
-    hanleExitModal();
+    // hanleExitModal();
   };
 
   const handleEditQuestion = (data) => {

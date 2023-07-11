@@ -69,14 +69,6 @@ const MyCoursesPage = () => {
             <AiFillEye />
             Xem
           </MenuItem>
-          <MenuItem onClick={() => handleDelete(row)}>
-            <AiFillDelete />
-            Xóa
-          </MenuItem>
-          <MenuItem>
-            <BiHistory />
-            Lịch sử
-          </MenuItem>
         </Dropdown>
       ),
     },
@@ -150,9 +142,7 @@ const MyCoursesPage = () => {
   return (
     <div className="container-fluid">
       <div className="content__head d-flex  justify-content-between">
-        <h3 className="content__title mb-3">
-          Tất cả yêu cầu phê duyệt khóa học
-        </h3>
+        <h3 className="content__title mb-3">Tất cả bản đăng ký khóa học</h3>
         <div className="content__tool">
           <button className="main__btn" onClick={() => nav("/mycourses/add")}>
             Thêm mới <MdOutlineAdd size={15} color="#00693e" />
@@ -198,6 +188,7 @@ const MyCoursesPage = () => {
           setPaginate={setPaginate}
           count={totalCourses}
           loading={loading}
+          selectableRows={false}
         />
       </div>
     </div>

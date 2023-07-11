@@ -43,7 +43,8 @@ export default function ModalAddLecture({
   hanleExitModal,
   chapterId,
 }) {
-  console.log("chapterId", chapterId);
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -168,6 +169,7 @@ export default function ModalAddLecture({
   const buttonChooseFile = useRef();
 
   const hanleUploadFile = async (files) => {
+    setLoading(true);
     try {
       const formData = new FormData();
       formData.append("files", files);
@@ -176,6 +178,7 @@ export default function ModalAddLecture({
         setValue("link", res.data[0]);
       }
     } catch (error) {}
+    setLoading(false);
   };
   return (
     <Modal
@@ -299,7 +302,8 @@ export default function ModalAddLecture({
                   onClick={() => {
                     buttonChooseFile.current?.click();
                   }}
-                  disabled={dataEditLecture ? true : false}
+                  disabled={loading}
+                  hidden={dataEditLecture ? true : false}
                 >
                   <MUIAddIcon fontSize="9" />
                   <p
@@ -310,6 +314,14 @@ export default function ModalAddLecture({
                     }}
                   >
                     Tải lên video
+                    {loading && (
+                      <div
+                        className="spinner-border spinner-border-sm ms-2"
+                        role="status"
+                      >
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    )}
                   </p>
                 </Fab>
               </div>
@@ -340,7 +352,8 @@ export default function ModalAddLecture({
                 <Form.Group className="mb-3">
                   <Form.Label>Nội dung</Form.Label>
                   <Form.Control
-                    type="text"
+                    as="textarea"
+                    rows={3}
                     {...register("content", { required: true })}
                   />
                   {errors.content && (
@@ -409,7 +422,11 @@ export default function ModalAddLecture({
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <button className="btn btn-secondary btn__footer__modal" onClick={handleSubmit(onSubmit)}>
+        <button
+          className="btn btn-secondary btn__footer__modal"
+          onClick={handleSubmit(onSubmit)}
+          disabled={loading}
+        >
           {dataEditLecture ? "Cập nhật" : "Thêm mới"}
         </button>
       </Modal.Footer>

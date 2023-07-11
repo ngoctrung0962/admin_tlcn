@@ -126,9 +126,7 @@ export default function MyCourseAdd({ isEdit }) {
   return (
     <div className="containerr mx-3">
       <div className="content__head d-flex  justify-content-between">
-        <h3 className="content__title mb-3">
-          {isEdit ? "Sửa khóa học" : "Thêm khóa học"}
-        </h3>
+        <h3 className="content__title mb-3">ĐĂNG KÝ KHÓA HỌC</h3>
 
         {/* <div className="content__tool ">
           <button

@@ -21,6 +21,10 @@ const requestTeacherApi = {
     const url = `/reject-request-teacher/${id}`;
     return axiosClient.post(url);
   },
+  getRequestById(id) {
+    const url = `/requests-teacher/${id}`;
+    return axiosClient.get(url);
+  },
 };
 
 export default requestTeacherApi;

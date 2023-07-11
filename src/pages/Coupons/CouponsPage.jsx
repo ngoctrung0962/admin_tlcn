@@ -8,7 +8,7 @@ import { BiHistory } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import categoriescoursesApi from "../../api/categoriescoursesApi";
 import Swal from "sweetalert2";
-import { formatDateDisplay } from "../../utils/MyUtils";
+import { formatDateDisplay, formatVND } from "../../utils/MyUtils";
 import couponsApi from "../../api/couponsApi";
 
 const CouponPage = () => {
@@ -75,10 +75,6 @@ const CouponPage = () => {
             <AiFillDelete />
             Xóa
           </MenuItem>
-          <MenuItem>
-            <BiHistory />
-            Lịch sử
-          </MenuItem>
         </Dropdown>
       ),
     },
@@ -96,13 +92,23 @@ const CouponPage = () => {
     },
     {
       name: "Loại",
-      selector: (row) => row.type,
+      selector: (row) => {
+        return row.type === "%"
+          ? "Giảm theo phần trăm hóa đơn"
+          : "Giảm theo số tiền nhất định";
+      },
       sortable: true,
       reorder: true,
     },
     {
       name: "Giá trị",
-      selector: (row) => row.value,
+      selector: (row) => {
+        if (row.type === "%") {
+          return row.value + "%";
+        } else {
+          return formatVND(row.value);
+        }
+      },
       sortable: true,
       reorder: true,
     },
@@ -219,6 +225,7 @@ const CouponPage = () => {
           count={totalCoupons}
           handleDeleteRowSelected={handleDeleteRowSelected}
           loading={loading}
+          onRowDoubleClicked={handleEdit}
         />
       </div>
     </div>

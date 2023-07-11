@@ -263,8 +263,9 @@ export default function Step1({
             <Form.Group className="mb-3">
               <Form.Label>Giá</Form.Label>
               <Form.Control
-                type="text"
-                {...register("price", { required: true })}
+                type="number"
+                // Chỉ nhập số
+                {...register("price", { required: true, pattern: /^[0-9]*$/ })}
               />
               {errors.price && <p className="form__error">Vui lòng nhập</p>}
             </Form.Group>

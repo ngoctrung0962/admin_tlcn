@@ -38,11 +38,15 @@ export default function SignIn() {
           ) {
             dispatch(loginSuccess(resGetUser.data));
             await Cookies.set("username", res.data.username);
+
             Swal.fire({
               icon: "success",
               iconHtml: "👍",
               title: "Đăng nhập thành công",
               text: "Chào mừng bạn đến với trang quản lý của chúng tôi",
+              allowOutsideClick: true,
+              showConfirmButton: false,
+              timer: 1000,
             });
             if (resGetUser.data.role === Enums.ROLE.REVIEWER) {
               navigate("/reviewcourses");
