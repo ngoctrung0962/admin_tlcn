@@ -152,7 +152,7 @@ export default function TaskOfReviewerEdit() {
             if (res.errorCode === "") {
               Swal.fire({
                 icon: "success",
-                title: "Từ chối thành công",
+                title: "Gửi yêu cầu chỉnh sửa thành công",
                 showConfirmButton: false,
                 timer: 1500,
               });
@@ -160,7 +160,7 @@ export default function TaskOfReviewerEdit() {
             } else {
               Swal.fire({
                 icon: "error",
-                title: "Từ chối thất bại",
+                title: "Gửi yêu cầu chỉnh sửa thất bại",
                 showConfirmButton: false,
                 timer: 1500,
               });

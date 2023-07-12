@@ -85,6 +85,7 @@ const ProfilePage = () => {
         Swal.fire({
           icon: "error",
           title: "Cập nhật thông tin thất bại",
+          text: res.message,
           showConfirmButton: false,
           timer: 1500,
         });

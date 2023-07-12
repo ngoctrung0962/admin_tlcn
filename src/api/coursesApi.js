@@ -128,6 +128,20 @@ const coursesApi = {
     const url = `/teacher/my-courses/update-summary`;
     return axiosClient.post(url, data);
   },
+
+  teacherStopSellCourse(courseId) {
+    const url = `/teacher/my-courses/${courseId}/un-active`;
+    return axiosClient.post(url);
+  },
+  teacherStartSellCourse(courseId) {
+    const url = `/teacher/my-courses/${courseId}/active`;
+    return axiosClient.post(url);
+  },
+
+  adminGetListCourse(paginate) {
+    const url = `/courses?page=${paginate.page}&limit=${paginate.limit}`;
+    return axiosClient.get(url);
+  },
 };
 
 export default coursesApi;

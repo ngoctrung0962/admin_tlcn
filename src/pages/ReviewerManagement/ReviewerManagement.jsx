@@ -31,24 +31,24 @@ const ReviewerManagement = () => {
     nav(`${row.id}`);
   };
   const columns = [
-    {
-      name: "Action",
-      minWidth: "100px",
-      maxWidth: "100px",
-      center: true,
-      cell: (row) => (
-        <Dropdown>
-          {/* <MenuItem onClick={() => handleEdit(row)}>
-            <AiFillEye />
-            Xem
-          </MenuItem> */}
-          <MenuItem>
-            <AiFillDelete />
-            Xóa
-          </MenuItem>
-        </Dropdown>
-      ),
-    },
+    // {
+    //   name: "Action",
+    //   minWidth: "100px",
+    //   maxWidth: "100px",
+    //   center: true,
+    //   cell: (row) => (
+    //     <Dropdown>
+    //       {/* <MenuItem onClick={() => handleEdit(row)}>
+    //         <AiFillEye />
+    //         Xem
+    //       </MenuItem> */}
+    //       {/* <MenuItem>
+    //         <AiFillDelete />
+    //         Xóa
+    //       </MenuItem> */}
+    //     </Dropdown>
+    //   ),
+    // },
 
     {
       name: "Username",
@@ -111,6 +111,7 @@ const ReviewerManagement = () => {
             setPaginate={setPaginate}
             count={totalReviewer}
             loading={loading}
+            selectableRows={false}
           />
         )}
       </div>

@@ -23,6 +23,8 @@ import SummaryBox, {
   SummaryBoxSpecial,
 } from "../components/summary-box/SummaryBox";
 import { data } from "../constants";
+import { useSelector } from "react-redux";
+import { Enums } from "../utils/Enums";
 
 ChartJS.register(
   CategoryScale,
@@ -35,6 +37,7 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+  const { currentUser } = useSelector((state) => state.user);
   const [dataSummary, setDataSummary] = useState([
     {
       title: "Học viên",
@@ -71,42 +74,81 @@ const Dashboard = () => {
   });
   useEffect(() => {
     const fetchData = async () => {
-      const res = await reportApi.getDataOverviewReport();
-      setDataSummary([
-        {
-          title: "Học viên",
-          subtitle: "Tổng số học viên tham gia khóa học",
-          value: `${res.data.studentsNum}/100`,
-          color: "#005fb7",
-          icon: <FaUserGraduate />,
-        },
-        {
-          title: "Khóa học",
-          subtitle: "Tổng số khóa học",
-          value: `${res.data.coursesNum}`,
-          color: "#FF9800",
-          icon: <FaDiscourse />,
-        },
-        {
-          title: "Giảng viên",
-          subtitle: "Tổng số giảng viên",
-          value: `${res.data.teachersNum}/100`,
-          color: "#a23275",
-          icon: <GrUserManager />,
-        },
-        {
-          title: "Yêu cầu giảng viên",
-          subtitle: "Tổng số yêu cầu",
-          value: `${res.data.requestToTeacher}`,
-          color: "#F44336",
-          icon: <FaFileContract />,
-        },
-      ]);
-      setDataTotalRevenue({
-        title: "Tổng doanh thu",
-        value: `${res.data.totalRevenues}`,
-      });
+      if (currentUser?.role === Enums.ROLE.ADMIN) {
+        const res = await reportApi.getDataOverviewReport();
+        setDataSummary([
+          {
+            title: "Học viên",
+            subtitle: "Tổng số học viên tham gia khóa học",
+            value: `${res.data.studentsNum}`,
+            color: "#005fb7",
+            icon: <FaUserGraduate />,
+          },
+          {
+            title: "Khóa học",
+            subtitle: "Tổng số khóa học",
+            value: `${res.data.coursesNum}`,
+            color: "#FF9800",
+            icon: <FaDiscourse />,
+          },
+          {
+            title: "Giảng viên",
+            subtitle: "Tổng số giảng viên",
+            value: `${res.data.teachersNum}`,
+            color: "#a23275",
+            icon: <GrUserManager />,
+          },
+          {
+            title: "Yêu cầu giảng viên",
+            subtitle: "Tổng số yêu cầu",
+            value: `${res.data.requestToTeacher}`,
+            color: "#F44336",
+            icon: <FaFileContract />,
+          },
+        ]);
+        setDataTotalRevenue({
+          title: "Tổng doanh thu",
+          value: `${res.data.totalRevenues}`,
+        });
+      } else if (currentUser?.role === Enums.ROLE.TEACHER) {
+        const res = await reportApi.teacherGetOverviewReport();
+        setDataSummary([
+          {
+            title: "Học viên",
+            subtitle: "Tổng số học viên tham gia khóa học",
+            value: `${res.data.totalStudents}`,
+            color: "#005fb7",
+            icon: <FaUserGraduate />,
+          },
+          {
+            title: "Khóa học",
+            subtitle: "Tổng số khóa học",
+            value: `${res.data.totalCourses}`,
+            color: "#FF9800",
+            icon: <FaDiscourse />,
+          },
+          {
+            title: "Đánh giá",
+            subtitle: "Tổng số đánh giá",
+            value: `${res.data.totalReviews}`,
+            color: "#a23275",
+            icon: <GrUserManager />,
+          },
+          {
+            title: "Tổng quan đánh giá",
+            subtitle: "Trung bình đánh giá",
+            value: `${res.data.avgRate}`,
+            color: "#F44336",
+            icon: <FaFileContract />,
+          },
+        ]);
+        setDataTotalRevenue({
+          title: "Tổng doanh thu",
+          value: `${res.data?.totalRevenues}`,
+        });
+      }
     };
+
     fetchData();
   }, []);
   return (
@@ -161,6 +203,8 @@ const Dashboard = () => {
 export default Dashboard;
 
 const RevenueByMonthsChart = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
   const [loading1, setLoading1] = useState(false);
   const chartOptions = {
     responsive: true,
@@ -198,23 +242,45 @@ const RevenueByMonthsChart = () => {
 
   const fetchDataRevenueByMonth = async (month, year) => {
     setLoading1(true);
-    const res = await reportApi.getDataReportByMonth(month, year);
 
-    const ArrayData = [];
-    const ArrayLabel = [];
-    res?.data?.forEach((item) => {
-      ArrayData.push(item.value);
-      ArrayLabel.push(`${item.day}`);
-    });
-    setChartData({
-      labels: ArrayLabel,
-      datasets: [
-        {
-          label: "Revenue",
-          data: ArrayData,
-        },
-      ],
-    });
+    if (currentUser?.role === Enums.ROLE.ADMIN) {
+      const res = await reportApi.getDataReportByMonth(month, year);
+
+      const ArrayData = [];
+      const ArrayLabel = [];
+      res?.data?.forEach((item) => {
+        ArrayData.push(item.value);
+        ArrayLabel.push(`${item.day}`);
+      });
+      setChartData({
+        labels: ArrayLabel,
+        datasets: [
+          {
+            label: "Doanh thu",
+            data: ArrayData,
+          },
+        ],
+      });
+    } else if (currentUser?.role === Enums.ROLE.TEACHER) {
+      const res = await reportApi.teacherGetDataReportByMonth(month, year);
+
+      const ArrayData = [];
+      const ArrayLabel = [];
+      res?.data?.forEach((item) => {
+        ArrayData.push(item.value);
+        ArrayLabel.push(`${item.day}`);
+      });
+      setChartData({
+        labels: ArrayLabel,
+        datasets: [
+          {
+            label: "Doanh thu",
+            data: ArrayData,
+          },
+        ],
+      });
+    }
+
     setLoading1(false);
     //Gắn data vào chart
   };
@@ -285,6 +351,8 @@ const RevenueByMonthsChart = () => {
 };
 
 const RevenueByYearsChart = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
   const [loading, setLoading] = useState(false);
   const chartOptions = {
     responsive: true,
@@ -322,23 +390,45 @@ const RevenueByYearsChart = () => {
 
   const fetchDataRevenueByYear = async (year) => {
     setLoading(true);
-    const res = await reportApi.getDataReportByYear(year);
 
-    const ArrayData = [];
-    const ArrayLabel = [];
-    res?.data?.forEach((item) => {
-      ArrayData.push(item.value);
-      ArrayLabel.push(`Tháng ${item.month}`);
-    });
-    setChartData({
-      labels: ArrayLabel,
-      datasets: [
-        {
-          label: "Revenue",
-          data: ArrayData,
-        },
-      ],
-    });
+    if (currentUser?.role === Enums.ROLE.ADMIN) {
+      const res = await reportApi.getDataReportByYear(year);
+
+      const ArrayData = [];
+      const ArrayLabel = [];
+      res?.data?.forEach((item) => {
+        ArrayData.push(item.value);
+        ArrayLabel.push(`Tháng ${item.month}`);
+      });
+      setChartData({
+        labels: ArrayLabel,
+        datasets: [
+          {
+            label: "Doanh thu",
+            data: ArrayData,
+          },
+        ],
+      });
+    } else if (currentUser?.role === Enums.ROLE.TEACHER) {
+      const res = await reportApi.teacherGetDataReportByYear(year);
+
+      const ArrayData = [];
+      const ArrayLabel = [];
+      res?.data?.forEach((item) => {
+        ArrayData.push(item.value);
+        ArrayLabel.push(`Tháng ${item.month}`);
+      });
+      setChartData({
+        labels: ArrayLabel,
+        datasets: [
+          {
+            label: "Doanh thu",
+            data: ArrayData,
+          },
+        ],
+      });
+    }
+
     setLoading(false);
     //Gắn data vào chart
   };

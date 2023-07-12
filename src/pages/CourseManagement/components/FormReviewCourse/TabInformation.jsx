@@ -11,9 +11,11 @@ import MUIAddIcon from "@mui/icons-material/Add";
 import coursesApi from "../../../../api/coursesApi";
 import Loading from "../../../../components/Loading/Loading.component";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export default function TabInformation({ idCourse }) {
   const [loading, setLoading] = useState(false);
+  const nav = useNavigate();
   const [summaryInfo, setSummaryInfo] = useState();
   const {
     register,
@@ -154,7 +156,14 @@ export default function TabInformation({ idCourse }) {
         <button className="main__btn" onClick={handleSubmit(onSubmit)}>
           Cập nhật
         </button>
-        <button className="main__btn">Hủy</button>
+        <button
+          className="main__btn"
+          onClick={() => {
+            nav(-1);
+          }}
+        >
+          Hủy
+        </button>
       </div>
       {loading ? (
         <Loading />
@@ -256,7 +265,7 @@ export default function TabInformation({ idCourse }) {
               <Form.Group className="mb-3">
                 <Form.Label>Giá</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="number"
                   {...register("price", { required: true })}
                 />
                 {errors.price && <p className="form__error">Vui lòng nhập</p>}
