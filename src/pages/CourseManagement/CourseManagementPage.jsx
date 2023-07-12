@@ -11,7 +11,10 @@ import { useNavigate } from "react-router-dom";
 import { formatDateDisplay, formatVND } from "../../utils/MyUtils";
 import Swal from "sweetalert2";
 import { Enums } from "../../utils/Enums";
+import { useSelector } from "react-redux";
 const CourseManagementPage = () => {
+  const { currentUser } = useSelector((state) => state.user);
+  console.log("currentUser", currentUser);
   const [loading, setLoading] = useState(false);
   const [listCourses, setListCourses] = useState([]);
   const [paginate, setPaginate] = useState({
@@ -21,12 +24,19 @@ const CourseManagementPage = () => {
   const [totalCourses, setTotalCourses] = useState(0);
   const fetchData = async () => {
     setLoading(true);
-    const res = await coursesApi.getListCourseOfTeacher(paginate);
-    if (res.errorCode === "") {
-      setListCourses(res.data.content);
-      setTotalCourses(res.data.totalElements);
+    if (currentUser?.role === Enums.ROLE.ADMIN) {
+      const res = await coursesApi.adminGetListCourse(paginate);
+      if (res.errorCode === "") {
+        setListCourses(res.data.content);
+        setTotalCourses(res.data.totalElements);
+      }
+    } else {
+      const res = await coursesApi.getListCourseOfTeacher(paginate);
+      if (res.errorCode === "") {
+        setListCourses(res.data.content);
+        setTotalCourses(res.data.totalElements);
+      }
     }
-
     setLoading(false);
   };
   useEffect(() => {
@@ -70,12 +80,41 @@ const CourseManagementPage = () => {
             <AiFillEye />
             Xem
           </MenuItem>
-          <MenuItem onClick={() => handleDelete(row)}>
-            <AiFillDelete />
-            Khóa khóa học
-          </MenuItem>
         </Dropdown>
       ),
+    },
+    {
+      name: "Trạng thái",
+      selector: (row) => {
+        return (
+          <p
+            className="m-0"
+            style={{
+              color: row.active === true ? "green" : "red",
+              fontWeight: "bold",
+              backgroundColor: row.active === true ? "#d4edda" : "#f8d7da",
+              borderRadius: "5px",
+              padding: "5px",
+              textAlign: "center",
+              width: "100px",
+            }}
+          >
+            {row.active === true ? "Đang bán" : "Ngừng bán"}
+          </p>
+        );
+      },
+      sortable: true,
+      reorder: true,
+      minWidth: "200px",
+      maxWidth: "200px",
+    },
+    {
+      name: "Giảng viên",
+      selector: (row) => row.accountName,
+      sortable: true,
+      reorder: true,
+      minWidth: "200px",
+      maxWidth: "200px",
     },
     {
       name: "Mã khóa học",
@@ -90,6 +129,8 @@ const CourseManagementPage = () => {
       selector: (row) => row?.name,
       sortable: true,
       reorder: true,
+      minWidth: "400px",
+      maxWidth: "400px",
       wrap: true,
     },
     {
@@ -147,6 +188,7 @@ const CourseManagementPage = () => {
           setPaginate={setPaginate}
           count={totalCourses}
           loading={loading}
+          selectableRows={false}
         />
       </div>
     </div>

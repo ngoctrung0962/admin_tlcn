@@ -185,6 +185,12 @@ export default function Step2({
   };
   return (
     <div>
+      <div className="btn__add__chapter mt-2">
+        <button className="" onClick={handleAddChapter}>
+          <i className="fas fa-plus"></i>
+          Thêm Chapter
+        </button>
+      </div>
       {isShowModal && (
         <ModalAddChapter
           setIsShowModal={setIsShowModal}
@@ -228,6 +234,15 @@ export default function Step2({
               </Dropdown>
             </div>
             <div className="chapter__body">
+              <div className="btn__add__chapter mb-2">
+                <button
+                  className=""
+                  onClick={() => handleAddLecture(chapter?.id)}
+                >
+                  <i className="fas fa-plus"></i>
+                  Thêm bài học
+                </button>
+              </div>
               {chapter?.lectures?.map((lecture, indexLecture) => {
                 return (
                   // <div className="lecture__box" key={indexLecture}>
@@ -257,25 +272,11 @@ export default function Step2({
                   renderLecture(lecture)
                 );
               })}
-              <div className="btn__add__chapter">
-                <button
-                  className=""
-                  onClick={() => handleAddLecture(chapter?.id)}
-                >
-                  <i className="fas fa-plus"></i>
-                  Thêm bài học
-                </button>
-              </div>
             </div>
           </div>
         );
       })}
-      <div className="btn__add__chapter">
-        <button className="" onClick={handleAddChapter}>
-          <i className="fas fa-plus"></i>
-          Add Chapter
-        </button>
-      </div>
+
       <div
         style={{
           display: "flex",

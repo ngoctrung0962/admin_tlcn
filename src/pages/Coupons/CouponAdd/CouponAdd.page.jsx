@@ -129,7 +129,7 @@ export default function CouponAdd(props) {
                   <Form.Group className="mb-3">
                     <Form.Label>Giá trị</Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       {...register("value", { required: true })}
                     />
                     {errors.value && (
@@ -160,7 +160,7 @@ export default function CouponAdd(props) {
                   <Form.Group className="mb-3">
                     <Form.Label>Tổng số lượng</Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       {...register("num", { required: true })}
                     />
                     {errors.num && <p className="form__error">Vui lòng nhập</p>}
@@ -168,7 +168,7 @@ export default function CouponAdd(props) {
                   <Form.Group className="mb-3">
                     <Form.Label>Số lượng còn lại</Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       {...register("numberOfRemain", { required: true })}
                     />
                     {errors.numberOfRemain && (

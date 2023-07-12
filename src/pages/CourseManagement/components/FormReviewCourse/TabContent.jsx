@@ -203,6 +203,17 @@ export default function TabContent({ idCourse }) {
   }, [idCourse]);
   return (
     <div className="mt-2">
+      <div className="btn__add__chapter mb-2">
+        <button
+          className=""
+          onClick={() => {
+            setIsShowModalChapter(true);
+          }}
+        >
+          <i className="fas fa-plus me-1"></i>
+          Thêm Chapter
+        </button>
+      </div>
       {isShowModalChapter && (
         <ModalAddChapter
           dataEditChapter={dataEditChapter}
@@ -251,12 +262,7 @@ export default function TabContent({ idCourse }) {
                   </Dropdown>
                 </div>
                 <div className="chapter__body">
-                  {chapter?.lectures
-                    ?.sort((a, b) => a.offset - b.offset)
-                    .map((lecture, indexLecture) => {
-                      return renderLecture(lecture, chapter);
-                    })}
-                  <div className="btn__add__chapter">
+                  <div className="btn__add__chapter mb-2">
                     <button
                       className=""
                       onClick={() => {
@@ -269,22 +275,16 @@ export default function TabContent({ idCourse }) {
                       Thêm bài học
                     </button>
                   </div>
+                  {chapter?.lectures
+                    ?.sort((a, b) => a.offset - b.offset)
+                    .map((lecture, indexLecture) => {
+                      return renderLecture(lecture, chapter);
+                    })}
                 </div>
               </div>
             );
           })
       )}
-      <div className="btn__add__chapter">
-        <button
-          className=""
-          onClick={() => {
-            setIsShowModalChapter(true);
-          }}
-        >
-          <i className="fas fa-plus"></i>
-          Add Chapter
-        </button>
-      </div>
     </div>
   );
 }

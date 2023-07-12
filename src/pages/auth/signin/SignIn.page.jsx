@@ -38,7 +38,11 @@ export default function SignIn() {
           ) {
             dispatch(loginSuccess(resGetUser.data));
             await Cookies.set("username", res.data.username);
-
+            if (resGetUser.data.role === Enums.ROLE.REVIEWER) {
+              navigate("/taskofreviewer");
+            } else {
+              navigate("/");
+            }
             Swal.fire({
               icon: "success",
               iconHtml: "👍",
@@ -48,11 +52,6 @@ export default function SignIn() {
               showConfirmButton: false,
               timer: 1000,
             });
-            if (resGetUser.data.role === Enums.ROLE.REVIEWER) {
-              navigate("/reviewcourses");
-            } else {
-              navigate("/");
-            }
           }
         }
       } else {

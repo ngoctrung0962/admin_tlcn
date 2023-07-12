@@ -55,16 +55,16 @@ const ReviewPage = () => {
       selector: (row) => row.id,
       sortable: true,
       reorder: true,
-      minWidth: "100px",
-      maxWidth: "100px",
+      minWidth: "200px",
+      maxWidth: "200px",
     },
     {
       name: "User name",
       selector: (row) => row.username,
       sortable: true,
       reorder: true,
-      minWidth: "150px",
-      maxWidth: "150px",
+      minWidth: "200px",
+      maxWidth: "200px",
     },
 
     {
@@ -77,11 +77,11 @@ const ReviewPage = () => {
     },
     {
       name: "Nội dung",
-      selector: (row) => row.content,
+      selector: (row) => {
+        return <div dangerouslySetInnerHTML={{ __html: row.content }}></div>;
+      },
       sortable: true,
       reorder: true,
-      minWidth: "250px",
-      maxWidth: "250px",
       wrap: true,
     },
     {
@@ -97,7 +97,7 @@ const ReviewPage = () => {
   return (
     <div className="container-fluid">
       <div className="content__head d-flex  justify-content-between">
-        <h3 className="content__title ">Tất cả bình luận</h3>
+        <h3 className="content__title ">Tất cả đánh giá</h3>
         <div className="content__tool">
           <button className="main__btn" onClick={() => nav("add")}>
             Thêm mới <MdOutlineAdd size={15} color="#00693e" />

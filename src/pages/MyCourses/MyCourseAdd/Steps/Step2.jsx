@@ -226,6 +226,12 @@ export default function Step2({
   }, []);
   return (
     <div>
+      <div className="btn__add__chapter mb-2">
+        <button className="" onClick={handleAddChapter}>
+          <i className="fas fa-plus"></i>
+          Thêm Chapter
+        </button>
+      </div>
       {isShowModal && (
         <ModalAddChapter
           setIsShowModal={setIsShowModal}
@@ -281,36 +287,7 @@ export default function Step2({
                 </Dropdown>
               </div>
               <div className="chapter__body">
-                {chapter?.lectures?.map((lecture, indexLecture) => {
-                  return (
-                    // <div className="lecture__box" key={indexLecture}>
-                    //   <div className="lecture__head">
-                    //     <h5 className="lecture__name">{lecture.name} </h5>
-                    //     <Dropdown>
-                    //       <MenuItem onClick={() => handleEditLecture(lecture)}>
-                    //         <AiFillEye className="me-1" />
-                    //         Chỉnh sửa
-                    //       </MenuItem>
-                    //       <MenuItem
-                    //         onClick={() => handleDeleteLecture(lecture.id)}
-                    //       >
-                    //         <AiFillDelete className="me-1" />
-                    //         Xóa
-                    //       </MenuItem>
-                    //     </Dropdown>
-                    //   </div>
-                    //   <div className="lecture__body">
-                    //     <div className="lecture__info">
-                    //       <span className="lecture__time">
-                    //         {lecture.time} phút
-                    //       </span>
-                    //     </div>
-                    //   </div>
-                    // </div>
-                    renderLecture(lecture, chapter)
-                  );
-                })}
-                <div className="btn__add__chapter">
+                <div className="btn__add__chapter mb-2">
                   <button
                     className=""
                     onClick={() => handleAddLecture(chapter?.temp_id)}
@@ -319,16 +296,13 @@ export default function Step2({
                     Thêm bài học
                   </button>
                 </div>
+                {chapter?.lectures?.map((lecture, indexLecture) => {
+                  return renderLecture(lecture, chapter);
+                })}
               </div>
             </div>
           );
         })}{" "}
-        <div className="btn__add__chapter">
-          <button className="" onClick={handleAddChapter}>
-            <i className="fas fa-plus"></i>
-            Add Chapter
-          </button>
-        </div>
       </div>
 
       <div

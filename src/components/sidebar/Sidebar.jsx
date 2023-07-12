@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteDetailUser } from "../../redux/userRedux";
+import { Enums } from "../../utils/Enums";
 
 const Sidebar = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -57,7 +58,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar__logo">
-        <Link to="/">
+        <Link to={user?.role === Enums.ROLE.REVIEWER ? "/reviewcourses" : "/"}>
           <CgMenuGridR size={40} color="#00693e" />
         </Link>
 

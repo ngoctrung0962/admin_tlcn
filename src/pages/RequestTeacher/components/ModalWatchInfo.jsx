@@ -200,7 +200,7 @@ export default function ModalWatchInfo({
                     <Col md={6} sm={12}>
                       <img
                         src={item?.link}
-                        alt="avatar"
+                        alt="ảnh chứng chỉ"
                         style={{
                           width: "100%",
                           height: "250px",

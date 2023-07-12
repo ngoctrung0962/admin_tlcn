@@ -106,16 +106,20 @@ export default function ReviewAdd({ isEdit }) {
     } catch (error) {}
   };
   return (
-    <div className="container">
+    <div className="containerr px-3">
       <div className="content__head d-flex  justify-content-between">
         <h3 className="content__title mb-3">
-          {isEdit ? "SỬA BÌNH LUẬN" : "THÊM MỚI BÌNH LUẬN"}
+          {isEdit ? "XEM ĐÁNH GIÁ" : "THÊM MỚI ĐÁNH GIÁ"}
         </h3>
         <div className="content__tool ">
           <button className="main__btn me-2" onClick={() => nav(-1)}>
             Hủy
           </button>
-          <button className="main__btn" onClick={handleSubmit(onSubmit)}>
+          <button
+            className="main__btn"
+            onClick={handleSubmit(onSubmit)}
+            hidden={isEdit}
+          >
             Lưu
           </button>
         </div>
@@ -142,6 +146,7 @@ export default function ReviewAdd({ isEdit }) {
                       labelField={"name"}
                       isClearable={true}
                       required={true}
+                      isDisabled={isEdit}
                     />
                     {errors.courseId && (
                       <p className="form__error">Vui lòng nhập</p>
@@ -152,6 +157,7 @@ export default function ReviewAdd({ isEdit }) {
                     <Form.Control
                       type="text"
                       {...register("content", { required: true })}
+                      readOnly={isEdit}
                     />
                     {errors.content && (
                       <p className="form__error">Vui lòng nhập</p>
@@ -164,6 +170,7 @@ export default function ReviewAdd({ isEdit }) {
                     <Form.Control
                       type="number"
                       {...register("rate", { required: true })}
+                      readOnly={isEdit}
                     />
                     {errors.rate && (
                       <p className="form__error">Vui lòng nhập</p>

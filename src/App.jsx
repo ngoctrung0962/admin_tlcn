@@ -98,7 +98,16 @@ function App() {
           element={user ? <Navigate to="/" /> : <ForgotPass />}
         />
         <Route path="/" element={user ? <MainLayout /> : <SignIn />}>
-          <Route index element={<Dashboard />} />
+          <Route
+            index
+            element={
+              user?.role !== Enums.ROLE.REVIEWER ? (
+                <Dashboard />
+              ) : (
+                <Navigate to="/taskofreviewer" />
+              )
+            }
+          />
 
           {(user?.role === Enums.ROLE.REVIEWER ||
             user?.role === Enums.ROLE.ADMIN) && (
