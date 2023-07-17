@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import categoriescoursesApi from "../../../api/categoriescoursesApi";
-import reviewApi from "../../../api/reviewApi";
 import SelectAsync from "../../../components/Select/SelectAsync";
 import SimpleSelect from "../../../components/Select/SimpleSelect";
 import CustomDatePicker from "../../../components/DatePicker/DatePicker.component";
@@ -13,7 +12,30 @@ import reviewerApi from "../../../api/reviewerApi";
 import { formatDateDisplay } from "../../../utils/MyUtils";
 import SelectCategoriesAsync from "../../../components/Select/SelectCategoriesAsync";
 
-export default function ReviewerAdd({ isEdit }) {
+export default function ReviewerEdit() {
+  const { id } = useParams();
+  const fetchData = async () => {
+    const res = await reviewerApi.getDetailReviewer(id);
+    console.log(res.data);
+    reset({
+      username: res.data.username,
+      fullname: res.data.fullname,
+      birthdate: res.data.birthdate,
+      gender: res.data.gender,
+      phone: res.data.phone,
+      email: res.data.email,
+      categories: res.data.categories.map((item) => {
+        return {
+          value: item.id,
+          label: item.name,
+        };
+      }),
+    });
+  };
+  useEffect(() => {
+    fetchData();
+  }, [id]);
+
   const {
     register,
     handleSubmit,
@@ -60,17 +82,10 @@ export default function ReviewerAdd({ isEdit }) {
   return (
     <div className="containerr px-3">
       <div className="content__head d-flex  justify-content-between">
-        <h3 className="content__title mb-3">
-          {isEdit
-            ? "XEM THÔNG TIN NGƯỜI KIỂM DUYỆT"
-            : "THÊM MỚI NGƯỜI KIỂM DUYỆT"}
-        </h3>
+        <h3 className="content__title mb-3">XEM THÔNG TIN NGƯỜI KIỂM DUYỆT</h3>
         <div className="content__tool ">
           <button className="main__btn me-2" onClick={() => nav(-1)}>
-            Hủy
-          </button>
-          <button className="main__btn" onClick={handleSubmit(onSubmit)}>
-            Lưu
+            Trở về
           </button>
         </div>
       </div>
@@ -84,28 +99,20 @@ export default function ReviewerAdd({ isEdit }) {
                 <Form.Control
                   type="text"
                   {...register("username", { required: true })}
+                  readOnly
                 />
                 {errors.username && (
                   <p className="form__error">Vui lòng nhập</p>
                 )}
               </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Password</Form.Label>
 
-                <Form.Control
-                  type="text"
-                  {...register("password", { required: true })}
-                />
-                {errors.password && (
-                  <p className="form__error">Vui lòng nhập</p>
-                )}
-              </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Họ và tên</Form.Label>
 
                 <Form.Control
                   type="text"
                   {...register("fullname", { required: true })}
+                  readOnly
                 />
                 {errors.fullname && (
                   <p className="form__error">Vui lòng nhập</p>
@@ -113,7 +120,11 @@ export default function ReviewerAdd({ isEdit }) {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Ngày sinh</Form.Label>
-                <CustomDatePicker control={control} field={"birthdate"} />
+                <CustomDatePicker
+                  control={control}
+                  field={"birthdate"}
+                  readOnly={true}
+                />
                 {errors.birthdate && (
                   <p className="form__error">Vui lòng nhập</p>
                 )}
@@ -130,6 +141,7 @@ export default function ReviewerAdd({ isEdit }) {
                   isClearable={true}
                   required={true}
                   isMulti={true}
+                  isDisabled={true}
                 />
                 {errors.categories && (
                   <p className="form__error">Vui lòng nhập</p>
@@ -147,6 +159,7 @@ export default function ReviewerAdd({ isEdit }) {
                     { value: "nu", label: "Nữ" },
                     { value: "nam", label: "Nam" },
                   ]}
+                  isDisabled={true}
                 />
                 {errors.gender && <p className="form__error">Vui lòng nhập</p>}
               </Form.Group>
@@ -155,6 +168,7 @@ export default function ReviewerAdd({ isEdit }) {
                 <Form.Control
                   type="text"
                   {...register("phone", { required: true })}
+                  readOnly
                 />
 
                 {errors.phone && <p className="form__error">Vui lòng nhập</p>}
@@ -164,6 +178,7 @@ export default function ReviewerAdd({ isEdit }) {
                 <Form.Control
                   type="text"
                   {...register("email", { required: true })}
+                  readOnly
                 />
                 {errors.email && <p className="form__error">Vui lòng nhập</p>}
               </Form.Group>

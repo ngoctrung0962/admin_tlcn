@@ -1,6 +1,6 @@
 import { MenuItem } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiFillEye } from "react-icons/ai";
 import { MdOutlineAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import reviewerApi from "../../api/reviewerApi";
@@ -28,27 +28,23 @@ const ReviewerManagement = () => {
   }, [paginate]);
   const nav = useNavigate();
   const handleEdit = (row) => {
-    nav(`${row.id}`);
+    nav(`/managementreviewer/${row.username}`);
   };
   const columns = [
-    // {
-    //   name: "Action",
-    //   minWidth: "100px",
-    //   maxWidth: "100px",
-    //   center: true,
-    //   cell: (row) => (
-    //     <Dropdown>
-    //       {/* <MenuItem onClick={() => handleEdit(row)}>
-    //         <AiFillEye />
-    //         Xem
-    //       </MenuItem> */}
-    //       {/* <MenuItem>
-    //         <AiFillDelete />
-    //         Xóa
-    //       </MenuItem> */}
-    //     </Dropdown>
-    //   ),
-    // },
+    {
+      name: "Action",
+      minWidth: "100px",
+      maxWidth: "100px",
+      center: true,
+      cell: (row) => (
+        <Dropdown>
+          <MenuItem onClick={() => handleEdit(row)}>
+            <AiFillEye />
+            Xem
+          </MenuItem>
+        </Dropdown>
+      ),
+    },
 
     {
       name: "Username",
@@ -112,6 +108,7 @@ const ReviewerManagement = () => {
             count={totalReviewer}
             loading={loading}
             selectableRows={false}
+            onRowDoubleClicked={handleEdit}
           />
         )}
       </div>

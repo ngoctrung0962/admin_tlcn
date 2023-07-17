@@ -47,6 +47,7 @@ import CourseManagementEdit from "./pages/CourseManagement/CourseEdit/CourseMana
 import ResetPasswordPage from "./pages/auth/ForgotPass/ResetPassword.page";
 import ReviewerManagement from "./pages/ReviewerManagement/ReviewerManagement";
 import ReviewerAdd from "./pages/ReviewerManagement/ReviewerAdd/ReviewerAdd.page";
+import ReviewerEdit from "./pages/ReviewerManagement/ReviewerEdit/ReviewerEdit.page";
 function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -153,7 +154,7 @@ function App() {
           <Route path="managementreviewer" element={<Outlet />}>
             <Route path="" element={<ReviewerManagement />} />
             <Route path="add" element={<ReviewerAdd />} />
-            <Route path=":id" element={<ReviewAdd isEdit={true} />} />
+            <Route path=":id" element={<ReviewerEdit />} />
           </Route>
 
           {/* Categories course route */}
