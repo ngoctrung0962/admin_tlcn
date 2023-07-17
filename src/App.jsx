@@ -46,6 +46,7 @@ import ChangePassword from "./pages/ChangePassword/ChangePassword";
 import CourseManagementEdit from "./pages/CourseManagement/CourseEdit/CourseManagementEdit";
 import ReviewerManagement from "./pages/ReviewerManagement/ReviewerManagement";
 import ReviewerAdd from "./pages/ReviewerManagement/ReviewerAdd/ReviewerAdd.page";
+import ReviewerEdit from "./pages/ReviewerManagement/ReviewerEdit/ReviewerEdit.page";
 function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -148,7 +149,7 @@ function App() {
           <Route path="managementreviewer" element={<Outlet />}>
             <Route path="" element={<ReviewerManagement />} />
             <Route path="add" element={<ReviewerAdd />} />
-            <Route path=":id" element={<ReviewAdd isEdit={true} />} />
+            <Route path=":id" element={<ReviewerEdit />} />
           </Route>
 
           {/* Categories course route */}

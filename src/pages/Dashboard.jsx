@@ -42,35 +42,35 @@ const Dashboard = () => {
     {
       title: "Học viên",
       subtitle: "Tổng số học viên tham gia khóa học",
-      value: "300/1000",
+      value: "0",
       color: "#005fb7",
       icon: <FaUserGraduate />,
     },
     {
       title: "Khóa học",
       subtitle: "Tổng số khóa học",
-      value: "3000",
+      value: "0",
       color: "#FF9800",
       icon: <FaDiscourse />,
     },
     {
       title: "Giảng viên",
       subtitle: "Tổng số giảng viên",
-      value: "50/100",
+      value: "0",
       color: "#a23275",
       icon: <GrUserManager />,
     },
     {
       title: "Yêu cầu trở thành giảng viên",
       subtitle: "Tổng số yêu cầu",
-      value: "20",
+      value: "0",
       color: "#F44336",
       icon: <FaFileContract />,
     },
   ]);
   const [dataTotalRevenue, setDataTotalRevenue] = useState({
     title: "Tổng doanh thu",
-    value: "3000000",
+    value: "0",
   });
   useEffect(() => {
     const fetchData = async () => {
@@ -144,7 +144,7 @@ const Dashboard = () => {
         ]);
         setDataTotalRevenue({
           title: "Tổng doanh thu",
-          value: `${res.data?.totalRevenues}`,
+          value: `${res.data?.totalRevenues ? res.data?.totalRevenues : 0}`,
         });
       }
     };
